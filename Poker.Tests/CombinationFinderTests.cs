@@ -118,9 +118,9 @@ namespace Poker.Tests
             _player.Cards[1] = new Card(EValue.Three, EColor.Clubs);
             _table.Cards[0] = new Card(EValue.Four, EColor.Diamonds);
             _table.Cards[1] = new Card(EValue.Six, EColor.Diamonds);
-            _table.Cards[2] = new Card(EValue.Seven, EColor.Clubs);
-            _table.Cards[3] = new Card(EValue.King, EColor.Hearts);
-            _table.Cards[4] = new Card(EValue.Ace, EColor.Clubs);
+            _table.Cards[2] = new Card(EValue.Six, EColor.Clubs);
+            _table.Cards[3] = new Card(EValue.Seven, EColor.Clubs);
+            _table.Cards[4] = new Card(EValue.King, EColor.Hearts);
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.Straight, combination.Combination);

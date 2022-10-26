@@ -20,24 +20,26 @@ namespace Poker.Logic
             return GetStraight() != null;
         }
 
-        private IEnumerable<Card> GetStraight()
-        {
-            var ordered = _cards.OrderByDescending(x => x.Value);
-
-            if (StraightCount(ordered.Take(5)))
-                return ordered.Take(5);
-            if (StraightCount(ordered.Skip(1).Take(5)))
-                return ordered.Skip(1).Take(5);
-            if (StraightCount(ordered.Skip(2).Take(5)))
-                return ordered.Skip(2).Take(5);
-            return null;
-        }
-
         private bool StraightCount(IEnumerable<Card> cards)
         {
             return !cards
                 .Where((i, index) => index > 0 && cards.ElementAt(index - 1).Value != i.Value + 1)
                 .Any();
+        }
+
+        private IEnumerable<Card> GetStraight()
+        {
+            var orderedDistinct = _cards.GroupBy(x => x.Value)
+                .Select(x => x.First())
+                .OrderByDescending(x => x.Value);
+
+            if (orderedDistinct.Count() >= 5 && StraightCount(orderedDistinct.Take(5)))
+                return orderedDistinct.Take(5);
+            if (orderedDistinct.Count() >= 6 && StraightCount(orderedDistinct.Skip(1).Take(5)))
+                return orderedDistinct.Skip(1).Take(5);
+            if (orderedDistinct.Count() >= 7 && StraightCount(orderedDistinct.Skip(2).Take(5)))
+                return orderedDistinct.Skip(2).Take(5);
+            return null;
         }
     }
 }

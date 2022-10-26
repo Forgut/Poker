@@ -2,7 +2,7 @@
 
 namespace Poker.Entity
 {
-    public class Card 
+    public class Card
     {
         public Card(EValue value, EColor color)
         {
@@ -17,5 +17,29 @@ namespace Poker.Entity
         {
             return $"{Value.ToStr()}{Color.ToStr()}";
         }
+
+        public override bool Equals(object obj)
+        {
+            var card = (Card)obj;
+            return card.Color == this.Color && card.Value == this.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Color.GetHashCode() + this.Value.GetHashCode();
+        }
+
+        public static bool operator ==(Card obj1, Card obj2)
+        {
+            if (ReferenceEquals(obj1, obj2))
+                return true;
+            if (ReferenceEquals(obj1, null))
+                return false;
+            if (ReferenceEquals(obj2, null))
+                return false;
+            return obj1.Equals(obj2);
+        }
+        public static bool operator !=(Card obj1, Card obj2)
+        => !(obj1 == obj2);
     }
 }
