@@ -217,6 +217,7 @@ namespace Poker.Tests
         [InlineData("10♦ 2♠ 7♣ 5♣ A♥ 2♦ 8♦", "10♦ 2♠ 7♣ 5♣ A♥ 10♣ Q♥", "10♦ 2♠ 7♣ 5♣ A♥ 7♦ 3♠", ExpectedWinner.Hand2, ECombination.OnePair)]
         [InlineData("2♠ 10♣ K♦ 6♥ 9♠ 6♣ 6♦", "2♠ 10♣ K♦ 6♥ 9♠ 3♦ J♣", "2♠ 10♣ K♦ 6♥ 9♠ K♠ 5♠", ExpectedWinner.Hand1, ECombination.ThreeOfAKind)]
         [InlineData("A♦ K♦ Q♦ J♦ 6♦ 2♣ 7♦", "A♦ K♦ Q♦ J♦ 6♦ 10♥ A♣", "A♦ K♦ Q♦ J♦ 6♦ 3♣ 10♦", ExpectedWinner.Hand3, ECombination.RoyalFlush)]
+        [InlineData("A♦ K♦ Q♦ J♦ 10♦ A♠ Q♠", "A♦ K♦ Q♦ J♦ 10♦ Q♣ A♣", "A♦ K♦ Q♦ J♦ 10♦ Q♥ A♥", ExpectedWinner.Hand1 | ExpectedWinner.Hand2 | ExpectedWinner.Hand3, ECombination.RoyalFlush)]
         public void Should_return_best_combination(string hand1,
             string hand2,
             string hand3,

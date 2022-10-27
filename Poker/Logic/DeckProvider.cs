@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Poker.Logic
 {
-    internal class DeckProvider
+    public class DeckProvider
     {
         public IEnumerable<Card> GetInitialDeck()
         {
