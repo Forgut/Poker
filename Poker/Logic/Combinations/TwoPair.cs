@@ -16,7 +16,9 @@ namespace Poker.Logic
         private IEnumerable<Card> GetTwoPairs()
         {
             return _cards.GroupBy(x => x.Value)
-                .Where(x => x.Count() == 2)
+                .Where(x => x.Count() >= 2)
+                .OrderByDescending(x => x.Key)
+                .Take(2)
                 .SelectMany(card => card)
                 .OrderByDescending(x => x.Value);
         }

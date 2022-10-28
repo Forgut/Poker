@@ -12,8 +12,9 @@ namespace Poker
         static void Main(string[] args)
         {
             var winners = new List<string>();
-            for (int i = 0; i < 10000; i++)
-                winners.AddRange(ProcessGame(i));
+            //for (int i = 0; i < 10000; i++)
+            //    winners.AddRange(ProcessGame(i));
+            ProcessGame(2);
             foreach (var player in winners.GroupBy(x => x))
                 Console.WriteLine($"{player.Key}: {player.Count()}");
         }

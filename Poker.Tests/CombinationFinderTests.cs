@@ -78,6 +78,24 @@ namespace Poker.Tests
         }
 
         [Fact]
+        public void Should_find_two_pairs_when_there_are_3_pairs()
+        {
+            _player.Cards[0] = new Card(EValue.Eight, EColor.Hearts);
+            _player.Cards[1] = new Card(EValue.Ten, EColor.Clubs);
+            _table.Cards[0] = new Card(EValue.Eight, EColor.Diamonds);
+            _table.Cards[1] = new Card(EValue.Ten, EColor.Diamonds);
+            _table.Cards[2] = new Card(EValue.Two, EColor.Clubs);
+            _table.Cards[3] = new Card(EValue.Four, EColor.Hearts);
+            _table.Cards[4] = new Card(EValue.Four, EColor.Clubs);
+
+            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            Assert.Equal(ECombination.TwoPair, combination.Combination);
+            Assert.True(combination.Cards.Count(x => x.Value == EValue.Ten) == 2);
+            Assert.True(combination.Cards.Count(x => x.Value == EValue.Eight) == 2);
+            Assert.Single(combination.Cards.Where(x => x.Value == EValue.Four));
+        }
+
+        [Fact]
         public void Should_find_three_of_a_kind()
         {
             _player.Cards[0] = new Card(EValue.Eight, EColor.Clubs);
