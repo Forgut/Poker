@@ -4,13 +4,14 @@ using System.Linq;
 
 namespace Poker.Logic
 {
-    internal class Croupier
+    public class Croupier
     {
         private List<Card> _deck;
 
-        public Croupier(IEnumerable<Card> deck)
+        public Croupier(DeckProvider deckProvider, DeckShuffler deckShuffler)
         {
-            _deck = deck.ToList();
+            var initialDeck = deckProvider.GetInitialDeck();
+            _deck =  deckShuffler.ShuffleDeck(initialDeck).ToList();
         }
 
         public void PreFlop(Table table)

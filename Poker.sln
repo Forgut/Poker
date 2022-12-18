@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poker", "Poker\Poker.csproj", "{5ECAE988-7F78-4DB1-92CA-11932572B73F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poker", "Poker\Poker.csproj", "{5ECAE988-7F78-4DB1-92CA-11932572B73F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poker.Tests", "Poker.Tests\Poker.Tests.csproj", "{252DC8A6-81DB-4267-90FE-A00653E887F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poker.Tests", "Poker.Tests\Poker.Tests.csproj", "{252DC8A6-81DB-4267-90FE-A00653E887F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poker.Logic", "Poker.Logic\Poker.Logic.csproj", "{D1787ED3-9290-4927-BCF1-B237F0AFBBEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poker.CLI", "Poker.CLI\Poker.CLI.csproj", "{4284D1DF-6B5F-4094-B669-4D8BFDF75E66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{252DC8A6-81DB-4267-90FE-A00653E887F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{252DC8A6-81DB-4267-90FE-A00653E887F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{252DC8A6-81DB-4267-90FE-A00653E887F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1787ED3-9290-4927-BCF1-B237F0AFBBEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1787ED3-9290-4927-BCF1-B237F0AFBBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1787ED3-9290-4927-BCF1-B237F0AFBBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1787ED3-9290-4927-BCF1-B237F0AFBBEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4284D1DF-6B5F-4094-B669-4D8BFDF75E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4284D1DF-6B5F-4094-B669-4D8BFDF75E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4284D1DF-6B5F-4094-B669-4D8BFDF75E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4284D1DF-6B5F-4094-B669-4D8BFDF75E66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

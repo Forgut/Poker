@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Poker.Logic
 {
-    internal class DeckShuffler
+    public class DeckShuffler
     {
         private readonly Random _random;
 
