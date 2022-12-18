@@ -9,8 +9,6 @@ namespace Poker.Logic.Logic
     public class Game
     {
         private readonly Table _table;
-        private readonly DeckProvider _deckProvider;
-        private readonly DeckShuffler _deckShuffler;
         private readonly Croupier _croupier;
         private readonly CombinationComparer _combinationComparer;
         private readonly WinEstimator _winEstimator;
@@ -32,12 +30,17 @@ namespace Poker.Logic.Logic
             Winners = new List<Player>();
         }
 
-        public void SetTargetPlayer(Player player)
+        public bool SetTargetPlayer(string playerName)
         {
-            if (_table.Players.Contains(player))
+            var player = _table.Players.FirstOrDefault(x => x.Name == playerName);
+            if (player != null)
+            {
                 _targetPlayer = player;
-            else
-                _targetPlayer = _table.Players.First();
+                return true;
+            }
+
+            _targetPlayer = _table.Players.First();
+            return false;
         }
 
         public void ResetRound()
@@ -165,7 +168,7 @@ namespace Poker.Logic.Logic
                     Combination = new CombinationFinder(x, _table).GetBestCombination()
                 });
 
-            var winners = new CombinationComparer()
+            var winners = _combinationComparer
                .GetBestCombinations(playersCombinations.Select(x => x.Combination));
 
             Winners = playersCombinations.Where(x => winners.Contains(x.Combination))

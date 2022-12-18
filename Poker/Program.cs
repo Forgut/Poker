@@ -41,7 +41,7 @@ namespace Poker
 
             var game = new Game(croupier, combinationComparer, winEstimator, table);
 
-            game.SetTargetPlayer(players[0]);
+            game.SetTargetPlayer(players[0].Name);
 
             game.DrawPlayerCards();
             game.Flop();
