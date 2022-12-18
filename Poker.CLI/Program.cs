@@ -4,6 +4,7 @@ using Poker.Logic.Estimator;
 using Poker.Logic.Logic;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Poker.CLI
 {
@@ -13,7 +14,7 @@ namespace Poker.CLI
         {
             var gameState = GetGameState();
 
-            gameState.ExecuteAction(null);
+            gameState.ExecuteAction("help");
             while (!gameState.ShouldEndGame)
             {
                 Console.Write("> ");
@@ -73,7 +74,7 @@ namespace Poker.CLI
                     PrintWinProbabilities();
                     break;
                 case EAction.SetupPlayer:
-                    SetupTargetPlayer();
+                    SetupTargetPlayer(ParseParameters(action).FirstOrDefault());
                     break;
                 case EAction.PrintTable:
                     PrintTableState();
@@ -91,9 +92,20 @@ namespace Poker.CLI
             }
         }
 
+        private IEnumerable<string> ParseParameters(string action)
+        {
+            var parameters = action.Split(":")
+                .Skip(1)
+                .Select(x => x.Trim());
+            return parameters;
+        }
+
         private EAction ParseAction(string action)
         {
-            return action switch
+            var actionPrefix = action.Split(":")
+                .First()
+                .Trim();
+            return actionPrefix switch
             {
                 "h" or "help" => EAction.Help,
                 "q" or "quit" => EAction.Quit,
@@ -181,10 +193,8 @@ namespace Poker.CLI
             Console.WriteLine("Reset game to go again");
         }
 
-        private void SetupTargetPlayer()
+        private void SetupTargetPlayer(string playerName)
         {
-            Console.WriteLine("Insert player name");
-            var playerName = Console.ReadLine();
             Console.Write($"Setting up as target {playerName} ");
             if (_game.SetTargetPlayer(playerName))
                 Console.WriteLine("succeded");
