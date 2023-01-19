@@ -1,5 +1,6 @@
 ﻿using Poker.Entity;
 using Poker.Logic;
+using Poker.Logic.Entity;
 using Poker.Logic.Estimator;
 using Poker.Logic.Logic;
 using System;
@@ -33,10 +34,11 @@ namespace Poker
             };
 
 
-            var deckProvider = new DeckProvider();
             var table = new Table(players);
-            var croupier = new Croupier(deckProvider, new DeckShuffler(new Random(seed)));
-            var winEstimator = new WinEstimator(deckProvider);
+            var deck = Deck.NewDeck
+                .Shuffled(new DeckShuffler(new Random(1)));
+            var croupier = new Croupier(deck);
+            var winEstimator = new WinEstimator();
             var combinationComparer = new CombinationComparer();
 
             var game = new Game(croupier, combinationComparer, winEstimator, table);

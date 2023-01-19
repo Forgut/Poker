@@ -1,11 +1,12 @@
 ﻿using Poker.Entity;
+using Poker.Logic.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Poker.Logic
 {
-    public class DeckShuffler
+    public class DeckShuffler : IShuffleRule
     {
         private readonly Random _random;
 
@@ -14,9 +15,9 @@ namespace Poker.Logic
             _random = random;
         }
 
-        public IEnumerable<Card> ShuffleDeck(IEnumerable<Card> cards)
+        public void ShuffleDeck(IEnumerable<Card> cards)
         {
-            return ShuffleIterator(cards, _random);
+             ShuffleIterator(cards, _random);
         }
 
         /// <summary>

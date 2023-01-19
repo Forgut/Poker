@@ -21,7 +21,7 @@ namespace Poker.Tests
             var player = new Player("Xd", 100);
             player.Cards[0] = new Card(EValue.Ace, EColor.Spades);
             player.Cards[1] = new Card(EValue.Queen, EColor.Spades);
-            var result = new WinEstimator(new Logic.DeckProvider())
+            var result = new WinEstimator()
                 .ProbableCombinationsForPlayer2Missing(table, player);
         }
 
@@ -36,7 +36,7 @@ namespace Poker.Tests
             var player = new Player("Xd", 100);
             player.Cards[0] = new Card(EValue.Ace, EColor.Spades);
             player.Cards[1] = new Card(EValue.Queen, EColor.Spades);
-            var result = new WinEstimator(new Logic.DeckProvider())
+            var result = new WinEstimator()
                 .ProbableCombinationsForPlayer1Missing(table, player);
         }
 
@@ -50,7 +50,7 @@ namespace Poker.Tests
             var player = new Player("Xd", 100);
             player.Cards[0] = new Card(EValue.Ace, EColor.Spades);
             player.Cards[1] = new Card(EValue.Queen, EColor.Spades);
-            var result = new WinEstimator(new Logic.DeckProvider())
+            var result = new WinEstimator()
                 .ProbableCombinationsForEnemy2Missing(table, player);
         }
 
@@ -65,7 +65,7 @@ namespace Poker.Tests
             var player = new Player("Xd", 100);
             player.Cards[0] = new Card(EValue.Ace, EColor.Spades);
             player.Cards[1] = new Card(EValue.Queen, EColor.Spades);
-            var result = new WinEstimator(new Logic.DeckProvider())
+            var result = new WinEstimator()
                 .ProbableCombinationsForEnemy1Missing(table, player);
         }
     }

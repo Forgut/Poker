@@ -1,4 +1,5 @@
 ﻿using Poker.Entity;
+using Poker.Logic.Entity;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -10,13 +11,6 @@ namespace Poker.Logic.Estimator
 {
     public class WinEstimator
     {
-        private readonly DeckProvider _deckProvider;
-
-        public WinEstimator(DeckProvider deckProvider)
-        {
-            _deckProvider = deckProvider;
-        }
-
         public CombinationEstimationResult ProbableCombinationsForPlayer2Missing(Table table, Player player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
@@ -140,7 +134,9 @@ namespace Poker.Logic.Estimator
 
         private IEnumerable<Card> GetAvailableCards(IEnumerable<Card> unavailableCards)
         {
-            return _deckProvider.GetInitialDeck()
+            return Deck.NewDeck
+                .NotShuffled()
+                .Cards
                 .Except(unavailableCards)
                 .ToList();
         }

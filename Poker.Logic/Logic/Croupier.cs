@@ -1,4 +1,5 @@
 ﻿using Poker.Entity;
+using Poker.Logic.Entity;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,12 +7,11 @@ namespace Poker.Logic
 {
     public class Croupier
     {
-        private List<Card> _deck;
+        private readonly Deck _deck;
 
-        public Croupier(DeckProvider deckProvider, DeckShuffler deckShuffler)
+        public Croupier(Deck deck)
         {
-            var initialDeck = deckProvider.GetInitialDeck();
-            _deck =  deckShuffler.ShuffleDeck(initialDeck).ToList();
+            _deck = deck;
         }
 
         public void PreFlop(Table table)
@@ -42,9 +42,7 @@ namespace Poker.Logic
 
         private Card GetNextCardFromDeck()
         {
-            var card = _deck.First();
-            _deck.Remove(card);
-            return card;
+            return _deck.DrawCard();
         }
     }
 }
