@@ -1,8 +1,11 @@
 ﻿using Poker.Entity;
+using Poker.Logic.Entity;
 using Poker.Logic.Estimator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace Poker.Logic.Logic
 {
@@ -12,6 +15,7 @@ namespace Poker.Logic.Logic
         private readonly Croupier _croupier;
         private readonly CombinationComparer _combinationComparer;
         private readonly WinEstimator _winEstimator;
+        private readonly Players _players;
 
         private Player _targetPlayer;
 
@@ -21,32 +25,34 @@ namespace Poker.Logic.Logic
         public Game(Croupier croupier,
                     CombinationComparer combinationComparer,
                     WinEstimator winEstimator,
-                    Table table)
+                    Table table,
+                    Players players)
         {
             _croupier = croupier;
             _combinationComparer = combinationComparer;
             _winEstimator = winEstimator;
             _table = table;
             Winners = new List<Player>();
+            _players = players;
         }
 
         public bool SetTargetPlayer(string playerName)
         {
-            var player = _table.Players.FirstOrDefault(x => x.Name == playerName);
+            var player = _players.FirstOrDefault(x => x.Name == playerName);
             if (player != null)
             {
                 _targetPlayer = player;
                 return true;
             }
 
-            _targetPlayer = _table.Players.First();
+            _targetPlayer = _players.First();
             return false;
         }
 
         public void ResetRound()
         {
             _table.ClearCards();
-            foreach (var player in _table.Players)
+            foreach (var player in _players)
                 player.ClearCards();
             Winners.Clear();
             GameState = EGameState.New;
@@ -54,7 +60,7 @@ namespace Poker.Logic.Logic
 
         public void DrawPlayerCards()
         {
-            _croupier.PreFlop(_table);
+            _croupier.PreFlop(_players);
             GameState = EGameState.PreFlop;
         }
 
@@ -78,8 +84,24 @@ namespace Poker.Logic.Logic
 
         public void PrintGameState()
         {
-            Console.WriteLine($"Current stage: {GameState}");
-            Console.WriteLine(_table.GetTableState());
+            Console.WriteLine();
+            var sb = new StringBuilder();
+            sb.AppendLine($"Current stage: {GameState}");
+            sb.Append("Table: ");
+            foreach (var card in _table.Cards)
+            {
+                if (card == null)
+                    sb.Append("X ");
+                else
+                    sb.Append($"{card} ");
+            }
+            sb.AppendLine();
+
+            sb.AppendLine("Players:");
+            foreach (var player in _players)
+                sb.AppendLine($"{player.Name}: {player.Cards[0]} {player.Cards[1]}");
+
+            Console.WriteLine(sb.ToString());
         }
 
         public void PrintWinProbabilities()
@@ -152,7 +174,7 @@ namespace Poker.Logic.Logic
             void PrintRiver()
             {
                 var playersCombinations =
-                _table.Players.Select(x => new
+                _players.Select(x => new
                 {
                     Player = x,
                     Combination = new CombinationFinder(x, _table).GetBestCombination()
@@ -174,7 +196,7 @@ namespace Poker.Logic.Logic
         public void EndRound()
         {
             var playersCombinations =
-                _table.Players.Select(x => new
+                _players.Select(x => new
                 {
                     Player = x,
                     Combination = new CombinationFinder(x, _table).GetBestCombination()

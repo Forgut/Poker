@@ -9,14 +9,12 @@ namespace Poker.Entity
 {
     public class Table
     {
-        public Table(IEnumerable<Player> players)
+        public Table()
         {
             _cards = new Card[5];
-            Players = players;
         }
         private Card[] _cards { get; }
         public ReadOnlyCollection<Card> Cards => Array.AsReadOnly(_cards);
-        public IEnumerable<Player> Players { get; }
 
         public void SetFirstCard(Card card)
         {
@@ -56,26 +54,6 @@ namespace Poker.Entity
         public void ClearCards()
         {
             Array.Clear(_cards);
-        }
-
-        public string GetTableState()
-        {
-            var sb = new StringBuilder();
-            sb.Append("Table: ");
-            foreach (var card in _cards)
-            {
-                if (card == null)
-                    sb.Append("X ");
-                else
-                    sb.Append($"{card} ");
-            }
-            sb.AppendLine();
-
-            sb.AppendLine("Players:");
-            foreach (var player in Players)
-                sb.AppendLine($"{player.Name}: {player.Cards[0]} {player.Cards[1]}");
-
-            return sb.ToString();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Poker
 
         static IEnumerable<string> ProcessGame(int seed)
         {
-            var players = new List<Player>()
+            var players = new Players()
             {
                 new Player("Fregi"),
                 new Player("Szymeg"),
@@ -34,14 +34,14 @@ namespace Poker
             };
 
 
-            var table = new Table(players);
+            var table = new Table();
             var deck = Deck.NewDeck
                 .Shuffled(new DeckShuffler(new Random(1)));
             var croupier = new Croupier(deck);
             var winEstimator = new WinEstimator();
             var combinationComparer = new CombinationComparer();
 
-            var game = new Game(croupier, combinationComparer, winEstimator, table);
+            var game = new Game(croupier, combinationComparer, winEstimator, table, players);
 
             game.SetTargetPlayer(players[0].Name);
 

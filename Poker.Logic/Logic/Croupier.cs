@@ -14,9 +14,8 @@ namespace Poker.Logic
             _deck = deck;
         }
 
-        public void PreFlop(Table table)
+        public void PreFlop(Players players)
         {
-            var players = table.Players;
             foreach (var player in players)
                 player.SetFirstCard(GetNextCardFromDeck());
             foreach (var player in players)

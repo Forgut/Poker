@@ -26,21 +26,21 @@ namespace Poker.CLI
 
         static GameState GetGameState()
         {
-            var players = GetPlayers()
+            var players = GetPlayerNames()
                 .Select(x => new Player(x))
-                .ToList();
+                .ToPlayers();
 
-            var table = new Table(players);
+            var table = new Table();
             var deck = Deck.NewDeck
                 .Shuffled(new DeckShuffler(new Random(1)));
             var croupier = new Croupier(deck);
             var winEstimator = new WinEstimator();
             var combinationComparer = new CombinationComparer();
 
-            var game = new Game(croupier, combinationComparer, winEstimator, table);
+            var game = new Game(croupier, combinationComparer, winEstimator, table, players);
             return new GameState(game);
 
-            IEnumerable<string> GetPlayers()
+            IEnumerable<string> GetPlayerNames()
             {
                 Console.WriteLine("Insert players separated by ;");
                 var names = Console.ReadLine();
