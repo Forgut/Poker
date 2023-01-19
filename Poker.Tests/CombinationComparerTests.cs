@@ -246,6 +246,31 @@ namespace Poker.Tests
                 Assert.Contains(combination3, winner);
         }
 
+        [Theory]
+        [InlineData("3♣ 3♥ A♣ A♦ A♠ 7♣ 8♥", "2♣ 2♥ A♣ A♦ A♠ 7♣ 8♥", ExpectedWinner.Hand1, ECombination.FullHouse)]
+        [InlineData("A♣ A♥ 3♣ 3♦ 3♠ 7♣ 8♥", "Q♣ Q♥ 3♣ 3♦ 3♠ 7♣ 8♥", ExpectedWinner.Hand1, ECombination.FullHouse)]
+        public void Should_recognize_better_full_house_properly(string hand1,
+            string hand2,
+            ExpectedWinner expectedWinner,
+            ECombination expectedCombination)
+        {
+            var combination1 = new CombinationFinder(GetCards(hand1)).GetBestCombination();
+            var combination2 = new CombinationFinder(GetCards(hand2)).GetBestCombination();
+
+            var winner = new CombinationComparer()
+                .GetBestCombinations(new List<CombinationDTO>()
+                {
+                    combination1,
+                    combination2,
+                });
+
+            Assert.Equal(expectedCombination, winner.First().Combination);
+            if (expectedWinner.HasFlag(ExpectedWinner.Hand1))
+                Assert.Contains(combination1, winner);
+            if (expectedWinner.HasFlag(ExpectedWinner.Hand2))
+                Assert.Contains(combination2, winner);
+        }
+
         [Flags]
         public enum ExpectedWinner
         {
