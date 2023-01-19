@@ -27,7 +27,7 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
                 .Any();
         }
 
-        private IEnumerable<Card> GetStraight()
+        private IEnumerable<Card>? GetStraight()
         {
             var orderedDistinct = _cards.GroupBy(x => x.Value)
                 .Select(x => x.First())

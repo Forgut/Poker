@@ -7,10 +7,10 @@ namespace Poker.Core.Application.CombinationsLogic
 {
     public class CombinationDTO : IComparable
     {
-        public CombinationDTO(ECombination combination, IEnumerable<Card> cards)
+        public CombinationDTO(ECombination combination, IEnumerable<Card>? cards)
         {
             Combination = combination;
-            Cards = cards;
+            Cards = cards ?? throw new ArgumentNullException(nameof(cards));
         }
 
         public ECombination Combination { get; }

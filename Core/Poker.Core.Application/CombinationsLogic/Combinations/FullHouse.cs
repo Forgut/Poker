@@ -20,7 +20,7 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
             return GetFullHouse() != null;
         }
 
-        private IEnumerable<Card> GetFullHouse()
+        private IEnumerable<Card>? GetFullHouse()
         {
             var pair = _cards.GroupBy(x => x.Value)
                 .FirstOrDefault(x => x.Count() == 2);

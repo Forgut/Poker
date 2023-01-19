@@ -15,7 +15,7 @@ namespace Poker.Core.Application
         private readonly WinEstimator _winEstimator;
         private readonly Players _players;
 
-        private Player _targetPlayer;
+        private Player? _targetPlayer;
 
         public List<Player> Winners { get; private set; }
         public EGameState GameState { get; private set; }

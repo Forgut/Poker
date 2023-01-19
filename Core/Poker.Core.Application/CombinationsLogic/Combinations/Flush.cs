@@ -20,7 +20,7 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
             return GetFlush() != null;
         }
 
-        private IEnumerable<Card> GetFlush()
+        private IEnumerable<Card>? GetFlush()
         {
             var oneColorCards = _cards
                 .GroupBy(x => x.Color)

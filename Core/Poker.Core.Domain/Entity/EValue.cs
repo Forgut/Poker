@@ -1,4 +1,6 @@
-﻿namespace Poker.Core.Domain.Entity
+﻿using System;
+
+namespace Poker.Core.Domain.Entity
 {
     public enum EValue
     {
@@ -42,7 +44,7 @@
                 case EValue.Two:
                     return ((int)value).ToString();
                 default:
-                    return null;
+                    throw new NotSupportedException();
             }
         }
     }

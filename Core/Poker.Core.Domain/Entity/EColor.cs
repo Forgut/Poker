@@ -1,4 +1,6 @@
-﻿namespace Poker.Core.Domain.Entity
+﻿using System;
+
+namespace Poker.Core.Domain.Entity
 {
     public enum EColor
     {
@@ -23,7 +25,7 @@
                 case EColor.Hearts:
                     return "♥";
                 default:
-                    return null;
+                    throw new NotSupportedException();
             }
         }
     }

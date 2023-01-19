@@ -9,7 +9,7 @@ namespace Poker.Core.Application.CombinationsLogic
 
     public class CombinationFinder
     {
-        private List<Combination> _combinations;
+        private List<Combination> _combinations = new List<Combination>();
         public CombinationFinder(Player player, Table table)
         {
             var cards = player.Cards.ToList();

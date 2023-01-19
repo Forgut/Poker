@@ -15,6 +15,7 @@ namespace Poker.Core.Domain.Entity
 
         private readonly Card[] _cards;
         public ReadOnlyCollection<Card> Cards => Array.AsReadOnly(_cards);
+
         public void SetFirstCard(Card card)
         {
             if (_cards[0] != null)
