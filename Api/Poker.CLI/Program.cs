@@ -3,6 +3,7 @@ using Poker.Core.Application.CardBehaviour;
 using Poker.Core.Application.CardBehaviour.Shuffling;
 using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
+using Poker.Core.Domain.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
