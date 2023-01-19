@@ -26,19 +26,19 @@ namespace Poker.Logic
 
         public void Flop(Table table)
         {
-            table.Cards[0] = GetNextCardFromDeck();
-            table.Cards[1] = GetNextCardFromDeck();
-            table.Cards[2] = GetNextCardFromDeck();
+            table.SetFirstCard(GetNextCardFromDeck());
+            table.SetSecondCard(GetNextCardFromDeck());
+            table.SetThirdCard(GetNextCardFromDeck());
         }
 
         public void Turn(Table table)
         {
-            table.Cards[3] = GetNextCardFromDeck();
+            table.SetFourthCard(GetNextCardFromDeck());
         }
 
         public void River(Table table)
         {
-            table.Cards[4] = GetNextCardFromDeck();
+            table.SetFifthCard(GetNextCardFromDeck());
         }
 
         private Card GetNextCardFromDeck()

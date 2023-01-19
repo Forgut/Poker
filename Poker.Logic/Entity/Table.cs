@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using Poker.Logic.Cards.Entity;
+using Poker.Logic.Exceptions;
 
 namespace Poker.Entity
 {
@@ -8,17 +11,58 @@ namespace Poker.Entity
     {
         public Table(IEnumerable<Player> players)
         {
-            Cards = new Card[5];
+            _cards = new Card[5];
             Players = players;
         }
-        public Card[] Cards { get; }
+        private Card[] _cards { get; }
+        public ReadOnlyCollection<Card> Cards => Array.AsReadOnly(_cards);
         public IEnumerable<Player> Players { get; }
+
+        public void SetFirstCard(Card card)
+        {
+            if (_cards[0] != null)
+                throw new CardAlreadySetException();
+            _cards[0] = card;
+        }
+
+        public void SetSecondCard(Card card)
+        {
+            if (_cards[1] != null)
+                throw new CardAlreadySetException();
+            _cards[1] = card;
+        }
+
+        public void SetThirdCard(Card card)
+        {
+            if (_cards[2] != null)
+                throw new CardAlreadySetException();
+            _cards[2] = card;
+        }
+
+        public void SetFourthCard(Card card)
+        {
+            if (_cards[3] != null)
+                throw new CardAlreadySetException();
+            _cards[3] = card;
+        }
+
+        public void SetFifthCard(Card card)
+        {
+            if (_cards[4] != null)
+                throw new CardAlreadySetException();
+            _cards[4] = card;
+        }
+
+        public void ClearCards()
+        {
+            Array.Clear(_cards);
+        }
 
         public string GetTableState()
         {
             var sb = new StringBuilder();
             sb.Append("Table: ");
-            foreach (var card in Cards)
+            foreach (var card in _cards)
             {
                 if (card == null)
                     sb.Append("X ");
@@ -28,7 +72,7 @@ namespace Poker.Entity
             sb.AppendLine();
 
             sb.AppendLine("Players:");
-            foreach(var player in Players)
+            foreach (var player in Players)
                 sb.AppendLine($"{player.Name}: ({player.Money}), {player.Cards[0]} {player.Cards[1]}");
 
             return sb.ToString();

@@ -45,7 +45,7 @@ namespace Poker.Logic.Logic
 
         public void ResetRound()
         {
-            Array.Clear(_table.Cards, 0, _table.Cards.Length);
+            _table.ClearCards();
             foreach (var player in _table.Players)
                 player.ClearCards();
             Winners.Clear();
