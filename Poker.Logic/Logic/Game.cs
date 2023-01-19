@@ -105,6 +105,12 @@ namespace Poker.Logic.Logic
 
             void PrintFlop()
             {
+                if (_targetPlayer == null)
+                {
+                    Console.WriteLine("Target player not specified");
+                    return;
+                }
+
                 var flopProb = _winEstimator
                         .ProbableCombinationsForPlayer2Missing(_table, _targetPlayer);
 
@@ -122,6 +128,12 @@ namespace Poker.Logic.Logic
 
             void PrintTurn()
             {
+                if (_targetPlayer == null)
+                {
+                    Console.WriteLine("Target player not specified");
+                    return;
+                }
+
                 var turnProb = _winEstimator
                 .ProbableCombinationsForPlayer1Missing(_table, _targetPlayer);
 

@@ -25,15 +25,9 @@ namespace Poker.CLI
 
         static GameState GetGameState()
         {
-            var players = new List<Player>()
-            {
-                new Player("Fregi", 100),
-                new Player("Szymeg", 100),
-                new Player("Avamys", 100),
-                new Player("Mietas", 100),
-                new Player("JFK", 100),
-                //new Player("Nataszka", 100),
-            };
+            var players = GetPlayers()
+                .Select(x => new Player(x, 100))
+                .ToList();
 
             var deckProvider = new DeckProvider();
             var table = new Table(players);
@@ -43,6 +37,14 @@ namespace Poker.CLI
 
             var game = new Game(croupier, combinationComparer, winEstimator, table);
             return new GameState(game);
+
+            IEnumerable<string> GetPlayers()
+            {
+                Console.WriteLine("Insert players separated by ;");
+                var names = Console.ReadLine();
+                return names.Split(";")
+                    .Select(x => x.Trim());
+            }
         }
     }
 
