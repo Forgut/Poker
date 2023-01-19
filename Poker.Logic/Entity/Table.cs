@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using Poker.Logic.Cards.Entity;
+using Poker.Logic.Entity;
 using Poker.Logic.Exceptions;
 
 namespace Poker.Entity

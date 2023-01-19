@@ -1,4 +1,4 @@
-﻿using Poker.Logic.Cards.Entity;
+﻿using Poker.Logic.Entity;
 using Poker.Logic.Exceptions;
 using System;
 using System.Collections.ObjectModel;

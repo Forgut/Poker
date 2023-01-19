@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Poker.Logic.Cards.Entity
+namespace Poker.Logic.Entity
 {
     public class Card
     {
