@@ -1,4 +1,4 @@
-﻿namespace Poker.Entity
+﻿namespace Poker.Core.Domain.Entity
 {
     public enum ECombination
     {

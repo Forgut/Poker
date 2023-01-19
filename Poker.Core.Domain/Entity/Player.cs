@@ -1,9 +1,8 @@
-﻿using Poker.Logic.Entity;
-using Poker.Logic.Exceptions;
+﻿using Poker.Core.Domain.Exceptions;
 using System;
 using System.Collections.ObjectModel;
 
-namespace Poker.Entity
+namespace Poker.Core.Domain.Entity
 {
     public class Player
     {
@@ -32,7 +31,7 @@ namespace Poker.Entity
 
         public void ClearCards()
         {
-            Array.Clear(_cards);
+            Array.Clear(_cards, 0, _cards.Length);
         }
     }
 }

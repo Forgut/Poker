@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Poker.Logic\Poker.Logic.csproj" />
+    <ProjectReference Include="..\..\Poker.Core.Application\Poker.Core.Application.csproj" />
+    <ProjectReference Include="..\..\Poker.Core.Domain\Poker.Core.Domain.csproj" />
   </ItemGroup>
 
 </Project>

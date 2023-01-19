@@ -1,4 +1,4 @@
-﻿namespace Poker.Logic.Entity
+﻿namespace Poker.Core.Domain.Entity
 {
     public enum EColor
     {

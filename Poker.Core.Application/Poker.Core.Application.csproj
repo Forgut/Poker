@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Logic\lbg4v5fp.ct5~" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Poker.Core.Domain\Poker.Core.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

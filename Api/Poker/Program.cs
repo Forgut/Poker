@@ -1,8 +1,8 @@
-﻿using Poker.Entity;
-using Poker.Logic;
-using Poker.Logic.Entity;
-using Poker.Logic.Estimator;
-using Poker.Logic.Logic;
+﻿using Poker.Core.Application.Entity;
+using Poker.Core.Application.Logic;
+using Poker.Core.Application.Logic.Combinations;
+using Poker.Core.Application.Logic.Estimator;
+using Poker.Core.Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
