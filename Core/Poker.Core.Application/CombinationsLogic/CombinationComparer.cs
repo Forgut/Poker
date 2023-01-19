@@ -1,8 +1,7 @@
-﻿using Poker.Core.Application.Entity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Poker.Core.Application.Logic.Combinations
+namespace Poker.Core.Application.CombinationsLogic
 {
     public class CombinationComparer
     {

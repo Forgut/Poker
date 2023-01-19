@@ -1,12 +1,12 @@
-﻿using Poker.Core.Application.Entity;
-using Poker.Core.Application.Logic.Combinations;
+﻿using Poker.Core.Application.CardBehaviour;
+using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Poker.Core.Application.Logic.Estimator
+namespace Poker.Core.Application
 {
     public class WinEstimator
     {
@@ -32,7 +32,7 @@ namespace Poker.Core.Application.Logic.Estimator
             var combinationsDictionary = possibleCombinations
                 .Select(x => new { Combination = x, Comb = new CombinationFinder(x).GetBestCombination().Combination })
                 .GroupBy(x => x.Comb)
-                .Select(x => new { x.Key, Chance = (double)x.Count() / (double)possibleCombinations.Count })
+                .Select(x => new { x.Key, Chance = x.Count() / (double)possibleCombinations.Count })
                 .ToDictionary(keySelector: x => x.Key, elementSelector: chance => chance.Chance);
 
             return new CombinationEstimationResult(combinationsDictionary);
@@ -55,7 +55,7 @@ namespace Poker.Core.Application.Logic.Estimator
             var combinationsDictionary = possibleCombinations
                 .Select(x => new { Combination = x, Comb = new CombinationFinder(x).GetBestCombination().Combination })
                 .GroupBy(x => x.Comb)
-                .Select(x => new { x.Key, Chance = (double)x.Count() / (double)possibleCombinations.Count })
+                .Select(x => new { x.Key, Chance = x.Count() / (double)possibleCombinations.Count })
                 .ToDictionary(keySelector: x => x.Key, elementSelector: chance => chance.Chance);
 
             return new CombinationEstimationResult(combinationsDictionary);
@@ -91,7 +91,7 @@ namespace Poker.Core.Application.Logic.Estimator
             var combinationsDictionary = possibleCombinations
                 .Select(x => new { Combination = x, Comb = new CombinationFinder(x).GetBestCombination().Combination })
                 .GroupBy(x => x.Comb)
-                .Select(x => new { x.Key, Chance = (double)x.Count() / (double)possibleCombinations.Count })
+                .Select(x => new { x.Key, Chance = x.Count() / (double)possibleCombinations.Count })
                 .ToDictionary(keySelector: x => x.Key, elementSelector: chance => chance.Chance);
 
             return new CombinationEstimationResult(combinationsDictionary);
@@ -124,7 +124,7 @@ namespace Poker.Core.Application.Logic.Estimator
             var combinationsDictionary = possibleCombinations
                 .Select(x => new { Combination = x, Comb = new CombinationFinder(x).GetBestCombination().Combination })
                 .GroupBy(x => x.Comb)
-                .Select(x => new { x.Key, Chance = (double)x.Count() / (double)possibleCombinations.Count })
+                .Select(x => new { x.Key, Chance = x.Count() / (double)possibleCombinations.Count })
                 .ToDictionary(keySelector: x => x.Key, elementSelector: chance => chance.Chance);
 
             return new CombinationEstimationResult(combinationsDictionary);

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Poker.Core.Domain.Entity;
 
-namespace Poker.Core.Domain.Entity
+namespace Poker.Core.Application.CardBehaviour.Shuffling
 {
     public class ShuffleRule : IShuffleRule
     {

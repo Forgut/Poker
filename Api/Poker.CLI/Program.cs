@@ -1,7 +1,7 @@
-﻿using Poker.Core.Application.Entity;
-using Poker.Core.Application.Logic;
-using Poker.Core.Application.Logic.Combinations;
-using Poker.Core.Application.Logic.Estimator;
+﻿using Poker.Core.Application;
+using Poker.Core.Application.CardBehaviour;
+using Poker.Core.Application.CardBehaviour.Shuffling;
+using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
 using System;
 using System.Collections.Generic;

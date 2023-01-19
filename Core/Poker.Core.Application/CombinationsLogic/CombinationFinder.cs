@@ -1,15 +1,15 @@
-﻿using Poker.Core.Application.Entity;
+﻿using Poker.Core.Application.CombinationsLogic.Combinations;
 using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Poker.Core.Application.Logic.Combinations
+namespace Poker.Core.Application.CombinationsLogic
 {
 
     public class CombinationFinder
     {
-        private List<CombinationBase> _combinations;
+        private List<Combination> _combinations;
         public CombinationFinder(Player player, Table table)
         {
             var cards = player.Cards.ToList();
@@ -35,7 +35,7 @@ namespace Poker.Core.Application.Logic.Combinations
 
         private void InitCombinations(IEnumerable<Card> cards)
         {
-            _combinations = new List<CombinationBase>()
+            _combinations = new List<Combination>()
             {
                 new RoyalFlush(cards),
                 new StraightFlush(cards),

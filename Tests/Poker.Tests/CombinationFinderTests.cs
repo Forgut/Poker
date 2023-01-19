@@ -1,5 +1,5 @@
-﻿using Poker.Core.Application.Entity;
-using Poker.Core.Application.Logic.Combinations;
+﻿using Poker.Core.Application;
+using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
 using System.Linq;
 using Xunit;

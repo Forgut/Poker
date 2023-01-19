@@ -1,14 +1,13 @@
-﻿using Poker.Core.Application.Entity;
-using Poker.Core.Domain.Entity;
+﻿using Poker.Core.Domain.Entity;
 using System.Collections.Generic;
 
-namespace Poker.Core.Application.Logic.Combinations
+namespace Poker.Core.Application.CombinationsLogic.Combinations
 {
-    abstract class CombinationBase
+    abstract class Combination
     {
         protected IEnumerable<Card> _cards;
 
-        protected CombinationBase(IEnumerable<Card> cards)
+        protected Combination(IEnumerable<Card> cards)
         {
             _cards = cards;
         }

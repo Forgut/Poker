@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Poker.Core.Application.Entity
+namespace Poker.Core.Application.CombinationsLogic
 {
     public class CombinationDTO : IComparable
     {

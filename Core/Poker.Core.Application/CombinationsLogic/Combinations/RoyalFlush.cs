@@ -1,9 +1,8 @@
-﻿using Poker.Core.Application.Entity;
-using Poker.Core.Domain.Entity;
+﻿using Poker.Core.Domain.Entity;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Poker.Core.Application.Logic.Combinations
+namespace Poker.Core.Application.CombinationsLogic.Combinations
 {
     class RoyalFlush : StraightFlush
     {

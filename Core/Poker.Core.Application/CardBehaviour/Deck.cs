@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Poker.Core.Application.CardBehaviour.Shuffling;
+using Poker.Core.Domain.Entity;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Poker.Core.Domain.Entity
+namespace Poker.Core.Application.CardBehaviour
 {
     public class Deck : IShuffleStage
     {
@@ -47,16 +49,5 @@ namespace Poker.Core.Domain.Entity
         }
 
         #endregion
-    }
-
-    public interface IShuffleStage
-    {
-        Deck Shuffled(IShuffleRule shuffleRule);
-        Deck NotShuffled();
-    }
-
-    public interface IShuffleRule
-    {
-        void ShuffleDeck(List<Card> cards);
     }
 }

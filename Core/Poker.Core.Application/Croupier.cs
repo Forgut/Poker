@@ -1,7 +1,7 @@
-﻿using Poker.Core.Application.Entity;
+﻿using Poker.Core.Application.CardBehaviour;
 using Poker.Core.Domain.Entity;
 
-namespace Poker.Core.Application.Logic
+namespace Poker.Core.Application
 {
     public class Croupier
     {

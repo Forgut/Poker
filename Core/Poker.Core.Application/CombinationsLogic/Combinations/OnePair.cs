@@ -1,11 +1,10 @@
-﻿using Poker.Core.Application.Entity;
-using Poker.Core.Domain.Entity;
+﻿using Poker.Core.Domain.Entity;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Poker.Core.Application.Logic.Combinations
+namespace Poker.Core.Application.CombinationsLogic.Combinations
 {
-    class HighCard : CombinationBase
+    class HighCard : Combination
     {
         public HighCard(IEnumerable<Card> cards) : base(cards)
         {
@@ -23,7 +22,7 @@ namespace Poker.Core.Application.Logic.Combinations
             return true;
         }
     }
-    class OnePair : CombinationBase
+    class OnePair : Combination
     {
         public OnePair(IEnumerable<Card> cards)
             : base(cards)

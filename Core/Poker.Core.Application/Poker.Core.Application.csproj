@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Logic\lbg4v5fp.ct5~" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Poker.Core.Domain\Poker.Core.Domain.csproj" />
   </ItemGroup>
 

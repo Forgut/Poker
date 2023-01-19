@@ -3,7 +3,7 @@ using Poker.Core.Domain.Exceptions;
 using System;
 using System.Collections.ObjectModel;
 
-namespace Poker.Core.Application.Entity
+namespace Poker.Core.Application
 {
     public class Table
     {

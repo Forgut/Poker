@@ -1,13 +1,11 @@
-﻿using Poker.Core.Application.Entity;
-using Poker.Core.Application.Logic.Combinations;
-using Poker.Core.Application.Logic.Estimator;
+﻿using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Poker.Core.Application.Logic
+namespace Poker.Core.Application
 {
     public class Game
     {
