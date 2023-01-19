@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Xunit;
 
-namespace Poker.Tests
+namespace Poker.Tests.UnitTests
 {
     public class CombinationComparerTests
     {

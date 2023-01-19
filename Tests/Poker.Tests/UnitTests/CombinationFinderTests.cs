@@ -4,7 +4,7 @@ using Poker.Core.Domain.Entity;
 using System.Linq;
 using Xunit;
 
-namespace Poker.Tests
+namespace Poker.Tests.UnitTests
 {
     public class CombinationFinderTests
     {
