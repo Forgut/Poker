@@ -24,8 +24,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_high_card()
         {
-            _player.Cards[0] = new Card(EValue.Eight, EColor.Diamonds);
-            _player.Cards[1] = new Card(EValue.Ten, EColor.Diamonds);
+            _player.SetFirstCard(new Card(EValue.Eight, EColor.Diamonds));
+            _player.SetSecondCard(new Card(EValue.Ten, EColor.Diamonds));
             _table.Cards[0] = new Card(EValue.Two, EColor.Clubs);
             _table.Cards[1] = new Card(EValue.Four, EColor.Clubs);
             _table.Cards[2] = new Card(EValue.Six, EColor.Hearts);
@@ -34,18 +34,18 @@ namespace Poker.Tests
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.HighCard, combination.Combination);
-            Assert.Single(combination.Cards.Where(x=>x.Value == EValue.Ace));
-            Assert.Single(combination.Cards.Where(x=>x.Value == EValue.King));
-            Assert.Single(combination.Cards.Where(x=>x.Value == EValue.Ten));
-            Assert.Single(combination.Cards.Where(x=>x.Value == EValue.Eight));
-            Assert.Single(combination.Cards.Where(x=>x.Value == EValue.Six));
+            Assert.Single(combination.Cards.Where(x => x.Value == EValue.Ace));
+            Assert.Single(combination.Cards.Where(x => x.Value == EValue.King));
+            Assert.Single(combination.Cards.Where(x => x.Value == EValue.Ten));
+            Assert.Single(combination.Cards.Where(x => x.Value == EValue.Eight));
+            Assert.Single(combination.Cards.Where(x => x.Value == EValue.Six));
         }
 
         [Fact]
         public void Should_find_pair()
         {
-            _player.Cards[0] = new Card(EValue.Eight, EColor.Hearts);
-            _player.Cards[1] = new Card(EValue.Ten, EColor.Clubs);
+            _player.SetFirstCard(new Card(EValue.Eight, EColor.Hearts));
+            _player.SetSecondCard(new Card(EValue.Ten, EColor.Clubs));
             _table.Cards[0] = new Card(EValue.Two, EColor.Hearts);
             _table.Cards[1] = new Card(EValue.Four, EColor.Clubs);
             _table.Cards[2] = new Card(EValue.Ten, EColor.Diamonds);
@@ -63,8 +63,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_two_pairs()
         {
-            _player.Cards[0] = new Card(EValue.Eight, EColor.Hearts);
-            _player.Cards[1] = new Card(EValue.Ten, EColor.Clubs);
+            _player.SetFirstCard(new Card(EValue.Eight, EColor.Hearts));
+            _player.SetSecondCard(new Card(EValue.Ten, EColor.Clubs));
             _table.Cards[0] = new Card(EValue.Eight, EColor.Diamonds);
             _table.Cards[1] = new Card(EValue.Ten, EColor.Diamonds);
             _table.Cards[2] = new Card(EValue.Two, EColor.Clubs);
@@ -81,8 +81,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_two_pairs_when_there_are_3_pairs()
         {
-            _player.Cards[0] = new Card(EValue.Eight, EColor.Hearts);
-            _player.Cards[1] = new Card(EValue.Ten, EColor.Clubs);
+            _player.SetFirstCard(new Card(EValue.Eight, EColor.Hearts));
+            _player.SetSecondCard(new Card(EValue.Ten, EColor.Clubs));
             _table.Cards[0] = new Card(EValue.Eight, EColor.Diamonds);
             _table.Cards[1] = new Card(EValue.Ten, EColor.Diamonds);
             _table.Cards[2] = new Card(EValue.Two, EColor.Clubs);
@@ -99,8 +99,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_three_of_a_kind()
         {
-            _player.Cards[0] = new Card(EValue.Eight, EColor.Clubs);
-            _player.Cards[1] = new Card(EValue.Eight, EColor.Spades);
+            _player.SetFirstCard(new Card(EValue.Eight, EColor.Clubs));
+            _player.SetSecondCard(new Card(EValue.Eight, EColor.Spades));
             _table.Cards[0] = new Card(EValue.Eight, EColor.Diamonds);
             _table.Cards[1] = new Card(EValue.Ten, EColor.Diamonds);
             _table.Cards[2] = new Card(EValue.Four, EColor.Clubs);
@@ -117,8 +117,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_flush()
         {
-            _player.Cards[0] = new Card(EValue.Eight, EColor.Clubs);
-            _player.Cards[1] = new Card(EValue.Three, EColor.Clubs);
+            _player.SetFirstCard(new Card(EValue.Eight, EColor.Clubs));
+            _player.SetSecondCard(new Card(EValue.Three, EColor.Clubs));
             _table.Cards[0] = new Card(EValue.Eight, EColor.Diamonds);
             _table.Cards[1] = new Card(EValue.Ten, EColor.Diamonds);
             _table.Cards[2] = new Card(EValue.Two, EColor.Clubs);
@@ -133,8 +133,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_straight()
         {
-            _player.Cards[0] = new Card(EValue.Five, EColor.Clubs);
-            _player.Cards[1] = new Card(EValue.Three, EColor.Clubs);
+            _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
+            _player.SetSecondCard(new Card(EValue.Three, EColor.Clubs));
             _table.Cards[0] = new Card(EValue.Four, EColor.Diamonds);
             _table.Cards[1] = new Card(EValue.Six, EColor.Diamonds);
             _table.Cards[2] = new Card(EValue.Six, EColor.Clubs);
@@ -153,8 +153,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_full_house()
         {
-            _player.Cards[0] = new Card(EValue.Five, EColor.Clubs);
-            _player.Cards[1] = new Card(EValue.Five, EColor.Diamonds);
+            _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
+            _player.SetSecondCard(new Card(EValue.Five, EColor.Diamonds));
             _table.Cards[0] = new Card(EValue.Four, EColor.Diamonds);
             _table.Cards[1] = new Card(EValue.Six, EColor.Diamonds);
             _table.Cards[2] = new Card(EValue.Seven, EColor.Hearts);
@@ -170,8 +170,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_four_of_a_kind()
         {
-            _player.Cards[0] = new Card(EValue.Five, EColor.Clubs);
-            _player.Cards[1] = new Card(EValue.Five, EColor.Hearts);
+            _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
+            _player.SetSecondCard(new Card(EValue.Five, EColor.Hearts));
             _table.Cards[0] = new Card(EValue.Five, EColor.Diamonds);
             _table.Cards[1] = new Card(EValue.Five, EColor.Spades);
             _table.Cards[2] = new Card(EValue.Seven, EColor.Hearts);
@@ -188,8 +188,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_straight_flush()
         {
-            _player.Cards[0] = new Card(EValue.Five, EColor.Clubs);
-            _player.Cards[1] = new Card(EValue.Three, EColor.Clubs);
+            _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
+            _player.SetSecondCard(new Card(EValue.Three, EColor.Clubs));
             _table.Cards[0] = new Card(EValue.Four, EColor.Clubs);
             _table.Cards[1] = new Card(EValue.Six, EColor.Clubs);
             _table.Cards[2] = new Card(EValue.Seven, EColor.Clubs);
@@ -209,8 +209,8 @@ namespace Poker.Tests
         [Fact]
         public void Should_find_royal_flush()
         {
-            _player.Cards[0] = new Card(EValue.Ace, EColor.Hearts);
-            _player.Cards[1] = new Card(EValue.Queen, EColor.Hearts);
+            _player.SetFirstCard(new Card(EValue.Ace, EColor.Hearts));
+            _player.SetSecondCard(new Card(EValue.Queen, EColor.Hearts));
             _table.Cards[0] = new Card(EValue.Jack, EColor.Hearts);
             _table.Cards[1] = new Card(EValue.King, EColor.Hearts);
             _table.Cards[2] = new Card(EValue.Ten, EColor.Clubs);

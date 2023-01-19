@@ -47,7 +47,7 @@ namespace Poker.Logic.Logic
         {
             Array.Clear(_table.Cards, 0, _table.Cards.Length);
             foreach (var player in _table.Players)
-                Array.Clear(player.Cards, 0, player.Cards.Length);
+                player.ClearCards();
             Winners.Clear();
             GameState = EGameState.New;
         }

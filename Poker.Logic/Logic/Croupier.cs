@@ -19,9 +19,9 @@ namespace Poker.Logic
         {
             var players = table.Players;
             foreach (var player in players)
-                player.Cards[0] = GetNextCardFromDeck();
+                player.SetFirstCard(GetNextCardFromDeck());
             foreach (var player in players)
-                player.Cards[1] = GetNextCardFromDeck();
+                player.SetSecondCard(GetNextCardFromDeck());
         }
 
         public void Flop(Table table)
