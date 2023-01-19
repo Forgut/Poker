@@ -17,7 +17,7 @@ namespace Poker.Tests
 
         public CombinationFinderTests()
         {
-            _player = new Player("test", 100);
+            _player = new Player("test");
             _table = new Table(new List<Player>() { _player });
         }
 

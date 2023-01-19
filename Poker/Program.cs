@@ -25,11 +25,11 @@ namespace Poker
         {
             var players = new List<Player>()
             {
-                new Player("Fregi", 100),
-                new Player("Szymeg", 100),
-                new Player("Avamys", 100),
-                new Player("Mietas", 100),
-                new Player("JFK", 100),
+                new Player("Fregi"),
+                new Player("Szymeg"),
+                new Player("Avamys"),
+                new Player("Mietas"),
+                new Player("JFK"),
                 //new Player("Nataszka", 100),
             };
 

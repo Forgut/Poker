@@ -7,16 +7,12 @@ namespace Poker.Entity
 {
     public class Player
     {
-        public Player(string name, int money)
+        public Player(string name)
         {
             Name = name;
-            Money = InitialMoney = money;
             _cards = new Card[2];
         }
         public string Name { get; }
-        public int Money { get; }
-        public int InitialMoney { get; }
-
 
         private readonly Card[] _cards;
         public ReadOnlyCollection<Card> Cards => Array.AsReadOnly(_cards);

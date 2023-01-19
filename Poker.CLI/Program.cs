@@ -27,7 +27,7 @@ namespace Poker.CLI
         static GameState GetGameState()
         {
             var players = GetPlayers()
-                .Select(x => new Player(x, 100))
+                .Select(x => new Player(x))
                 .ToList();
 
             var table = new Table(players);
