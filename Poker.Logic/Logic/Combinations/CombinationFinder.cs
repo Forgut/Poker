@@ -1,5 +1,6 @@
 ﻿using Poker.Entity;
 using Poker.Logic.Entity;
+using Poker.Logic.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Poker.Logic
                     return combination.GetCombination();
             }
 
-            throw new System.Exception("None combination was found - this shouldn't occure");
+            throw new CombinationNotFoundException();
         }
 
         private void InitCombinations(IEnumerable<Card> cards)
@@ -48,7 +49,6 @@ namespace Poker.Logic
                 new OnePair(cards),
                 new HighCard(cards),
             };
-
         }
     }
 }
