@@ -32,7 +32,7 @@ namespace Poker.CLI
 
             var table = new Table();
             var deck = Deck.NewDeck
-                .Shuffled(new DeckShuffler(new Random(1)));
+                .Shuffled(new ShuffleRule(new Random(1)));
             var croupier = new Croupier(deck);
             var winEstimator = new WinEstimator();
             var combinationComparer = new CombinationComparer();

@@ -57,6 +57,6 @@ namespace Poker.Logic.Entity
 
     public interface IShuffleRule
     {
-        void ShuffleDeck(IEnumerable<Card> cards);
+        void ShuffleDeck(List<Card> cards);
     }
 }
