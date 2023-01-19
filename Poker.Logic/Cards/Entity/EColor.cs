@@ -1,4 +1,4 @@
-﻿namespace Poker.Entity
+﻿namespace Poker.Logic.Cards.Entity
 {
     public enum EColor
     {

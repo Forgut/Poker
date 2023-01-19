@@ -1,4 +1,5 @@
 ﻿using Poker.Entity;
+using Poker.Logic.Cards.Entity;
 using Poker.Logic.Estimator;
 using System;
 using System.Collections.Generic;

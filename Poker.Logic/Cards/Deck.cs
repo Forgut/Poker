@@ -1,10 +1,10 @@
-﻿using Poker.Entity;
+﻿using Poker.Logic.Cards.Entity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Poker.Logic.Entity
+namespace Poker.Logic.Cards
 {
     public class Deck : IShuffleStage
     {

@@ -1,4 +1,5 @@
 ﻿using Poker.Entity;
+using Poker.Logic.Cards.Entity;
 using System.Collections.Generic;
 
 namespace Poker.Logic

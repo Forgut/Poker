@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Poker.Entity
+namespace Poker.Logic.Cards.Entity
 {
     public class Card
     {
@@ -21,12 +21,12 @@ namespace Poker.Entity
         public override bool Equals(object obj)
         {
             var card = (Card)obj;
-            return card.Color == this.Color && card.Value == this.Value;
+            return card.Color == Color && card.Value == Value;
         }
 
         public override int GetHashCode()
         {
-            return this.Color.GetHashCode() + this.Value.GetHashCode();
+            return Color.GetHashCode() + Value.GetHashCode();
         }
 
         public static bool operator ==(Card obj1, Card obj2)

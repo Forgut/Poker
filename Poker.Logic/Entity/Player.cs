@@ -1,4 +1,6 @@
-﻿namespace Poker.Entity
+﻿using Poker.Logic.Cards.Entity;
+
+namespace Poker.Entity
 {
     public class Player
     {

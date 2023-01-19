@@ -1,6 +1,6 @@
 ﻿using Poker.Entity;
 using Poker.Logic;
-using Poker.Logic.Entity;
+using Poker.Logic.Cards;
 using Poker.Logic.Estimator;
 using Poker.Logic.Logic;
 using System;

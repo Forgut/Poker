@@ -1,5 +1,6 @@
 ﻿using Poker.Entity;
 using Poker.Logic;
+using Poker.Logic.Cards.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
