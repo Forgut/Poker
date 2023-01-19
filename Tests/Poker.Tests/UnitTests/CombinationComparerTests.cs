@@ -311,19 +311,14 @@ namespace Poker.Tests.UnitTests
 
         EColor GetColor(char input)
         {
-            switch (input)
+            return input switch
             {
-                case '♣':
-                    return EColor.Clubs;
-                case '♠':
-                    return EColor.Spades;
-                case '♦':
-                    return EColor.Diamonds;
-                case '♥':
-                    return EColor.Hearts;
-                default:
-                    throw new NotImplementedException();
-            }
+                '♣' => EColor.Clubs,
+                '♠' => EColor.Spades,
+                '♦' => EColor.Diamonds,
+                '♥' => EColor.Hearts,
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }

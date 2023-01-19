@@ -13,8 +13,8 @@ namespace Poker.Core.Domain.Entity
         }
         public string Name { get; }
 
-        private readonly Card[] _cards;
-        public ReadOnlyCollection<Card> Cards => Array.AsReadOnly(_cards);
+        private readonly Card?[] _cards;
+        public ReadOnlyCollection<Card?> Cards => Array.AsReadOnly(_cards);
 
         public void SetFirstCard(Card card)
         {

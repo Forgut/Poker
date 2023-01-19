@@ -1,6 +1,7 @@
 ﻿using Poker.Core.Application.CombinationsLogic.Combinations;
 using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,7 +15,10 @@ namespace Poker.Core.Application.CombinationsLogic
         {
             var cards = player.Cards.ToList();
             cards.AddRange(table.Cards);
-            InitCombinations(cards);
+            if (cards.Any(x => x == null))
+                throw new ArgumentNullException();
+
+            InitCombinations(cards!);
         }
 
         public CombinationFinder(IEnumerable<Card> cards)

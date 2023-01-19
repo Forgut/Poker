@@ -10,11 +10,11 @@ namespace Poker.Core.Application.CombinationsLogic
         public CombinationDTO(ECombination combination, IEnumerable<Card>? cards)
         {
             Combination = combination;
-            Cards = cards ?? throw new ArgumentNullException(nameof(cards));
+            Cards = cards;
         }
 
         public ECombination Combination { get; }
-        public IEnumerable<Card> Cards { get; }
+        public IEnumerable<Card>? Cards { get; }
 
         public override bool Equals(object obj)
         {
@@ -49,6 +49,11 @@ namespace Poker.Core.Application.CombinationsLogic
         public override string ToString()
         {
             return $"{string.Join(" ", Cards)} ({Combination})";
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Combination, Cards);
         }
     }
 }

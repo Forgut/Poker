@@ -1,5 +1,6 @@
 ﻿using Poker.Core.Application.CardBehaviour;
 using Poker.Core.Application.CombinationsLogic;
+using Poker.Core.Common;
 using Poker.Core.Domain.Entity;
 using System;
 using System.Collections.Generic;
@@ -148,7 +149,7 @@ namespace Poker.Core.Application
             cards.AddRange(table.Cards);
 
             var cardsNotAvailable = cards
-                .Where(x => x != null)
+                .ExceptNull()
                 .ToList();
 
             return cardsNotAvailable;
