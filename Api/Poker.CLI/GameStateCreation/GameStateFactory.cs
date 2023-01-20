@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System;
 using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Extensions;
+using System.Linq;
 
 namespace Poker.CLI.GameStateCreation
 {
@@ -90,5 +91,13 @@ namespace Poker.CLI.GameStateCreation
             _players = players.ToPlayers();
             return this;
         }
+        public IBuildGameStateStage WithRandomPlayers(int numberOfplayers = 4)
+        {
+            _players = new Players();
+            foreach (var i in Enumerable.Range(0, numberOfplayers))
+                _players.Add(new Player($"Player {i + 1}"));
+            return this;
+        }
+
     }
 }

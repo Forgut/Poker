@@ -1,13 +1,6 @@
 ﻿using Poker.CLI.Common;
 using Poker.CLI.GameStateCreation;
-using Poker.CLI.Simulation;
-using Poker.CLI.Standard;
-using Poker.Core.Application;
-using Poker.Core.Application.CardBehaviour;
-using Poker.Core.Application.CardBehaviour.Shuffling;
-using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
-using Poker.Core.Domain.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +11,7 @@ namespace Poker.CLI
     {
         static void Main(string[] args)
         {
-            bool isSimulation = false;
+            bool isSimulation = true;
             if (args.Length > 0)
                 bool.TryParse(args[0], out isSimulation);
 
@@ -36,7 +29,8 @@ namespace Poker.CLI
                     .WithDefaultTable()
                     .WithDefaultWinEstimator()
                     .WithDefaultCombinationComparer()
-                    .WithPlayers(GetPlayers())
+                    //.WithPlayers(GetPlayers())
+                    .WithRandomPlayers()
                     .Build();
             }
             else

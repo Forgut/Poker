@@ -33,6 +33,7 @@ namespace Poker.CLI.GameStateCreation
     interface ISetPlayersStage
     {
         IBuildGameStateStage WithPlayers(IEnumerable<Player> players);
+        IBuildGameStateStage WithRandomPlayers(int numberOfplayers = 4);
     }
 
     interface IBuildGameStateStage
