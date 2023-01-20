@@ -1,12 +1,12 @@
-﻿using Poker.Core.Application;
+﻿using Poker.CLI.Common;
+using Poker.Core.Application;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Poker.CLI
+namespace Poker.CLI.Simulation
 {
-
-    class GameSimulationState
+    class GameSimulationState : IGameState
     {
         private readonly GameSimulation _game;
 

@@ -1,4 +1,4 @@
-﻿namespace Poker.CLI
+﻿namespace Poker.CLI.Common
 {
     enum EAction
     {

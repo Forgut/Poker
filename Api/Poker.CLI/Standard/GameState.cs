@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Poker.CLI.Common;
 
-namespace Poker.CLI
+namespace Poker.CLI.Standard
 {
-    class GameState
+    class GameState : IGameState
     {
         private readonly Game _game;
 
