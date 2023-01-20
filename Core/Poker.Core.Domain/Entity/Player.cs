@@ -1,6 +1,8 @@
-﻿using Poker.Core.Domain.Exceptions;
+﻿using Poker.Core.Common;
+using Poker.Core.Domain.Exceptions;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Poker.Core.Domain.Entity
 {
@@ -15,6 +17,7 @@ namespace Poker.Core.Domain.Entity
 
         private readonly Card?[] _cards;
         public ReadOnlyCollection<Card?> Cards => Array.AsReadOnly(_cards);
+        public bool HasCards => _cards.ExceptNull().Count() == 2;
 
         public void SetFirstCard(Card card)
         {

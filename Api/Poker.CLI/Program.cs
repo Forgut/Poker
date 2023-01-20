@@ -38,7 +38,7 @@ namespace Poker.CLI
             var winEstimator = new WinEstimator();
             var combinationComparer = new CombinationComparer();
 
-            var game = new Game(croupier, combinationComparer, winEstimator, table, players);
+            var game = new Game(combinationComparer, winEstimator, table, players);
             return new GameState(game);
 
             IEnumerable<string> GetPlayerNames()

@@ -1,17 +1,18 @@
 ﻿using Poker.Core.Application;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace Poker.CLI
 {
-    class GameState
+
+    class GameSimulationState
     {
-        private readonly Game _game;
+        private readonly GameSimulation _game;
 
         public bool ShouldEndGame { get; private set; }
 
-        public GameState(Game game)
+        public GameSimulationState(GameSimulation game)
         {
             _game = game;
         }
@@ -44,9 +45,6 @@ namespace Poker.CLI
                 case EAction.ClearConsole:
                     ClearConsole();
                     break;
-                case EAction.FillPlayerHand:
-                    FillPlayerHand();
-                    break;
                 case EAction.Help:
                 case EAction.Unkown:
                     PrintHelp();
@@ -77,7 +75,6 @@ namespace Poker.CLI
                 "s" or "set" => EAction.SetupPlayer,
                 "t" or "table" => EAction.PrintTable,
                 "c" or "clear" => EAction.ClearConsole,
-                "f" or "fill" => EAction.FillPlayerHand,
                 "xd" => EAction.AvamysShouts,
                 _ => EAction.Unkown,
             };
@@ -104,7 +101,7 @@ namespace Poker.CLI
             switch (_game.GameState)
             {
                 case EGameState.New:
-                    DrawPlayerCards();
+                    DrawCards();
                     break;
                 case EGameState.PreFlop:
                     Flop();
@@ -116,9 +113,6 @@ namespace Poker.CLI
                     River();
                     break;
                 case EGameState.River:
-                    ShowCards();
-                    break;
-                case EGameState.ShowCards:
                     EndRound();
                     break;
                 case EGameState.End:
@@ -127,66 +121,33 @@ namespace Poker.CLI
             }
         }
 
-        private void DrawPlayerCards()
+        private void DrawCards()
         {
-            Console.WriteLine("Pre flop. Type in cards separated with ;");
-            var cards = Console.ReadLine();
-            try
-            {
-                _game.InsertTargetPlayerCards(cards);
-            }
-            catch
-            {
-                Console.WriteLine("Error occured");
-            }
+            Console.WriteLine("Drawing cards");
+            _game.DrawPlayerCards();
         }
 
         private void Flop()
         {
-            Console.WriteLine("Flop round. Type in cards separated with ;");
-            var cards = Console.ReadLine();
-            try
-            {
-                _game.Flop(cards);
-            }
-            catch
-            {
-                Console.WriteLine("Error occured");
-            }
+            Console.WriteLine("Flop round");
+            _game.Flop();
         }
 
         private void Turn()
         {
-            Console.WriteLine("Turn round. Type in cards separated with ;");
-            var cards = Console.ReadLine();
-            try
-            {
-                _game.Turn(cards);
-            }
-            catch
-            {
-                Console.WriteLine("Error occured");
-            }
+            Console.WriteLine("Turn round");
+            _game.Turn();
         }
 
         private void River()
         {
-            Console.WriteLine("River round. Type in cards separated with ;");
-            var cards = Console.ReadLine();
-            try
-            {
-                _game.River(cards);
-
-            }
-            catch
-            {
-                Console.WriteLine("Error occured");
-            }
+            Console.WriteLine("River round");
+            _game.River();
         }
 
         private void EndRound()
         {
-            Console.WriteLine("Game has ended. Type in other player cards to establish a winner");
+            Console.WriteLine("Game has ended");
             _game.EndRound();
             _game.PrintWinner();
             Console.WriteLine("Reset game to go again");
@@ -211,29 +172,6 @@ namespace Poker.CLI
             _game.PrintGameState();
         }
 
-        private void ShowCards()
-        {
-            Console.WriteLine("Fill other players cards in order to calculate winner.\n" +
-                "Players with no cards will not be included in calculations");
-            _game.ShowCards();
-        }
-
-        private void FillPlayerHand()
-        {
-            Console.WriteLine("Type player name");
-            var playerName = Console.ReadLine();
-            Console.WriteLine("Type in player cards separated with ;");
-            var cards = Console.ReadLine();
-            try
-            {
-                _game.FillPlayersCards(playerName, cards);
-            }
-            catch
-            {
-                Console.WriteLine("Error occured");
-            }
-        }
-
         private void PrintHelp()
         {
             Console.WriteLine("List of commands:\n" +
@@ -244,8 +182,7 @@ namespace Poker.CLI
                 "p print                Prints win probabilties\n" +
                 "s set                  Sets player as target player\n" +
                 "t table                Prints table state\n" +
-                "c clear                Clears console\n" +
-                "f fill                 Sets selected player hand\n");
+                "c clear                Clears console\n");
         }
     }
 }

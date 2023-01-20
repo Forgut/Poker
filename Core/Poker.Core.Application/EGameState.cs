@@ -7,6 +7,7 @@
         Flop = 2,
         Turn = 3,
         River = 4,
-        End = 5,
+        ShowCards = 5,
+        End = 6,
     }
 }

@@ -41,7 +41,7 @@ namespace Poker
             var winEstimator = new WinEstimator();
             var combinationComparer = new CombinationComparer();
 
-            var game = new Game(croupier, combinationComparer, winEstimator, table, players);
+            var game = new GameSimulation(croupier, combinationComparer, winEstimator, table, players);
 
             game.SetTargetPlayer(players[0].Name);
 

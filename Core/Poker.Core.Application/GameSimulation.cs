@@ -7,29 +7,31 @@ using System.Text;
 
 namespace Poker.Core.Application
 {
-    public class Game
+    public class GameSimulation
     {
         private readonly Table _table;
+        private readonly Croupier _croupier;
         private readonly CombinationComparer _combinationComparer;
         private readonly WinEstimator _winEstimator;
         private readonly Players _players;
 
-        private Player _targetPlayer;
+        private Player? _targetPlayer;
 
         public List<Player> Winners { get; private set; }
         public EGameState GameState { get; private set; }
 
-        public Game(CombinationComparer combinationComparer,
+        public GameSimulation(Croupier croupier,
+                    CombinationComparer combinationComparer,
                     WinEstimator winEstimator,
                     Table table,
                     Players players)
         {
+            _croupier = croupier;
             _combinationComparer = combinationComparer;
             _winEstimator = winEstimator;
             _table = table;
             Winners = new List<Player>();
             _players = players;
-            _targetPlayer = players.First();
         }
 
         public bool SetTargetPlayer(string playerName)
@@ -54,46 +56,28 @@ namespace Poker.Core.Application
             GameState = EGameState.New;
         }
 
-        public void InsertTargetPlayerCards(string cards, char separator = ';')
+        public void DrawPlayerCards()
         {
-            var split = cards.Split(separator);
-            _targetPlayer.SetFirstCard(Card.FromString(split[0]));
-            _targetPlayer.SetSecondCard(Card.FromString(split[1]));
+            _croupier.PreFlop(_players);
             GameState = EGameState.PreFlop;
         }
 
-        public void Flop(string cards, char separator = ';')
+        public void Flop()
         {
-            var split = cards.Split(separator);
-            _table.SetFirstCard(Card.FromString(split[0]));
-            _table.SetSecondCard(Card.FromString(split[1]));
-            _table.SetThirdCard(Card.FromString(split[2]));
+            _croupier.Flop(_table);
             GameState = EGameState.Flop;
         }
 
-        public void Turn(string card)
+        public void Turn()
         {
-            _table.SetFourthCard(Card.FromString(card));
+            _croupier.Turn(_table);
             GameState = EGameState.Turn;
         }
 
-        public void River(string card)
+        public void River()
         {
-            _table.SetFifthCard(Card.FromString(card));
+            _croupier.River(_table);
             GameState = EGameState.River;
-        }
-
-        public void ShowCards()
-        {
-            GameState = EGameState.ShowCards;
-        }
-
-        public void FillPlayersCards(string playerName, string cards, char separator = ';')
-        {
-            var player = _players.First(x => x.Name == playerName);
-            var split = cards.Split(separator);
-            player.SetFirstCard(Card.FromString(split[0]));
-            player.SetSecondCard(Card.FromString(split[1]));
         }
 
         public void PrintGameState()
@@ -133,7 +117,6 @@ namespace Poker.Core.Application
                     PrintTurn();
                     break;
                 case EGameState.River:
-                case EGameState.ShowCards:
                     PrintRiver();
                     break;
                 case EGameState.End:
@@ -188,9 +171,8 @@ namespace Poker.Core.Application
 
             void PrintRiver()
             {
-                var playersCombinations = _players
-                .Where(x => x.HasCards)
-                .Select(x => new
+                var playersCombinations =
+                _players.Select(x => new
                 {
                     Player = x,
                     Combination = new CombinationFinder(x, _table).GetBestCombination()
@@ -211,9 +193,8 @@ namespace Poker.Core.Application
 
         public void EndRound()
         {
-            var playersCombinations = _players
-                .Where(x => x.HasCards)
-                .Select(x => new
+            var playersCombinations =
+                _players.Select(x => new
                 {
                     Player = x,
                     Combination = new CombinationFinder(x, _table).GetBestCombination()
@@ -226,7 +207,5 @@ namespace Poker.Core.Application
                 .Select(x => x.Player)
                 .ToList();
         }
-
-
     }
 }

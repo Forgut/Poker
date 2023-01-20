@@ -10,6 +10,7 @@
         SetupPlayer = 5,
         PrintTable = 6,
         ClearConsole = 7,
+        FillPlayerHand = 8,
         AvamysShouts = 998,
         Quit = 999,
     }

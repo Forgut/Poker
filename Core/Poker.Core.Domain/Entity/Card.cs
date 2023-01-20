@@ -1,4 +1,9 @@
-﻿namespace Poker.Core.Domain.Entity
+﻿using System.Linq;
+using System.Text.RegularExpressions;
+using System;
+using Poker.Core.Domain.Exceptions;
+
+namespace Poker.Core.Domain.Entity
 {
     public class Card
     {
@@ -39,5 +44,50 @@
         }
         public static bool operator !=(Card? obj1, Card? obj2)
         => !(obj1 == obj2);
+
+        public static Card FromString(string input)
+        {
+            var rx = new Regex(@"[0-9AKQJ]+");
+            var value = GetValue(rx.Match(input).Value);
+            var color = GetColor(input.Last());
+            return new Card(value, color);
+
+            EValue GetValue(string value)
+            {
+                switch (value)
+                {
+                    case "A":
+                        return EValue.Ace;
+                    case "K":
+                        return EValue.King;
+                    case "Q":
+                        return EValue.Queen;
+                    case "J":
+                        return EValue.Jack;
+                }
+                var number = int.Parse(value);
+                if (number < 2 || number > 10)
+                    throw new WrongCardValueException(input);
+                return (EValue)number;
+            }
+
+            EColor GetColor(char color)
+            {
+                return color switch
+                {
+                    '♣' => EColor.Clubs,
+                    '♠' => EColor.Spades,
+                    '♦' => EColor.Diamonds,
+                    '♥' => EColor.Hearts,
+
+                    'c' => EColor.Clubs,
+                    's' => EColor.Spades,
+                    'd' => EColor.Diamonds,
+                    'h' => EColor.Hearts,
+
+                    _ => throw new WrongCardValueException(input),
+                };
+            }
+        }
     }
 }

@@ -281,44 +281,7 @@ namespace Poker.Tests.UnitTests
         private IEnumerable<Card> GetCards(string input)
         {
             return input.Split(" ")
-                .Select(x => GetCard(x));
-        }
-
-        private Card GetCard(string input)
-        {
-            var rx = new Regex(@"[0-9AKQJ]+");
-            var value = GetValue(rx.Match(input).Value);
-            var color = GetColor(input.Last());
-            return new Card(value, color);
-        }
-
-        EValue GetValue(string input)
-        {
-            switch (input)
-            {
-                case "A":
-                    return EValue.Ace;
-                case "K":
-                    return EValue.King;
-                case "Q":
-                    return EValue.Queen;
-                case "J":
-                    return EValue.Jack;
-            }
-            var number = int.Parse(input);
-            return (EValue)number;
-        }
-
-        EColor GetColor(char input)
-        {
-            return input switch
-            {
-                '♣' => EColor.Clubs,
-                '♠' => EColor.Spades,
-                '♦' => EColor.Diamonds,
-                '♥' => EColor.Hearts,
-                _ => throw new NotImplementedException(),
-            };
+                .Select(x => Card.FromString(x));
         }
     }
 }
