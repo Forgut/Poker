@@ -73,10 +73,10 @@ namespace Poker.Core.Application.GameBehaviour
             GameState = EGameState.River;
         }
 
-        public void PrintGameState()
+        public string PrintGameState()
         {
-            Console.WriteLine();
             var sb = new StringBuilder();
+            sb.AppendLine();
             sb.AppendLine($"Current stage: {GameState}");
             sb.Append("Table: ");
             foreach (var card in _table.Cards)
@@ -92,11 +92,12 @@ namespace Poker.Core.Application.GameBehaviour
             foreach (var player in _playersInfo.Players)
                 sb.AppendLine($"{player.Name}: {player.Cards[0]} {player.Cards[1]}");
 
-            Console.WriteLine(sb.ToString());
+            return sb.ToString();
         }
 
-        public void PrintWinProbabilities()
+        public string GetWinProbabilitiesAsString()
         {
+            var sb = new StringBuilder();
             switch (GameState)
             {
                 case EGameState.New:
@@ -115,11 +116,13 @@ namespace Poker.Core.Application.GameBehaviour
                     break;
             }
 
+            return sb.ToString();
+
             void PrintFlop()
             {
                 if (_playersInfo.TargetPlayer == null)
                 {
-                    Console.WriteLine("Target player not specified");
+                    sb.AppendLine("Target player not specified");
                     return;
                 }
 
@@ -129,20 +132,20 @@ namespace Poker.Core.Application.GameBehaviour
                 var flopEnemyProb = _winChanceEstimator
                     .ProbableCombinationsForEnemy2Missing(_table, _playersInfo.TargetPlayer);
 
-                Console.WriteLine($"Flop probability for {_playersInfo.TargetPlayer.Name}");
-                Console.WriteLine(flopProb);
-                Console.WriteLine();
+                sb.AppendLine($"Flop probability for {_playersInfo.TargetPlayer.Name}");
+                sb.AppendLine(flopProb.ToString());
+                sb.AppendLine();
 
-                Console.WriteLine($"Flop probability for {_playersInfo.TargetPlayer.Name} enemies");
-                Console.WriteLine(flopEnemyProb);
-                Console.WriteLine();
+                sb.AppendLine($"Flop probability for {_playersInfo.TargetPlayer.Name} enemies");
+                sb.AppendLine(flopEnemyProb.ToString());
+                sb.AppendLine();
             }
 
             void PrintTurn()
             {
                 if (_playersInfo.TargetPlayer == null)
                 {
-                    Console.WriteLine("Target player not specified");
+                    sb.AppendLine("Target player not specified");
                     return;
                 }
 
@@ -152,13 +155,13 @@ namespace Poker.Core.Application.GameBehaviour
                 var turnEnemyProb = _winChanceEstimator
                     .ProbableCombinationsForEnemy1Missing(_table, _playersInfo.TargetPlayer);
 
-                Console.WriteLine($"Turn probability for {_playersInfo.TargetPlayer.Name}");
-                Console.WriteLine(turnProb);
-                Console.WriteLine();
+                sb.AppendLine($"Turn probability for {_playersInfo.TargetPlayer.Name}");
+                sb.AppendLine(turnProb.ToString());
+                sb.AppendLine();
 
-                Console.WriteLine($"Turn probability for {_playersInfo.TargetPlayer.Name} enemies");
-                Console.WriteLine(turnEnemyProb);
-                Console.WriteLine();
+                sb.AppendLine($"Turn probability for {_playersInfo.TargetPlayer.Name} enemies");
+                sb.AppendLine(turnEnemyProb.ToString());
+                sb.AppendLine();
             }
 
             void PrintRiver()
@@ -171,16 +174,18 @@ namespace Poker.Core.Application.GameBehaviour
                 });
 
                 foreach (var playerCombination in playersCombinations)
-                    Console.WriteLine($"{playerCombination.Player.Name}: {playerCombination.Combination}");
+                    sb.AppendLine($"{playerCombination.Player.Name}: {playerCombination.Combination}");
             }
         }
 
-        public void PrintWinner()
+        public string GetWinnersAsString()
         {
-            Console.WriteLine("Winners:");
+            var sb = new StringBuilder();
+            sb.AppendLine("Winners:");
             foreach (var winner in _winDecision.Winners)
-                Console.Write($"{winner.Name};");
-            Console.WriteLine();
+                sb.Append($"{winner.Name};");
+            sb.AppendLine();
+            return sb.ToString();
         }
 
         public void EndRound()

@@ -150,7 +150,7 @@ namespace Poker.CLI.Simulation
         {
             Console.WriteLine("Game has ended");
             _game.EndRound();
-            _game.PrintWinner();
+            Console.WriteLine(_game.GetWinnersAsString());
             Console.WriteLine("Reset game to go again");
         }
 
@@ -165,12 +165,12 @@ namespace Poker.CLI.Simulation
 
         private void PrintWinProbabilities()
         {
-            _game.PrintWinProbabilities();
+            Console.WriteLine(_game.GetWinProbabilitiesAsString());
         }
 
         private void PrintTableState()
         {
-            _game.PrintGameState();
+            Console.WriteLine(_game.PrintGameState());
         }
 
         private void PrintHelp()

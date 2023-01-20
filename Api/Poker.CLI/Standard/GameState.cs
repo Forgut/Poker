@@ -190,7 +190,7 @@ namespace Poker.CLI.Standard
         {
             Console.WriteLine("Game has ended. Type in other player cards to establish a winner");
             _game.EndRound();
-            _game.PrintWinner();
+            Console.WriteLine(_game.GetWinnerAsString());
             Console.WriteLine("Reset game to go again");
         }
 
@@ -205,12 +205,12 @@ namespace Poker.CLI.Standard
 
         private void PrintWinProbabilities()
         {
-            _game.PrintWinProbabilities();
+            Console.WriteLine(_game.GetWinProbabilitiesAsString());
         }
 
         private void PrintTableState()
         {
-            _game.PrintGameState();
+            Console.WriteLine(_game.GameStateAsString());
         }
 
         private void ShowCards()
