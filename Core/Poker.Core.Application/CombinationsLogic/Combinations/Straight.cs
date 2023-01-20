@@ -34,11 +34,11 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
                 .OrderByDescending(x => x.Value);
 
             if (orderedDistinct.Count() >= 5 && StraightCount(orderedDistinct.Take(5)))
-                return orderedDistinct.Take(5);
+                return orderedDistinct.Take(5).OrderByDescending(x=>x.Value);
             if (orderedDistinct.Count() >= 6 && StraightCount(orderedDistinct.Skip(1).Take(5)))
-                return orderedDistinct.Skip(1).Take(5);
+                return orderedDistinct.Skip(1).Take(5).OrderByDescending(x=>x.Value);
             if (orderedDistinct.Count() >= 7 && StraightCount(orderedDistinct.Skip(2).Take(5)))
-                return orderedDistinct.Skip(2).Take(5);
+                return orderedDistinct.Skip(2).Take(5).OrderByDescending(x=>x.Value);
             return null;
         }
     }

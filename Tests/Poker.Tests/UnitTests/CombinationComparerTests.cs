@@ -248,7 +248,8 @@ namespace Poker.Tests.UnitTests
         [Theory]
         [InlineData("3♣ 3♥ A♣ A♦ A♠ 7♣ 8♥", "2♣ 2♥ A♣ A♦ A♠ 7♣ 8♥", ExpectedWinner.Hand1, ECombination.FullHouse)]
         [InlineData("A♣ A♥ 3♣ 3♦ 3♠ 7♣ 8♥", "Q♣ Q♥ 3♣ 3♦ 3♠ 7♣ 8♥", ExpectedWinner.Hand1, ECombination.FullHouse)]
-        public void Should_recognize_better_full_house_properly(string hand1,
+        [InlineData("2♣ 2♥ 3♣ 3♦ A♠ 7♣ 8♥", "2♣ 2♥ 3♣ 8♦ K♠ 7♣ 8♥", ExpectedWinner.Hand2, ECombination.TwoPair)]
+        public void Should_recognize_better_combination_properly(string hand1,
             string hand2,
             ExpectedWinner expectedWinner,
             ECombination expectedCombination)

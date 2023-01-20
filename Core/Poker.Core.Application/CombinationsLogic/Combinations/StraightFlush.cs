@@ -26,11 +26,11 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
                 .OrderBy(x => x.Color).ThenByDescending(x => x.Value);
 
             if (StraightFlushCount(ordered.Take(5)))
-                return ordered.Take(5);
+                return ordered.Take(5).OrderByDescending(x => x.Value);
             if (StraightFlushCount(ordered.Skip(1).Take(5)))
-                return ordered.Skip(1).Take(5);
+                return ordered.Skip(1).Take(5).OrderByDescending(x => x.Value);
             if (StraightFlushCount(ordered.Skip(2).Take(5)))
-                return ordered.Skip(2).Take(5);
+                return ordered.Skip(2).Take(5).OrderByDescending(x => x.Value);
             return null;
         }
 

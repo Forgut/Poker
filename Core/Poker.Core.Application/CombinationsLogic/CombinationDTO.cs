@@ -29,11 +29,9 @@ namespace Poker.Core.Application.CombinationsLogic
             var combination = (CombinationDTO)obj;
 
             var incomingCards = combination.Cards
-                .OrderByDescending(x => x.Value)
                 .ToList();
 
             var thisCards = Cards
-                .OrderByDescending(x => x.Value)
                 .ToList();
 
             for (int i = 0; i < incomingCards.Count(); i++)

@@ -38,7 +38,7 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
 
             var result = pair.ToList();
             result.AddRange(threeOfAKind);
-            return result;
+            return result.OrderByDescending(x => x.Value);
         }
     }
 }
