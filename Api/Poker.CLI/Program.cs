@@ -1,8 +1,6 @@
 ﻿using Poker.CLI.Common;
 using Poker.CLI.GameStateCreation;
 using Poker.Core.Domain.Entity;
-using Poker.Infrastructure.Services.Events;
-using Poker.Infrastructure.Services.Events.FilePublisher;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +31,7 @@ namespace Poker.CLI
                     .WithDefaultCombinationComparer()
                     //.WithPlayers(GetPlayers())
                     .WithRandomPlayers()
-                    .WithEventPublisher(new SaveEventsToFilePublisher())
+                    .WithNoEventPublisher()
                     .Build();
             }
             else

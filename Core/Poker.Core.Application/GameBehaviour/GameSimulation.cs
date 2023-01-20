@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Poker.Core.Application
+namespace Poker.Core.Application.GameBehaviour
 {
     public class GameSimulation
     {
@@ -15,10 +15,8 @@ namespace Poker.Core.Application
         private readonly Croupier _croupier;
         private readonly CombinationComparer _combinationComparer;
         private readonly WinEstimator _winEstimator;
-        private readonly Players _players;
+        private readonly PlayersInfo _playersInfo;
         private readonly IEventPublisher _eventPublisher;
-
-        private Player? _targetPlayer;
 
         public List<Player> Winners { get; private set; }
         public EGameState GameState { get; private set; }
@@ -35,27 +33,19 @@ namespace Poker.Core.Application
             _winEstimator = winEstimator;
             _table = table;
             Winners = new List<Player>();
-            _players = players;
+            _playersInfo = new PlayersInfo(players);
             _eventPublisher = eventPublisher;
         }
 
         public bool SetTargetPlayer(string playerName)
         {
-            var player = _players.FirstOrDefault(x => x.Name == playerName);
-            if (player != null)
-            {
-                _targetPlayer = player;
-                return true;
-            }
-
-            _targetPlayer = _players.First();
-            return false;
+           return  _playersInfo.SetTargetPlayer(playerName);
         }
 
         public void ResetRound()
         {
             _table.ClearCards();
-            foreach (var player in _players)
+            foreach (var player in _playersInfo.Players)
                 player.ClearCards();
             Winners.Clear();
             GameState = EGameState.New;
@@ -63,7 +53,7 @@ namespace Poker.Core.Application
 
         public void DrawPlayerCards()
         {
-            _croupier.PreFlop(_players);
+            _croupier.PreFlop(_playersInfo.Players);
             GameState = EGameState.PreFlop;
         }
 
@@ -101,7 +91,7 @@ namespace Poker.Core.Application
             sb.AppendLine();
 
             sb.AppendLine("Players:");
-            foreach (var player in _players)
+            foreach (var player in _playersInfo.Players)
                 sb.AppendLine($"{player.Name}: {player.Cards[0]} {player.Cards[1]}");
 
             Console.WriteLine(sb.ToString());
@@ -130,46 +120,46 @@ namespace Poker.Core.Application
 
             void PrintFlop()
             {
-                if (_targetPlayer == null)
+                if (_playersInfo.TargetPlayer == null)
                 {
                     Console.WriteLine("Target player not specified");
                     return;
                 }
 
                 var flopProb = _winEstimator
-                        .ProbableCombinationsForPlayer2Missing(_table, _targetPlayer);
+                        .ProbableCombinationsForPlayer2Missing(_table, _playersInfo.TargetPlayer);
 
                 var flopEnemyProb = _winEstimator
-                    .ProbableCombinationsForEnemy2Missing(_table, _targetPlayer);
+                    .ProbableCombinationsForEnemy2Missing(_table, _playersInfo.TargetPlayer);
 
-                Console.WriteLine($"Flop probability for {_targetPlayer.Name}");
+                Console.WriteLine($"Flop probability for {_playersInfo.TargetPlayer.Name}");
                 Console.WriteLine(flopProb);
                 Console.WriteLine();
 
-                Console.WriteLine($"Flop probability for {_targetPlayer.Name} enemies");
+                Console.WriteLine($"Flop probability for {_playersInfo.TargetPlayer.Name} enemies");
                 Console.WriteLine(flopEnemyProb);
                 Console.WriteLine();
             }
 
             void PrintTurn()
             {
-                if (_targetPlayer == null)
+                if (_playersInfo.TargetPlayer == null)
                 {
                     Console.WriteLine("Target player not specified");
                     return;
                 }
 
                 var turnProb = _winEstimator
-                .ProbableCombinationsForPlayer1Missing(_table, _targetPlayer);
+                .ProbableCombinationsForPlayer1Missing(_table, _playersInfo.TargetPlayer);
 
                 var turnEnemyProb = _winEstimator
-                    .ProbableCombinationsForEnemy1Missing(_table, _targetPlayer);
+                    .ProbableCombinationsForEnemy1Missing(_table, _playersInfo.TargetPlayer);
 
-                Console.WriteLine($"Turn probability for {_targetPlayer.Name}");
+                Console.WriteLine($"Turn probability for {_playersInfo.TargetPlayer.Name}");
                 Console.WriteLine(turnProb);
                 Console.WriteLine();
 
-                Console.WriteLine($"Turn probability for {_targetPlayer.Name} enemies");
+                Console.WriteLine($"Turn probability for {_playersInfo.TargetPlayer.Name} enemies");
                 Console.WriteLine(turnEnemyProb);
                 Console.WriteLine();
             }
@@ -177,7 +167,7 @@ namespace Poker.Core.Application
             void PrintRiver()
             {
                 var playersCombinations =
-                _players.Select(x => new
+                _playersInfo.Players.Select(x => new
                 {
                     Player = x,
                     Combination = new CombinationFinder(x, _table).GetBestCombination()
@@ -199,7 +189,7 @@ namespace Poker.Core.Application
         public void EndRound()
         {
             var playersCombinations =
-                _players.Select(x => new
+                _playersInfo.Players.Select(x => new
                 {
                     Player = x,
                     Combination = new CombinationFinder(x, _table).GetBestCombination()

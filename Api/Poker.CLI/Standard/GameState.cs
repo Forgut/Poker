@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Poker.CLI.Common;
+using Poker.Core.Application.GameBehaviour;
 
 namespace Poker.CLI.Standard
 {

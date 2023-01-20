@@ -1,5 +1,6 @@
 ﻿using Poker.CLI.Common;
 using Poker.Core.Application;
+using Poker.Core.Application.GameBehaviour;
 using System;
 using System.Collections.Generic;
 using System.Linq;

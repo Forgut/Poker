@@ -12,6 +12,7 @@ using Poker.Core.Domain.Extensions;
 using System.Linq;
 using Poker.Core.Application.Events;
 using Poker.Infrastructure.Services.Events;
+using Poker.Core.Application.GameBehaviour;
 
 namespace Poker.CLI.GameStateCreation
 {
