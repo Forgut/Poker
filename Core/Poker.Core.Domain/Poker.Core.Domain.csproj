@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Poker.Core.Common\Poker.Core.Common.csproj" />
+    <ProjectReference Include="..\Poker.Core.Common\Poker.Core.Common.csproj" />
   </ItemGroup>
 
 </Project>
