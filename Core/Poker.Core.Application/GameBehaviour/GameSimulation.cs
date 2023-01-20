@@ -14,8 +14,7 @@ namespace Poker.Core.Application.GameBehaviour
     {
         private readonly Table _table;
         private readonly Croupier _croupier;
-        private readonly CombinationComparer _combinationComparer;
-        private readonly WinEstimator _winEstimator;
+        private readonly WinChanceEstimator _winChanceEstimator;
         private readonly PlayersInfo _playersInfo;
         private readonly WinDecision _winDecision;
         private readonly IEventPublisher _eventPublisher;
@@ -24,14 +23,13 @@ namespace Poker.Core.Application.GameBehaviour
 
         public GameSimulation(Croupier croupier,
                     CombinationComparer combinationComparer,
-                    WinEstimator winEstimator,
+                    WinChanceEstimator winChanceEstimator,
                     Table table,
                     Players players,
                     IEventPublisher eventPublisher)
         {
             _croupier = croupier;
-            _combinationComparer = combinationComparer;
-            _winEstimator = winEstimator;
+            _winChanceEstimator = winChanceEstimator;
             _table = table;
             _playersInfo = new PlayersInfo(players);
             _winDecision = new WinDecision(table, players, combinationComparer);
@@ -125,10 +123,10 @@ namespace Poker.Core.Application.GameBehaviour
                     return;
                 }
 
-                var flopProb = _winEstimator
+                var flopProb = _winChanceEstimator
                         .ProbableCombinationsForPlayer2Missing(_table, _playersInfo.TargetPlayer);
 
-                var flopEnemyProb = _winEstimator
+                var flopEnemyProb = _winChanceEstimator
                     .ProbableCombinationsForEnemy2Missing(_table, _playersInfo.TargetPlayer);
 
                 Console.WriteLine($"Flop probability for {_playersInfo.TargetPlayer.Name}");
@@ -148,10 +146,10 @@ namespace Poker.Core.Application.GameBehaviour
                     return;
                 }
 
-                var turnProb = _winEstimator
+                var turnProb = _winChanceEstimator
                 .ProbableCombinationsForPlayer1Missing(_table, _playersInfo.TargetPlayer);
 
-                var turnEnemyProb = _winEstimator
+                var turnEnemyProb = _winChanceEstimator
                     .ProbableCombinationsForEnemy1Missing(_table, _playersInfo.TargetPlayer);
 
                 Console.WriteLine($"Turn probability for {_playersInfo.TargetPlayer.Name}");

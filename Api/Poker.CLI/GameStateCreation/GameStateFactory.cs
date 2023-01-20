@@ -27,7 +27,7 @@ namespace Poker.CLI.GameStateCreation
     {
         private Table _table;
         private Croupier _croupier;
-        private WinEstimator _winEstimator;
+        private WinChanceEstimator _winChanceEstimator;
         private CombinationComparer _combinationComparer;
         private Players _players;
         private IEventPublisher _eventPublisher;
@@ -41,10 +41,10 @@ namespace Poker.CLI.GameStateCreation
             return new GameState(BuildGame());
 
             GameSimulation BuildGameSimulation()
-                => new GameSimulation(_croupier, _combinationComparer, _winEstimator, _table, _players, _eventPublisher);
+                => new GameSimulation(_croupier, _combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);
 
             Game BuildGame()
-                => new Game(_combinationComparer, _winEstimator, _table, _players, _eventPublisher);
+                => new Game(_combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);
         }
 
         private GameStateFactory()
@@ -87,7 +87,7 @@ namespace Poker.CLI.GameStateCreation
 
         public ISetCombinationComparerStage WithDefaultWinEstimator()
         {
-            _winEstimator = new WinEstimator();
+            _winChanceEstimator = new WinChanceEstimator();
             return this;
         }
 
