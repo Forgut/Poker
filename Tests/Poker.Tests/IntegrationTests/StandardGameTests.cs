@@ -39,6 +39,7 @@ namespace Poker.Tests.IntegrationTests
         [Theory]
         [InlineData("Ac;Ah", "9h;8h", "As;Js", "3h;4h", "Kh;Qh;Jh", "10h", "3h", Player1Name)]
         [InlineData("2h;Ah", "9h;8h", "As;Js", "3h;4h", "Kh;Qh;Jh", "10h", "3h", Player1Name)]
+        [InlineData("2h;Ah", "9h;8h", "As;Js", "", "Kh;Qh;Jh", "10h", "3h", Player1Name)]
         public void Should_properly_play_the_game_and_select_proper_winners(string targetPlayerCards,
             string player2Cards,
             string player3Cards,
@@ -53,9 +54,12 @@ namespace Poker.Tests.IntegrationTests
             _game.Flop(flop);
             _game.Turn(turn);
             _game.River(river);
-            _game.FillPlayersCards(Player2Name, player2Cards);
-            _game.FillPlayersCards(Player3Name, player3Cards);
-            _game.FillPlayersCards(Player4Name, player4Cards);
+            if (!string.IsNullOrEmpty(player2Cards))
+                _game.FillPlayersCards(Player2Name, player2Cards);
+            if (!string.IsNullOrEmpty(player3Cards))
+                _game.FillPlayersCards(Player3Name, player3Cards);
+            if (!string.IsNullOrEmpty(player4Cards))
+                _game.FillPlayersCards(Player4Name, player4Cards);
             _game.EndRound();
 
             Assert.True(_game.GetWinnersAsString().Contains(expectedWinnerName));
