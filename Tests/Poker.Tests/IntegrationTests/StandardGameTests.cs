@@ -62,7 +62,7 @@ namespace Poker.Tests.IntegrationTests
                 _game.FillPlayersCards(Player4Name, player4Cards);
             _game.EndRound();
 
-            Assert.True(_game.GetWinnersAsString().Contains(expectedWinnerName));
+            Assert.Contains(expectedWinnerName, _game.GetWinnersAsString());
         }
     }
 }
