@@ -1,7 +1,9 @@
-﻿using Poker.Core.Domain.Entity;
+﻿using Poker.Core.Common;
+using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Exceptions;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Poker.Core.Application
 {
@@ -53,5 +55,8 @@ namespace Poker.Core.Application
         {
             Array.Clear(_cards, 0, _cards.Length);
         }
+
+        public bool IsFullySet
+            => _cards.ExceptNull().Count() == 5;
     }
 }

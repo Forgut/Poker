@@ -1,5 +1,6 @@
 ﻿using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Application.Events;
+using Poker.Core.Application.GameBehaviour.WinCalculation;
 using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Events;
 using System;
@@ -16,9 +17,9 @@ namespace Poker.Core.Application.GameBehaviour
         private readonly CombinationComparer _combinationComparer;
         private readonly WinEstimator _winEstimator;
         private readonly PlayersInfo _playersInfo;
+        private readonly WinDecision _winDecision;
         private readonly IEventPublisher _eventPublisher;
 
-        public List<Player> Winners { get; private set; }
         public EGameState GameState { get; private set; }
 
         public GameSimulation(Croupier croupier,
@@ -32,14 +33,14 @@ namespace Poker.Core.Application.GameBehaviour
             _combinationComparer = combinationComparer;
             _winEstimator = winEstimator;
             _table = table;
-            Winners = new List<Player>();
             _playersInfo = new PlayersInfo(players);
+            _winDecision = new WinDecision(table, players, combinationComparer);
             _eventPublisher = eventPublisher;
         }
 
         public bool SetTargetPlayer(string playerName)
         {
-           return  _playersInfo.SetTargetPlayer(playerName);
+            return _playersInfo.SetTargetPlayer(playerName);
         }
 
         public void ResetRound()
@@ -47,7 +48,6 @@ namespace Poker.Core.Application.GameBehaviour
             _table.ClearCards();
             foreach (var player in _playersInfo.Players)
                 player.ClearCards();
-            Winners.Clear();
             GameState = EGameState.New;
         }
 
@@ -112,9 +112,8 @@ namespace Poker.Core.Application.GameBehaviour
                     PrintTurn();
                     break;
                 case EGameState.River:
-                    PrintRiver();
-                    break;
                 case EGameState.End:
+                    PrintRiver();
                     break;
             }
 
@@ -181,37 +180,22 @@ namespace Poker.Core.Application.GameBehaviour
         public void PrintWinner()
         {
             Console.WriteLine("Winners:");
-            foreach (var winner in Winners)
+            foreach (var winner in _winDecision.Winners)
                 Console.Write($"{winner.Name};");
             Console.WriteLine();
         }
 
         public void EndRound()
         {
-            var playersCombinations =
-                _playersInfo.Players.Select(x => new
-                {
-                    Player = x,
-                    Combination = new CombinationFinder(x, _table).GetBestCombination()
-                });
+            var winners = _winDecision.Winners.ToList();
 
-            var winners = _combinationComparer
-               .GetBestCombinations(playersCombinations.Select(x => x.Combination));
-
-            var winnersAndCombinations = playersCombinations.Where(x => winners.Contains(x.Combination))
-                .Select(x => new { x.Player, x.Combination });
-
-            PublishEvent();
-
-            Winners = winnersAndCombinations.Select(x => x.Player)
-                .ToList();
-
+            PublishEvent(winners);
             GameState = EGameState.End;
 
-            void PublishEvent()
+            void PublishEvent(IEnumerable<Winner> winners)
             {
-                var eventParameters = winnersAndCombinations
-                    .Select(x => new WinnerInfo(x.Player.Name, x.Combination.ToString()));
+                var eventParameters = winners
+                    .Select(x => new WinnerInfo(x.Name, x.Combination));
                 var @event = new RoundEndedEvent(eventParameters);
                 _eventPublisher.RoundEnded(@event);
             }
