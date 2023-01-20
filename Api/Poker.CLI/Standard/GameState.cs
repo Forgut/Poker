@@ -159,11 +159,11 @@ namespace Poker.CLI.Standard
 
         private void Turn()
         {
-            Console.WriteLine("Turn round. Type in cards separated with ;");
-            var cards = Console.ReadLine();
+            Console.WriteLine("Turn round. Type in card.");
+            var card = Console.ReadLine();
             try
             {
-                _game.Turn(cards);
+                _game.Turn(card);
             }
             catch
             {
@@ -173,11 +173,11 @@ namespace Poker.CLI.Standard
 
         private void River()
         {
-            Console.WriteLine("River round. Type in cards separated with ;");
-            var cards = Console.ReadLine();
+            Console.WriteLine("River round. Type in card.");
+            var card = Console.ReadLine();
             try
             {
-                _game.River(cards);
+                _game.River(card);
 
             }
             catch
