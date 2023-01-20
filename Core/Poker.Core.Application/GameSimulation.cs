@@ -1,5 +1,7 @@
 ﻿using Poker.Core.Application.CombinationsLogic;
+using Poker.Core.Application.Events;
 using Poker.Core.Domain.Entity;
+using Poker.Core.Domain.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace Poker.Core.Application
         private readonly CombinationComparer _combinationComparer;
         private readonly WinEstimator _winEstimator;
         private readonly Players _players;
+        private readonly IEventPublisher _eventPublisher;
 
         private Player? _targetPlayer;
 
@@ -24,7 +27,8 @@ namespace Poker.Core.Application
                     CombinationComparer combinationComparer,
                     WinEstimator winEstimator,
                     Table table,
-                    Players players)
+                    Players players,
+                    IEventPublisher eventPublisher)
         {
             _croupier = croupier;
             _combinationComparer = combinationComparer;
@@ -32,6 +36,7 @@ namespace Poker.Core.Application
             _table = table;
             Winners = new List<Player>();
             _players = players;
+            _eventPublisher = eventPublisher;
         }
 
         public bool SetTargetPlayer(string playerName)
@@ -203,9 +208,23 @@ namespace Poker.Core.Application
             var winners = _combinationComparer
                .GetBestCombinations(playersCombinations.Select(x => x.Combination));
 
-            Winners = playersCombinations.Where(x => winners.Contains(x.Combination))
-                .Select(x => x.Player)
+            var winnersAndCombinations = playersCombinations.Where(x => winners.Contains(x.Combination))
+                .Select(x => new { x.Player, x.Combination });
+
+            PublishEvent();
+
+            Winners = winnersAndCombinations.Select(x => x.Player)
                 .ToList();
+
+            GameState = EGameState.End;
+
+            void PublishEvent()
+            {
+                var eventParameters = winnersAndCombinations
+                    .Select(x => new WinnerInfo(x.Player.Name, x.Combination.ToString()));
+                var @event = new RoundEndedEvent(eventParameters);
+                _eventPublisher.RoundEnded(@event);
+            }
         }
     }
 }

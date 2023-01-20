@@ -10,6 +10,8 @@ using System;
 using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Extensions;
 using System.Linq;
+using Poker.Core.Application.Events;
+using Poker.Infrastructure.Services.Events;
 
 namespace Poker.CLI.GameStateCreation
 {
@@ -19,6 +21,7 @@ namespace Poker.CLI.GameStateCreation
         ISetWinEstimatorStage,
         ISetCombinationComparerStage,
         ISetPlayersStage,
+        ISetEventPublisherStage,
         IBuildGameStateStage
     {
         private Table _table;
@@ -26,6 +29,7 @@ namespace Poker.CLI.GameStateCreation
         private WinEstimator _winEstimator;
         private CombinationComparer _combinationComparer;
         private Players _players;
+        private IEventPublisher _eventPublisher;
         private bool _isSimulation;
 
 
@@ -36,10 +40,10 @@ namespace Poker.CLI.GameStateCreation
             return new GameState(BuildGame());
 
             GameSimulation BuildGameSimulation()
-                => new GameSimulation(_croupier, _combinationComparer, _winEstimator, _table, _players);
+                => new GameSimulation(_croupier, _combinationComparer, _winEstimator, _table, _players, _eventPublisher);
 
             Game BuildGame()
-                => new Game(_combinationComparer, _winEstimator, _table, _players);
+                => new Game(_combinationComparer, _winEstimator, _table, _players, _eventPublisher);
         }
 
         private GameStateFactory()
@@ -86,12 +90,12 @@ namespace Poker.CLI.GameStateCreation
             return this;
         }
 
-        public IBuildGameStateStage WithPlayers(IEnumerable<Player> players)
+        public ISetEventPublisherStage WithPlayers(IEnumerable<Player> players)
         {
             _players = players.ToPlayers();
             return this;
         }
-        public IBuildGameStateStage WithRandomPlayers(int numberOfplayers = 4)
+        public ISetEventPublisherStage WithRandomPlayers(int numberOfplayers = 4)
         {
             _players = new Players();
             foreach (var i in Enumerable.Range(0, numberOfplayers))
@@ -99,5 +103,16 @@ namespace Poker.CLI.GameStateCreation
             return this;
         }
 
+        public IBuildGameStateStage WithNoEventPublisher()
+        {
+            _eventPublisher = new EmptyEventPublisher();
+            return this;
+        }
+
+        public IBuildGameStateStage WithEventPublisher(IEventPublisher eventPublisher)
+        {
+            _eventPublisher = eventPublisher;
+            return this;
+        }
     }
 }

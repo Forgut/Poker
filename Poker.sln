@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poker.Core.Domain", "Core\P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poker.Core.Common", "Poker.Core.Common\Poker.Core.Common.csproj", "{9987C3B7-37F7-41CE-A7FA-CABF506F2DB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poker.Infrastructure.Services", "Poker.Infrastructure.Services\Poker.Infrastructure.Services.csproj", "{BD71609D-CF76-458F-A3E4-9FA898F36982}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{9987C3B7-37F7-41CE-A7FA-CABF506F2DB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9987C3B7-37F7-41CE-A7FA-CABF506F2DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9987C3B7-37F7-41CE-A7FA-CABF506F2DB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD71609D-CF76-458F-A3E4-9FA898F36982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD71609D-CF76-458F-A3E4-9FA898F36982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD71609D-CF76-458F-A3E4-9FA898F36982}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD71609D-CF76-458F-A3E4-9FA898F36982}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +63,7 @@ Global
 		{2A7C4AE5-C858-4CD1-9A6D-40C747C846BB} = {575ED223-7203-49FF-970C-2FE804FCA75B}
 		{79FF195F-7E93-4063-BFF9-1449BF288F50} = {575ED223-7203-49FF-970C-2FE804FCA75B}
 		{9987C3B7-37F7-41CE-A7FA-CABF506F2DB4} = {575ED223-7203-49FF-970C-2FE804FCA75B}
+		{BD71609D-CF76-458F-A3E4-9FA898F36982} = {38E8A01D-5ABD-415E-8557-7D130478B568}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A5B6CC79-E67E-4F4C-85F5-7A0BC9AB7776}
