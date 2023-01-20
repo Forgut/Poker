@@ -27,18 +27,18 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
                 .Any();
         }
 
-        private IEnumerable<Card>? GetStraight()
+        private List<Card>? GetStraight()
         {
             var orderedDistinct = _cards.GroupBy(x => x.Value)
                 .Select(x => x.First())
                 .OrderByDescending(x => x.Value);
 
             if (orderedDistinct.Count() >= 5 && StraightCount(orderedDistinct.Take(5)))
-                return orderedDistinct.Take(5).OrderByDescending(x=>x.Value);
+                return orderedDistinct.Take(5).OrderByDescending(x=>x.Value).ToList();
             if (orderedDistinct.Count() >= 6 && StraightCount(orderedDistinct.Skip(1).Take(5)))
-                return orderedDistinct.Skip(1).Take(5).OrderByDescending(x=>x.Value);
+                return orderedDistinct.Skip(1).Take(5).OrderByDescending(x => x.Value).ToList();
             if (orderedDistinct.Count() >= 7 && StraightCount(orderedDistinct.Skip(2).Take(5)))
-                return orderedDistinct.Skip(2).Take(5).OrderByDescending(x=>x.Value);
+                return orderedDistinct.Skip(2).Take(5).OrderByDescending(x => x.Value).ToList();
             return null;
         }
     }

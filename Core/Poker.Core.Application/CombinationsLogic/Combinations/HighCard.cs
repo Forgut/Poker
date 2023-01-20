@@ -13,7 +13,8 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
         public override CombinationDTO GetCombination()
         {
             var highestValue = _cards.OrderByDescending(x => x.Value)
-                .Take(5);
+                .Take(5)
+                .ToList();
             return new CombinationDTO(ECombination.HighCard, highestValue);
         }
 

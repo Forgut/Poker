@@ -20,17 +20,17 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
             return new CombinationDTO(ECombination.StraightFlush, GetStraightFlush());
         }
 
-        protected IEnumerable<Card>? GetStraightFlush()
+        protected List<Card>? GetStraightFlush()
         {
             var ordered = _cards
                 .OrderBy(x => x.Color).ThenByDescending(x => x.Value);
 
             if (StraightFlushCount(ordered.Take(5)))
-                return ordered.Take(5).OrderByDescending(x => x.Value);
+                return ordered.Take(5).OrderByDescending(x => x.Value).ToList();
             if (StraightFlushCount(ordered.Skip(1).Take(5)))
-                return ordered.Skip(1).Take(5).OrderByDescending(x => x.Value);
+                return ordered.Skip(1).Take(5).OrderByDescending(x => x.Value).ToList();
             if (StraightFlushCount(ordered.Skip(2).Take(5)))
-                return ordered.Skip(2).Take(5).OrderByDescending(x => x.Value);
+                return ordered.Skip(2).Take(5).OrderByDescending(x => x.Value).ToList();
             return null;
         }
 

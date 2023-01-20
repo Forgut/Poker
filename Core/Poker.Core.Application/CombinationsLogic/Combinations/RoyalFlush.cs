@@ -20,11 +20,11 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
             return GetRoyalFlush() != null;
         }
 
-        private IEnumerable<Card>? GetRoyalFlush()
+        private List<Card>? GetRoyalFlush()
         {
             var straightFlush = GetStraightFlush();
             if (straightFlush?.First().Value == EValue.Ace)
-                return straightFlush;
+                return straightFlush.ToList();
             return null;
         }
     }

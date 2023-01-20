@@ -20,7 +20,7 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
             return GetFlush() != null;
         }
 
-        private IEnumerable<Card>? GetFlush()
+        private List<Card>? GetFlush()
         {
             var oneColorCards = _cards
                 .GroupBy(x => x.Color)
@@ -31,7 +31,8 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
                 return null;
 
             return oneColorCards.OrderByDescending(x => x.Value)
-                .Take(5);
+                .Take(5)
+                .ToList();
         }
     }
 }

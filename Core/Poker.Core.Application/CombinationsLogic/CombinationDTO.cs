@@ -1,20 +1,21 @@
 ﻿using Poker.Core.Domain.Entity;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Poker.Core.Application.CombinationsLogic
 {
     public class CombinationDTO : IComparable
     {
-        public CombinationDTO(ECombination combination, IEnumerable<Card>? cards)
+        public CombinationDTO(ECombination combination, List<Card>? cards)
         {
             Combination = combination;
-            Cards = cards;
+            Cards = cards?.AsReadOnly() ?? new ReadOnlyCollection<Card>(new List<Card>());
         }
 
         public ECombination Combination { get; }
-        public IEnumerable<Card>? Cards { get; }
+        public ReadOnlyCollection<Card>? Cards { get; }
 
         public override bool Equals(object obj)
         {
@@ -28,11 +29,9 @@ namespace Poker.Core.Application.CombinationsLogic
         {
             var combination = (CombinationDTO)obj;
 
-            var incomingCards = combination.Cards
-                .ToList();
+            var incomingCards = combination.Cards;
 
-            var thisCards = Cards
-                .ToList();
+            var thisCards = Cards;
 
             for (int i = 0; i < incomingCards.Count(); i++)
             {

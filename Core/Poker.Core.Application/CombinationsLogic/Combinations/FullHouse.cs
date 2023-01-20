@@ -20,7 +20,7 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
             return GetFullHouse() != null;
         }
 
-        private IEnumerable<Card>? GetFullHouse()
+        private List<Card>? GetFullHouse()
         {
             var pair = _cards.GroupBy(x => x.Value)
                 .FirstOrDefault(x => x.Count() == 2);
@@ -38,7 +38,8 @@ namespace Poker.Core.Application.CombinationsLogic.Combinations
 
             var result = pair.ToList();
             result.AddRange(threeOfAKind);
-            return result.OrderByDescending(x => x.Value);
+            return result.OrderByDescending(x => x.Value)
+                .ToList();
         }
     }
 }
