@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Poker.Core.Application.GameBehaviour
 {
-    public class Game
+    public class StandardGame
     {
         private readonly Table _table;
         private readonly WinChanceEstimator _winChanceEstimator;
@@ -20,7 +20,7 @@ namespace Poker.Core.Application.GameBehaviour
 
         public EGameState GameState { get; private set; }
 
-        public Game(CombinationComparer combinationComparer,
+        public StandardGame(CombinationComparer combinationComparer,
                     WinChanceEstimator winEstimator,
                     Table table,
                     Players players,

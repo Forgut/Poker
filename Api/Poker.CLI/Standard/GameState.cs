@@ -9,11 +9,11 @@ namespace Poker.CLI.Standard
 {
     class GameState : IGameState
     {
-        private readonly Game _game;
+        private readonly StandardGame _game;
 
         public bool ShouldEndGame { get; private set; }
 
-        public GameState(Game game)
+        public GameState(StandardGame game)
         {
             _game = game;
         }
