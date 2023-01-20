@@ -40,8 +40,8 @@ namespace Poker.CLI.GameStateCreation
                 return new GameSimulationState(BuildGameSimulation());
             return new GameState(BuildGame());
 
-            GameSimulation BuildGameSimulation()
-                => new GameSimulation(_croupier, _combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);
+            SimulationGame BuildGameSimulation()
+                => new SimulationGame(_croupier, _combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);
 
             StandardGame BuildGame()
                 => new StandardGame(_combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);

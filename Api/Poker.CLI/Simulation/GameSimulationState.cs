@@ -9,11 +9,11 @@ namespace Poker.CLI.Simulation
 {
     class GameSimulationState : IGameState
     {
-        private readonly GameSimulation _game;
+        private readonly SimulationGame _game;
 
         public bool ShouldEndGame { get; private set; }
 
-        public GameSimulationState(GameSimulation game)
+        public GameSimulationState(SimulationGame game)
         {
             _game = game;
         }

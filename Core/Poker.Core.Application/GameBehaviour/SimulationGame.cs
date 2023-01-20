@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Poker.Core.Application.GameBehaviour
 {
-    public class GameSimulation
+    public class SimulationGame
     {
         private readonly Table _table;
         private readonly Croupier _croupier;
@@ -21,7 +21,7 @@ namespace Poker.Core.Application.GameBehaviour
 
         public EGameState GameState { get; private set; }
 
-        public GameSimulation(Croupier croupier,
+        public SimulationGame(Croupier croupier,
                     CombinationComparer combinationComparer,
                     WinChanceEstimator winChanceEstimator,
                     Table table,
