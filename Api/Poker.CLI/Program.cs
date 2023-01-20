@@ -11,7 +11,7 @@ namespace Poker.CLI
     {
         static void Main(string[] args)
         {
-            bool isSimulation = true;
+            bool isSimulation = false;
             if (args.Length > 0)
                 bool.TryParse(args[0], out isSimulation);
 

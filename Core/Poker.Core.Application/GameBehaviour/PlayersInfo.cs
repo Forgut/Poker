@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Poker.Core.Application.GameBehaviour
 {
-    class PlayersInfo
+    public class PlayersInfo
     {
         public Players Players { get; private set; }
         public PlayersInfo(Players players)

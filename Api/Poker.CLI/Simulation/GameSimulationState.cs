@@ -170,7 +170,7 @@ namespace Poker.CLI.Simulation
 
         private void PrintTableState()
         {
-            Console.WriteLine(_game.PrintGameState());
+            Console.WriteLine(_game.GameStateAsString());
         }
 
         private void PrintHelp()

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Poker.Core.Application.GameBehaviour.WinCalculation
 {
-    class WinDecision
+    public class WinDecision
     {
         private readonly Table _table;
         private readonly Players _players;

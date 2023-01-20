@@ -7,7 +7,7 @@ namespace Poker.Core.Application
 {
     public class Croupier
     {
-        private Deck _deck;
+        private Deck? _deck;
         private readonly Random _random;
 
         public Croupier(Random random)
@@ -43,7 +43,7 @@ namespace Poker.Core.Application
 
         private Card GetNextCardFromDeck()
         {
-            return _deck.DrawCard();
+            return _deck!.DrawCard();
         }
 
         private void ResetDeck()
