@@ -41,6 +41,7 @@ namespace Poker.Core.Application.GameBehaviour
         public void ResetRound()
         {
             _table.ClearCards();
+            _winDecision.ResetWinners();
             foreach (var player in _playersInfo.Players)
                 player.ClearCards();
             GameState = EGameState.New;

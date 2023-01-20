@@ -244,11 +244,11 @@ namespace Poker.Tests.UnitTests
             if (expectedWinner.HasFlag(ExpectedWinner.Hand3))
                 Assert.Contains(combination3, winner);
         }
-
         [Theory]
         [InlineData("3♣ 3♥ A♣ A♦ A♠ 7♣ 8♥", "2♣ 2♥ A♣ A♦ A♠ 7♣ 8♥", ExpectedWinner.Hand1, ECombination.FullHouse)]
         [InlineData("A♣ A♥ 3♣ 3♦ 3♠ 7♣ 8♥", "Q♣ Q♥ 3♣ 3♦ 3♠ 7♣ 8♥", ExpectedWinner.Hand1, ECombination.FullHouse)]
         [InlineData("2♣ 2♥ 3♣ 3♦ A♠ 7♣ 8♥", "2♣ 2♥ 3♣ 8♦ K♠ 7♣ 8♥", ExpectedWinner.Hand2, ECombination.TwoPair)]
+        [InlineData("3♣ 3♦ A♥ K♥ Q♠ J♣ 5♠", "J♣ 3♣ 5♠ 3♦ A♥ J♠ 8♦", ExpectedWinner.Hand2, ECombination.TwoPair)]
         public void Should_recognize_better_combination_properly(string hand1,
             string hand2,
             ExpectedWinner expectedWinner,

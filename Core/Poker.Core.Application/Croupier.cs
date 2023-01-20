@@ -1,19 +1,23 @@
 ﻿using Poker.Core.Application.CardBehaviour;
+using Poker.Core.Application.CardBehaviour.Shuffling;
 using Poker.Core.Domain.Entity;
+using System;
 
 namespace Poker.Core.Application
 {
     public class Croupier
     {
-        private readonly Deck _deck;
+        private Deck _deck;
+        private readonly Random _random;
 
-        public Croupier(Deck deck)
+        public Croupier(Random random)
         {
-            _deck = deck;
+            _random = random;
         }
 
         public void PreFlop(Players players)
         {
+            ResetDeck();
             foreach (var player in players)
                 player.SetFirstCard(GetNextCardFromDeck());
             foreach (var player in players)
@@ -40,6 +44,11 @@ namespace Poker.Core.Application
         private Card GetNextCardFromDeck()
         {
             return _deck.DrawCard();
+        }
+
+        private void ResetDeck()
+        {
+            _deck = Deck.NewDeck.Shuffled(new ShuffleRule(_random));
         }
     }
 }

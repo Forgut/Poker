@@ -69,7 +69,7 @@ namespace Poker.CLI.GameStateCreation
 
         public ISetTableStage WithDefaultCroupier()
         {
-            _croupier = new Croupier(Deck.NewDeck.Shuffled(new ShuffleRule(new Random())));
+            _croupier = new Croupier(new Random());
             return this;
         }
 

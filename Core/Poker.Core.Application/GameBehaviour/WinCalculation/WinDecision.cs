@@ -22,6 +22,11 @@ namespace Poker.Core.Application.GameBehaviour.WinCalculation
         private ReadOnlyCollection<Winner>? _winners;
         public ReadOnlyCollection<Winner> Winners => _winners ??= CalculateWinners();
 
+        public void ResetWinners()
+        {
+            _winners = null;
+        }
+
         public ReadOnlyCollection<Winner> CalculateWinners()
         {
             if (!_table.IsFullySet)
