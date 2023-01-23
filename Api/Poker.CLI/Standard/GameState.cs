@@ -108,25 +108,23 @@ namespace Poker.CLI.Standard
         {
             switch (_game.GameState)
             {
-                case EGameState.New:
+                case EGameState.PreFlop:
                     DrawPlayerCards();
                     break;
-                case EGameState.PreFlop:
+                case EGameState.Flop:
                     Flop();
                     break;
-                case EGameState.Flop:
+                case EGameState.Turn:
                     Turn();
                     break;
-                case EGameState.Turn:
+                case EGameState.River:
                     River();
                     break;
-                case EGameState.River:
+                case EGameState.ShowCards:
                     ShowCards();
                     break;
-                case EGameState.ShowCards:
-                    EndRound();
-                    break;
                 case EGameState.End:
+                    EndRound();
                     _game.ResetRound();
                     break;
             }

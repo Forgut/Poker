@@ -26,25 +26,25 @@ namespace Poker.Core.Application.GameBehaviour
         public void DrawPlayerCards()
         {
             _croupier.PreFlop(_playersInfo.Players);
-            GameState = EGameState.PreFlop;
+            GameState = EGameState.Flop;
         }
 
         public void Flop()
         {
             _croupier.Flop(_table);
-            GameState = EGameState.Flop;
+            GameState = EGameState.Turn;
         }
 
         public void Turn()
         {
             _croupier.Turn(_table);
-            GameState = EGameState.Turn;
+            GameState = EGameState.River;
         }
 
         public void River()
         {
             _croupier.River(_table);
-            GameState = EGameState.River;
+            GameState = EGameState.End;
         }
     }
 }

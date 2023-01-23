@@ -31,7 +31,7 @@ namespace Poker.Core.Application.GameBehaviour
             var split = cards.Split(separator);
             _playersInfo.TargetPlayer.SetFirstCard(Card.FromString(split[0]));
             _playersInfo.TargetPlayer.SetSecondCard(Card.FromString(split[1]));
-            GameState = EGameState.PreFlop;
+            GameState = EGameState.Flop;
         }
 
         public void Flop(string cards, char separator = ';')
@@ -40,24 +40,24 @@ namespace Poker.Core.Application.GameBehaviour
             _table.SetFirstCard(Card.FromString(split[0]));
             _table.SetSecondCard(Card.FromString(split[1]));
             _table.SetThirdCard(Card.FromString(split[2]));
-            GameState = EGameState.Flop;
+            GameState = EGameState.Turn;
         }
 
         public void Turn(string card)
         {
             _table.SetFourthCard(Card.FromString(card));
-            GameState = EGameState.Turn;
+            GameState = EGameState.River;
         }
 
         public void River(string card)
         {
             _table.SetFifthCard(Card.FromString(card));
-            GameState = EGameState.River;
+            GameState = EGameState.ShowCards;
         }
 
         public void ShowCards()
         {
-            GameState = EGameState.ShowCards;
+            GameState = EGameState.End;
         }
 
         public void FillPlayersCards(string playerName, string cards, char separator = ';')

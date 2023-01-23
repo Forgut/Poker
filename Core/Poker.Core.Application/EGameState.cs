@@ -2,12 +2,11 @@
 {
     public enum EGameState
     {
-        New = 0,
-        PreFlop = 1,
-        Flop = 2,
-        Turn = 3,
-        River = 4,
-        ShowCards = 5,
-        End = 6,
+        PreFlop = 0,
+        Flop = 1,
+        Turn = 2,
+        River = 3,
+        ShowCards = 4,
+        End = 5,
     }
 }

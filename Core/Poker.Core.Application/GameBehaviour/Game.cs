@@ -44,7 +44,7 @@ namespace Poker.Core.Application.GameBehaviour
             _winDecision.ResetWinners();
             foreach (var player in _playersInfo.Players)
                 player.ClearCards();
-            GameState = EGameState.New;
+            GameState = EGameState.PreFlop;
         }
 
         public string GameStateAsString()
@@ -74,8 +74,6 @@ namespace Poker.Core.Application.GameBehaviour
             var sb = new StringBuilder();
             switch (GameState)
             {
-                case EGameState.New:
-                    break;
                 case EGameState.PreFlop:
                     break;
                 case EGameState.Flop:
