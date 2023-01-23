@@ -1,0 +1,50 @@
+Cel: standardowy system betowania w pokerze.
+
+Po ka¿dej turze, tj, po preFlop, flop, turn i river gracze mog¹ wykonaæ
+check, raise lub fold.
+
+Jeœli gracz straci wszystkie pieni¹dze odpada z rozgrywki.
+
+Przebieg:
+-PreFlop > gracz dostaje karty
+-Big i small blind - przed pierwszym betowaniem dwóch graczy ozanczonych jako big
+	oraz small MUSI wy³o¿yæ odpowiednie wartoœci na stó³. 
+-Nastêpuje kolejka betowania: ka¿dy gracz po kolei mo¿e wywo³ac check lub fold. 
+	Jeœli któryœ z graczy wykona raise to pozostali gracze musza znowu dostac decyzjê
+	czy wykonuj¹ check czy fold. Bet koñczy siê gdy ka¿dy gracz dorówna³ do najwy¿szego beta
+	lub foldowa³.
+-Flop > wyk³adane s¹ 3 karty na stó³.
+-kolejka betowania
+-Turn > czwarta karta
+-kolejka betowania
+-River > pi¹ta karta
+-kolejka betowania 
+-po okreœleniu zwyciêzcy nastepuje podzia³ wygranej pomiêdzy zwyciêzców
+
+Przypadki brzegowe
+-big lub small nie maj¹ odpowiednich pieniêdzy na wejœcie do gry.
+-podzia³ pieniêdzy w przypadku gdy ktoœ zrobi³ all in.
+
+DEV plan:
+1. Player musi zostac poszerzony o pole informuj¹ce o pieni¹dzach.
+2. Test integracyjny zawieraj¹cy standardowy przebieg rozbudowanej rozgrywki, ¿eby nie trzeba by³o
+	tego klikaæ rêcznie. 
+3. Utworzenie komend w GameState oraz Game - na ten moment potrzebny jedynie jest interfejs
+4. Implementacja utworzonego interfesju:
+
+
+Podzia³ odpowiedzialnoœci:
+Poker.CLI - przyjmowanie poleceñ które zostan¹ dopisane dla kroku betowania. Tura betowania 
+	ma wykonaæ siê automatycznie wiêc wszystko zostanie obs³u¿one wewn¹trz metody Next().
+	System bedzie oczekiwa³ od u¿ytkownika tylko informacji "[Check|Fold|Raise]<amount>" -
+	amount ma byæ opcjonalne ¿eby obs³u¿yæ raise. Fold i check maj¹ byæ bezparametrowe.
+
+Poker.Core.Application.Game - u¿ycie osobnego modu³u przy u¿yciu znanej informacji o graczach.
+	Game ma za zadanie weryfikowaæ czy gracza staæ na podjêt¹ decyzjê i w razie czego zwróciæ b³¹d.
+	Modu³ zapewnia informacjê o tym, który gracz obecnie obstawia oraz jaka jest wartoœæ "to-check".
+	Modu³ NIE WIE ile gracze maj¹ pieniêdzy.
+
+Poker.Core.Application.BetSystem - (nazwa modu³u mo¿e siê zmieniæ). Ten modu³ kontroluje obecn¹ wartoœæ
+	pota oraz informacjê o tym kto ile musi jeszcze do³o¿yæ oraz kto foldowa³. Modu³ te¿ ma odpowiedzialnoœæ
+	zwróciæ informacjê o tym kto ile wygra³ po zakoñczeniu rundy.
+	

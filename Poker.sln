@@ -12,6 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{38E8A01D-5ABD-415E-8557-7D130478B568}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{53F64479-2BA4-4037-9FDF-FDAA55A6AAB1}"
+	ProjectSection(SolutionItems) = preProject
+		BettingSystemPlan.txt = BettingSystemPlan.txt
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poker.CLI", "Api\Poker.CLI\Poker.CLI.csproj", "{A50F6B1D-588D-4803-A0A5-C9E0B1E24047}"
 EndProject
