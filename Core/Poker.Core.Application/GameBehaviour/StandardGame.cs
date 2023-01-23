@@ -1,29 +1,27 @@
-﻿using Poker.Core.Application.CombinationsLogic;
+﻿using Poker.Core.Application.Betting;
+using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Application.Events;
-using Poker.Core.Application.GameBehaviour.WinCalculation;
 using Poker.Core.Domain.Entity;
-using Poker.Core.Domain.Events;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Poker.Core.Application.GameBehaviour
 {
     public class StandardGame : Game
     {
+        private readonly BetOverseer _betOverseer;
         public StandardGame(CombinationComparer combinationComparer,
                     WinChanceEstimator winChanceEstimator,
                     Table table,
                     Players players,
-                    IEventPublisher eventPublisher)
+                    IEventPublisher eventPublisher,
+                    BetOverseer betOverseer)
             : base(combinationComparer,
                   winChanceEstimator,
                   table,
                   players,
                   eventPublisher)
         {
-
+            _betOverseer = betOverseer;
         }
 
         public void InsertTargetPlayerCards(string cards, char separator = ';')
@@ -68,10 +66,16 @@ namespace Poker.Core.Application.GameBehaviour
             player.SetSecondCard(Card.FromString(split[1]));
         }
 
-        public void Bet()
+        public (string CurrentlyBettingPlayer, int AmountToCheck) GetCurrentBetInfo()
         {
-            //todo logic of making bets, using new module.
-            //at this moment only proceed directly to next game state.
+            var currentPlayer = _betOverseer.GetCurrentlyBettingPlayer();
+            var amountToCheck = _betOverseer.GetAmountToCheck();
+            return (currentPlayer, amountToCheck);
+        }
+
+        public void Bet(string betDecision)
+        {
+            _betOverseer.Decision(betDecision);
             GameState++;
         }
     }

@@ -14,6 +14,7 @@ using Poker.Core.Application.Events;
 using Poker.Infrastructure.Services.Events;
 using Poker.Core.Application.GameBehaviour;
 using Poker.CLI.Input;
+using Poker.Core.Application.Betting;
 
 namespace Poker.CLI.GameStateCreation
 {
@@ -45,7 +46,7 @@ namespace Poker.CLI.GameStateCreation
                 => new SimulationGame(_croupier, _combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);
 
             StandardGame BuildGame()
-                => new StandardGame(_combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);
+                => new StandardGame(_combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher, new BetOverseer());
         }
 
         private GameStateFactory()

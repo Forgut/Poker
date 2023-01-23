@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using Poker.Core.Application;
+using Poker.Core.Application.Betting;
 using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Application.Events;
 using Poker.Core.Application.GameBehaviour;
@@ -33,7 +34,8 @@ namespace Poker.Tests.IntegrationTests
                                      winChanceEstimator,
                                      table,
                                      players,
-                                     eventPublisher);
+                                     eventPublisher,
+                                     new BetOverseer());
         }
 
         [Theory]

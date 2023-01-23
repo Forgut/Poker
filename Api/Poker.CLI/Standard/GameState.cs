@@ -222,8 +222,9 @@ namespace Poker.CLI.Standard
 
         private void Bet()
         {
-            Console.WriteLine("Here would happen bet logic. Not implemented yet. Proceeding.");
-            _game.Bet();
+            Console.WriteLine(_game.GetCurrentBetInfo());
+            var decision = _inputProivder.ReadLine();
+            _game.Bet(decision);
         }
 
         private void ShowCards()
