@@ -28,7 +28,7 @@ Przypadki brzegowe
 DEV plan:
 1. Player musi zostac poszerzony o pole informuj¹ce o pieni¹dzach - done
 2. Test integracyjny zawieraj¹cy standardowy przebieg rozbudowanej rozgrywki, ¿eby nie trzeba by³o
-	tego klikaæ rêcznie. 
+	tego klikaæ rêcznie - rejected.
 3. Utworzenie komend w GameState oraz Game - na ten moment potrzebny jedynie jest interfejs
 4. Implementacja utworzonego interfesju:
 
