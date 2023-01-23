@@ -13,7 +13,7 @@ namespace Poker.Tests.UnitTests
 
         public CombinationFinderTests()
         {
-            _player = new Player("test");
+            _player = new Player("test", 100);
             _table = new Table();
         }
 

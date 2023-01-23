@@ -8,12 +8,14 @@ namespace Poker.Core.Domain.Entity
 {
     public class Player
     {
-        public Player(string name)
+        public Player(string name, int initialMoney)
         {
             Name = name;
+            Money = initialMoney;
             _cards = new Card[2];
         }
         public string Name { get; }
+        public int Money { get; private set; }
 
         private readonly Card?[] _cards;
         public ReadOnlyCollection<Card?> Cards => Array.AsReadOnly(_cards);
@@ -36,6 +38,19 @@ namespace Poker.Core.Domain.Entity
         public void ClearCards()
         {
             Array.Clear(_cards, 0, _cards.Length);
+        }
+
+        public int TakeMoney(int amount)
+        {
+            if (amount > Money)
+                amount = Money;
+            Money -= amount;
+            return amount;
+        }
+
+        public void AddMoney(int amount)
+        {
+            Money += amount;
         }
     }
 }

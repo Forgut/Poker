@@ -100,7 +100,7 @@ namespace Poker.CLI.GameStateCreation
         {
             _players = new Players();
             foreach (var i in Enumerable.Range(0, numberOfplayers))
-                _players.Add(new Player($"Player {i + 1}"));
+                _players.Add(new Player($"Player {i + 1}", 100));
             return this;
         }
 

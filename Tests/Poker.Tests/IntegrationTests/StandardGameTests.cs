@@ -24,10 +24,10 @@ namespace Poker.Tests.IntegrationTests
             var eventPublisher = Substitute.For<IEventPublisher>();
             var players = new Players()
             {
-                new Player(Player1Name),
-                new Player(Player2Name),
-                new Player(Player3Name),
-                new Player(Player4Name),
+                new Player(Player1Name, 100),
+                new Player(Player2Name, 100),
+                new Player(Player3Name, 100),
+                new Player(Player4Name, 100),
             };
             _game = new StandardGame(combinationComparer,
                                      winChanceEstimator,

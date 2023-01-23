@@ -59,7 +59,7 @@ namespace Poker.CLI
         static IEnumerable<Player> GetPlayers()
         {
             return GetPlayerNames()
-                .Select(x => new Player(x));
+                .Select(x => new Player(x, 100));
 
             IEnumerable<string> GetPlayerNames()
             {
