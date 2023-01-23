@@ -40,11 +40,11 @@ Poker.CLI - przyjmowanie poleceñ które zostan¹ dopisane dla kroku betowania. Tur
 	amount ma byæ opcjonalne ¿eby obs³u¿yæ raise. Fold i check maj¹ byæ bezparametrowe.
 
 Poker.Core.Application.Game - u¿ycie osobnego modu³u przy u¿yciu znanej informacji o graczach.
-	Game ma za zadanie weryfikowaæ czy gracza staæ na podjêt¹ decyzjê i w razie czego zwróciæ b³¹d.
-	Modu³ zapewnia informacjê o tym, który gracz obecnie obstawia oraz jaka jest wartoœæ "to-check".
-	Modu³ NIE WIE ile gracze maj¹ pieniêdzy.
+	Ustawienie odpowiedniego state'u gry w momencie gdy zakoñczone zostanie betowanie (informacja o tym
+	przychodzi z modu³u).
 
 Poker.Core.Application.BetSystem - (nazwa modu³u mo¿e siê zmieniæ). Ten modu³ kontroluje obecn¹ wartoœæ
 	pota oraz informacjê o tym kto ile musi jeszcze do³o¿yæ oraz kto foldowa³. Modu³ te¿ ma odpowiedzialnoœæ
-	zwróciæ informacjê o tym kto ile wygra³ po zakoñczeniu rundy.
+	zwróciæ informacjê o tym kto ile wygra³ po zakoñczeniu rundy. Modu³ ma za zadanie weryfikowaæ czy gracza 
+	staæ na podjêt¹ decyzjê i w razie czego zwróciæ b³¹d.
 	
