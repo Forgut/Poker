@@ -4,18 +4,21 @@ using System.Linq;
 using System;
 using Poker.CLI.Common;
 using Poker.Core.Application.GameBehaviour;
+using Poker.CLI.Input;
 
 namespace Poker.CLI.Standard
 {
     class GameState : IGameState
     {
         private readonly StandardGame _game;
+        private readonly IInputProivder _inputProivder;
 
         public bool ShouldEndGame { get; private set; }
 
-        public GameState(StandardGame game)
+        public GameState(StandardGame game, IInputProivder inputProivder)
         {
             _game = game;
+            _inputProivder = inputProivder;
         }
 
         public void ExecuteAction(string action)
@@ -132,7 +135,7 @@ namespace Poker.CLI.Standard
         private void DrawPlayerCards()
         {
             Console.WriteLine("Pre flop. Type in cards separated with ;");
-            var cards = Console.ReadLine();
+            var cards = _inputProivder.ReadLine();
             try
             {
                 _game.InsertTargetPlayerCards(cards);
@@ -146,7 +149,7 @@ namespace Poker.CLI.Standard
         private void Flop()
         {
             Console.WriteLine("Flop round. Type in cards separated with ;");
-            var cards = Console.ReadLine();
+            var cards = _inputProivder.ReadLine();
             try
             {
                 _game.Flop(cards);
@@ -160,7 +163,7 @@ namespace Poker.CLI.Standard
         private void Turn()
         {
             Console.WriteLine("Turn round. Type in card.");
-            var card = Console.ReadLine();
+            var card = _inputProivder.ReadLine();
             try
             {
                 _game.Turn(card);
@@ -174,7 +177,7 @@ namespace Poker.CLI.Standard
         private void River()
         {
             Console.WriteLine("River round. Type in card.");
-            var card = Console.ReadLine();
+            var card = _inputProivder.ReadLine();
             try
             {
                 _game.River(card);
@@ -223,9 +226,9 @@ namespace Poker.CLI.Standard
         private void FillPlayerHand()
         {
             Console.WriteLine("Type player name");
-            var playerName = Console.ReadLine();
+            var playerName = _inputProivder.ReadLine();
             Console.WriteLine("Type in player cards separated with ;");
-            var cards = Console.ReadLine();
+            var cards = _inputProivder.ReadLine();
             try
             {
                 _game.FillPlayersCards(playerName, cards);

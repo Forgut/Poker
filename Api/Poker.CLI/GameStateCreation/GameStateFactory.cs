@@ -13,6 +13,7 @@ using System.Linq;
 using Poker.Core.Application.Events;
 using Poker.Infrastructure.Services.Events;
 using Poker.Core.Application.GameBehaviour;
+using Poker.CLI.Input;
 
 namespace Poker.CLI.GameStateCreation
 {
@@ -38,7 +39,7 @@ namespace Poker.CLI.GameStateCreation
         {
             if (_isSimulation)
                 return new GameSimulationState(BuildGameSimulation());
-            return new GameState(BuildGame());
+            return new GameState(BuildGame(), new ConsoleInputProvider());
 
             SimulationGame BuildGameSimulation()
                 => new SimulationGame(_croupier, _combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);
