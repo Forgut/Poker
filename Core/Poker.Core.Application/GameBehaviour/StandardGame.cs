@@ -31,7 +31,7 @@ namespace Poker.Core.Application.GameBehaviour
             var split = cards.Split(separator);
             _playersInfo.TargetPlayer.SetFirstCard(Card.FromString(split[0]));
             _playersInfo.TargetPlayer.SetSecondCard(Card.FromString(split[1]));
-            GameState = EGameState.Flop;
+            GameState = EGameState.PreFlopBet;
         }
 
         public void Flop(string cards, char separator = ';')
@@ -40,22 +40,22 @@ namespace Poker.Core.Application.GameBehaviour
             _table.SetFirstCard(Card.FromString(split[0]));
             _table.SetSecondCard(Card.FromString(split[1]));
             _table.SetThirdCard(Card.FromString(split[2]));
-            GameState = EGameState.Turn;
+            GameState = EGameState.FlopBet;
         }
 
         public void Turn(string card)
         {
             _table.SetFourthCard(Card.FromString(card));
-            GameState = EGameState.River;
+            GameState = EGameState.TurnBet;
         }
 
         public void River(string card)
         {
             _table.SetFifthCard(Card.FromString(card));
-            GameState = EGameState.ShowCards;
+            GameState = EGameState.RiverBet;
         }
 
-        public void ShowCards()
+        public void SetGameStateAsEnd()
         {
             GameState = EGameState.End;
         }
@@ -66,6 +66,13 @@ namespace Poker.Core.Application.GameBehaviour
             var split = cards.Split(separator);
             player.SetFirstCard(Card.FromString(split[0]));
             player.SetSecondCard(Card.FromString(split[1]));
+        }
+
+        public void Bet()
+        {
+            //todo logic of making bets, using new module.
+            //at this moment only proceed directly to next game state.
+            GameState++;
         }
     }
 }

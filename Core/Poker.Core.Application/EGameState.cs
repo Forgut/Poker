@@ -1,5 +1,6 @@
 ﻿namespace Poker.Core.Application
 {
+    // Order is important as it represents flow of stages through game
     public enum EGameState
     {
         PreFlop = 0,

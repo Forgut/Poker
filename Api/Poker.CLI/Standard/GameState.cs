@@ -120,6 +120,12 @@ namespace Poker.CLI.Standard
                 case EGameState.River:
                     River();
                     break;
+                case EGameState.PreFlopBet:
+                case EGameState.FlopBet:
+                case EGameState.TurnBet:
+                case EGameState.RiverBet:
+                    Bet();
+                    break;
                 case EGameState.ShowCards:
                     ShowCards();
                     break;
@@ -214,11 +220,17 @@ namespace Poker.CLI.Standard
             Console.WriteLine(_game.GameStateAsString());
         }
 
+        private void Bet()
+        {
+            Console.WriteLine("Here would happen bet logic. Not implemented yet. Proceeding.");
+            _game.Bet();
+        }
+
         private void ShowCards()
         {
             Console.WriteLine("Fill other players cards in order to calculate winner.\n" +
                 "Players with no cards will not be included in calculations");
-            _game.ShowCards();
+            _game.SetGameStateAsEnd();
         }
 
         private void FillPlayerHand()
