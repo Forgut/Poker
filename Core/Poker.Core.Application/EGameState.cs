@@ -3,10 +3,14 @@
     public enum EGameState
     {
         PreFlop = 0,
-        Flop = 1,
-        Turn = 2,
-        River = 3,
-        ShowCards = 4,
-        End = 5,
+        PreFlopBet = 1,
+        Flop = 2,
+        FlopBet = 3,
+        Turn = 4,
+        TurnBet = 5,
+        River = 6,
+        RiverBet = 7,
+        ShowCards = 8,
+        End = 9,
     }
 }
