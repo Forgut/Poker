@@ -73,10 +73,17 @@ namespace Poker.Core.Application.GameBehaviour
             return (currentPlayer, amountToCheck);
         }
 
-        public void Bet(string betDecision)
+        public bool Bet(string betDecision)
         {
-            _betOverseer.Decision(betDecision);
-            GameState++;
+            var isSuccess = _betOverseer.ExecuteForCurrentPlayer(betDecision);
+            if (isSuccess)
+                GameState++;
+            return isSuccess;
+        }
+
+        public void MoveBlinds()
+        {
+            _betOverseer.MoveBlinds();
         }
     }
 }

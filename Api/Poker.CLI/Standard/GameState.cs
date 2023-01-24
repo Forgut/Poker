@@ -192,6 +192,7 @@ namespace Poker.CLI.Standard
         {
             _outputProvider.WriteLine("Game has ended. Type in other player cards to establish a winner");
             _game.EndRound();
+            _game.MoveBlinds();
             _outputProvider.WriteLine(_game.GetWinnersAsString());
             _outputProvider.WriteLine("Reset game to go again");
         }
@@ -221,7 +222,11 @@ namespace Poker.CLI.Standard
         {
             _outputProvider.WriteLine(_game.GetCurrentBetInfo().ToString());
             var decision = _inputProivder.ReadLine();
-            _game.Bet(decision);
+            var isSuccess = _game.Bet(decision);
+            if (isSuccess)
+                _outputProvider.WriteLine("Success");
+            else
+                _outputProvider.WriteLine("Fail");
         }
 
         private void ShowCards()
