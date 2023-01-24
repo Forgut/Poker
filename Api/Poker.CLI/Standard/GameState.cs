@@ -116,6 +116,8 @@ namespace Poker.CLI.Standard
                     River();
                     break;
                 case EGameState.PreFlopBet:
+                    PreFlopBet();
+                    break;
                 case EGameState.FlopBet:
                 case EGameState.TurnBet:
                 case EGameState.RiverBet:
@@ -216,6 +218,16 @@ namespace Poker.CLI.Standard
         private void PrintTableState()
         {
             _outputProvider.WriteLine(_game.GameStateAsString());
+        }
+
+        private void PreFlopBet()
+        {
+            var bettingInfo = _game.GetCurrentBetInfo();
+            _outputProvider.WriteLine("First bet");
+            _outputProvider.WriteLine($"Big blind: {bettingInfo.BigBlindPlayer}");
+            _outputProvider.WriteLine($"Small blind: {bettingInfo.SmallBlindPlayer}");
+            _game.BetBigAndSmallBlind();
+            Bet();
         }
 
         private void Bet()

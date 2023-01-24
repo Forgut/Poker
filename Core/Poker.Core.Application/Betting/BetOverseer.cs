@@ -103,6 +103,16 @@ namespace Poker.Core.Application.Betting
         {
             _playersRotation.MoveBlinds();
         }
+
+        public string GetSmallBlindPlayer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetBigBlindPlayer()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Pot

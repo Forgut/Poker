@@ -66,12 +66,19 @@ namespace Poker.Core.Application.GameBehaviour
             player.SetSecondCard(Card.FromString(split[1]));
         }
 
-        public (string CurrentlyBettingPlayer, int AmountToCheck, int AmountOnThePot) GetCurrentBetInfo()
+        public (string CurrentlyBettingPlayer, int AmountToCheck, int AmountOnThePot, string BigBlindPlayer, string SmallBlindPlayer) GetCurrentBetInfo()
         {
             var currentPlayer = _betOverseer.GetCurrentlyBettingPlayer();
             var amountToCheck = _betOverseer.GetAmountToCheck();
             var totalPotAmount = _betOverseer.GetTotalAmountOnPot();
-            return (currentPlayer, amountToCheck, totalPotAmount);
+            var bigBlind = _betOverseer.GetBigBlindPlayer();
+            var smallBlind = _betOverseer.GetSmallBlindPlayer();
+            return (currentPlayer, amountToCheck, totalPotAmount, bigBlind, smallBlind);
+        }
+
+        public void BetBigAndSmallBlind()
+        {
+            //todo
         }
 
         public (bool BettingSucceeded, bool IsBettingOver) Bet(string betDecision)
