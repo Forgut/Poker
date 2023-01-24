@@ -1,6 +1,4 @@
 ﻿using Poker.Core.Domain.Entity;
-using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
@@ -8,7 +6,7 @@ namespace Poker.Core.Application.Betting
 {
     public class BetOverseer //todo name
     {
-        private PlayersRotation _playersRotation = new PlayersRotation(); //todo
+        private PlayersRotation _playersRotation = new PlayersRotation(new Players()); //todo
         private Pot _pot = new Pot(); //todo
 
         public string GetCurrentlyBettingPlayer()
@@ -75,25 +73,6 @@ namespace Poker.Core.Application.Betting
     {
         public int AmountToCheck(string playerName) => 5; //todo
         public void AddToPot(string playerName, int amount)
-        {
-            //todo
-        }
-    }
-
-    class PlayersRotation
-    {
-        public Player CurrentPlayer { get; }
-        public void MoveToNextPlayer()
-        {
-            //todo
-        }
-
-        public void CurrentPlayerFolded()
-        {
-            //todo
-        }
-
-        public void MoveBlinds()
         {
             //todo
         }
