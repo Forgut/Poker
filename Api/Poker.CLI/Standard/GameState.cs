@@ -220,13 +220,21 @@ namespace Poker.CLI.Standard
 
         private void Bet()
         {
-            _outputProvider.WriteLine(_game.GetCurrentBetInfo().ToString());
+            var bettingInfo = _game.GetCurrentBetInfo();
+            _outputProvider.WriteLine($"Currently betting {bettingInfo.CurrentlyBettingPlayer}");
+            _outputProvider.WriteLine($"Total pot amount: {bettingInfo.AmountOnThePot}");
+            _outputProvider.WriteLine($"Amount to check for {bettingInfo.CurrentlyBettingPlayer}: {bettingInfo.AmountToCheck}");
+
             var decision = _inputProivder.ReadLine();
-            var isSuccess = _game.Bet(decision);
+            var (isSuccess, isBettingOver) = _game.Bet(decision);
             if (isSuccess)
-                _outputProvider.WriteLine("Success");
+                _outputProvider.Write("Success - ");
             else
-                _outputProvider.WriteLine("Fail");
+                _outputProvider.Write("Fail - ");
+            if (isBettingOver)
+                _outputProvider.WriteLine("betting ends.");
+            else
+                _outputProvider.WriteLine("betting continues.");
         }
 
         private void ShowCards()

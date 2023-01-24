@@ -44,7 +44,7 @@ namespace Poker.CLI.GameStateCreation
                 => new SimulationGame(_croupier, _combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);
 
             StandardGame BuildGame()
-                => new StandardGame(_combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher, new BetOverseer());
+                => new StandardGame(_combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher, new BetOverseer(_players));
         }
 
         private GameStateFactory()

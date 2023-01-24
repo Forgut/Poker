@@ -1,4 +1,7 @@
 ﻿using Poker.Core.Domain.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -6,8 +9,14 @@ namespace Poker.Core.Application.Betting
 {
     public class BetOverseer //todo name
     {
-        private PlayersRotation _playersRotation = new PlayersRotation(new Players()); //todo
-        private Pot _pot = new Pot(); //todo
+        private readonly PlayersRotation _playersRotation;
+        private readonly Pot _pot;
+
+        public BetOverseer(Players players)
+        {
+            _playersRotation = new PlayersRotation(players);
+            _pot = new Pot();
+        }
 
         public string GetCurrentlyBettingPlayer()
         {
@@ -17,6 +26,21 @@ namespace Poker.Core.Application.Betting
         public int GetAmountToCheck()
         {
             return _pot.AmountToCheck(_playersRotation.CurrentPlayer.Name);
+        }
+
+        public int GetTotalAmountOnPot()
+        {
+            return _pot.GetTotalAmount();
+        }
+
+        public bool IsBettingOver()
+        {
+            return _playersRotation.IsBettingOver();
+        }
+
+        public void ResetForNextRound()
+        {
+            _playersRotation.ResetPlayersTurns();
         }
 
         public bool ExecuteForCurrentPlayer(string input) //todo name
@@ -31,11 +55,9 @@ namespace Poker.Core.Application.Betting
             switch (decision)
             {
                 case Decision.Check:
-                    Check();
-                    return true;
+                    return Check();
                 case Decision.Raise:
-                    Raise(amount!.Value);
-                    return true;
+                    return Raise(amount!.Value);
                 case Decision.Fold:
                     Fold();
                     return true;
@@ -43,24 +65,38 @@ namespace Poker.Core.Application.Betting
             return false;
         }
 
-        private void Check()
+        private bool Check()
         {
             var amount = _pot.AmountToCheck(_playersRotation.CurrentPlayer.Name);
+            if (_playersRotation.CurrentPlayer.Money < amount)
+                return false;
+
+            _playersRotation.CurrentPlayer.TakeMoney(amount);
             _pot.AddToPot(_playersRotation.CurrentPlayer.Name, amount);
-            _playersRotation.MoveToNextPlayer();
+            _playersRotation.MarkCurrentPlayerAsFinished();
+            _playersRotation.MoveToNextNotFoldedPlayer();
+            return true;
         }
 
-        private void Raise(int amount)
+        private bool Raise(int amount)
         {
             var amountToCheck = _pot.AmountToCheck(_playersRotation.CurrentPlayer.Name);
-            _pot.AddToPot(_playersRotation.CurrentPlayer.Name, amountToCheck + amount);
-            _playersRotation.MoveToNextPlayer();
+            var totalAmount = amountToCheck + amount;
+            if (_playersRotation.CurrentPlayer.Money < totalAmount)
+                return false;
+
+            _playersRotation.CurrentPlayer.TakeMoney(totalAmount);
+            _pot.AddToPot(_playersRotation.CurrentPlayer.Name, totalAmount);
+            _playersRotation.MarkNotFoldedPlayersAsNotFinished();
+            _playersRotation.MarkCurrentPlayerAsFinished();
+            _playersRotation.MoveToNextNotFoldedPlayer();
+            return true;
         }
 
         private void Fold()
         {
-            _playersRotation.CurrentPlayerFolded();
-            _playersRotation.MoveToNextPlayer();
+            _playersRotation.MarkCurrentPlayerAsFolded();
+            _playersRotation.MoveToNextNotFoldedPlayer();
         }
 
         public void MoveBlinds()
@@ -69,12 +105,38 @@ namespace Poker.Core.Application.Betting
         }
     }
 
-    class Pot
+    public class Pot
     {
-        public int AmountToCheck(string playerName) => 5; //todo
+        private readonly List<(string PlayerName, int Amount)> _transactions;
+
+        public Pot()
+        {
+            _transactions = new List<(string PlayerName, int Amount)>();
+        }
+
+        public int AmountToCheck(string playerName)
+        {
+            var sumOfPlayerBets = _transactions
+                .GroupBy(x => x.PlayerName)
+                .SingleOrDefault(x => x.Key == playerName)
+                ?.Sum(x => x.Amount) ?? 0;
+
+            var highestBet = _transactions
+                .GroupBy(x => x.PlayerName)
+                .Select(x => x.Sum(x => x.Amount))
+                .OrderByDescending(x => x)
+                .FirstOrDefault();
+
+            return highestBet - sumOfPlayerBets;
+        }
         public void AddToPot(string playerName, int amount)
         {
-            //todo
+            _transactions.Add((playerName, amount));
+        }
+
+        public int GetTotalAmount()
+        {
+            return _transactions.Sum(x => x.Amount);
         }
     }
 }

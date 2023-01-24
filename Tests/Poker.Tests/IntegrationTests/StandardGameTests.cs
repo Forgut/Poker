@@ -35,7 +35,7 @@ namespace Poker.Tests.IntegrationTests
                                      table,
                                      players,
                                      eventPublisher,
-                                     new BetOverseer());
+                                     new BetOverseer(players));
         }
 
         [Theory]

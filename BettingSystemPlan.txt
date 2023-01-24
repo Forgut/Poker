@@ -24,6 +24,7 @@ Przebieg:
 Przypadki brzegowe
 -big lub small nie maj¹ odpowiednich pieniêdzy na wejœcie do gry.
 -podzia³ pieniêdzy w przypadku gdy ktoœ zrobi³ all in.
+-wszyscy folduj¹ (tu trzeba zadbac zeby gra po przedostatnim fold po prostu og³osi³a zwyciêzcê).
 
 DEV plan:
 1. Player musi zostac poszerzony o pole informuj¹ce o pieni¹dzach - done

@@ -18,15 +18,39 @@ namespace Poker.Core.Application.Betting
             _currentPlayerIndex = new RecurringIndex(_playerInfos.Count);
         }
 
-        public Player CurrentPlayer 
+        public Player CurrentPlayer
             => _playerInfos[_currentPlayerIndex.Value].Player;
 
-        public void MoveToNextPlayer()
+        public void MoveToNextNotFoldedPlayer()
         {
-            _currentPlayerIndex++;
+            int maxIterations = _playerInfos.Count;
+            do
+            {
+                if (maxIterations <= 0)
+                    break;
+                _currentPlayerIndex++;
+                maxIterations--;
+            }
+            while (_playerInfos[_currentPlayerIndex.Value].HasFolded);
         }
 
-        public void CurrentPlayerFolded()
+        public void MarkNotFoldedPlayersAsNotFinished()
+        {
+            foreach (var player in _playerInfos)
+            {
+                if (player.HasFolded)
+                    continue;
+
+                player.HasFinished = false;
+            }
+        }
+
+        public void MarkCurrentPlayerAsFinished()
+        {
+            _playerInfos[_currentPlayerIndex.Value].HasFinished = true;
+        }
+
+        public void MarkCurrentPlayerAsFolded()
         {
             _playerInfos[_currentPlayerIndex.Value].Fold();
         }
@@ -34,6 +58,17 @@ namespace Poker.Core.Application.Betting
         public void MoveBlinds()
         {
             throw new NotImplementedException();
+        }
+
+        public bool IsBettingOver()
+        {
+            return _playerInfos.All(x => x.HasFolded || x.HasFinished);
+        }
+
+        public void ResetPlayersTurns()
+        {
+            foreach (var player in _playerInfos)
+                player.HasFinished = false;
         }
 
         class PlayerInfo
@@ -46,6 +81,7 @@ namespace Poker.Core.Application.Betting
             public Player Player { get; }
             public bool HasFolded { get; private set; }
             public void Fold() => HasFolded = true;
+            public bool HasFinished { get; set; } = false;
         }
 
         public struct RecurringIndex

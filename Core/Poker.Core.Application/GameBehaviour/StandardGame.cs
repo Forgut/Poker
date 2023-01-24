@@ -66,19 +66,24 @@ namespace Poker.Core.Application.GameBehaviour
             player.SetSecondCard(Card.FromString(split[1]));
         }
 
-        public (string CurrentlyBettingPlayer, int AmountToCheck) GetCurrentBetInfo()
+        public (string CurrentlyBettingPlayer, int AmountToCheck, int AmountOnThePot) GetCurrentBetInfo()
         {
             var currentPlayer = _betOverseer.GetCurrentlyBettingPlayer();
             var amountToCheck = _betOverseer.GetAmountToCheck();
-            return (currentPlayer, amountToCheck);
+            var totalPotAmount = _betOverseer.GetTotalAmountOnPot();
+            return (currentPlayer, amountToCheck, totalPotAmount);
         }
 
-        public bool Bet(string betDecision)
+        public (bool BettingSucceeded, bool IsBettingOver) Bet(string betDecision)
         {
             var isSuccess = _betOverseer.ExecuteForCurrentPlayer(betDecision);
-            if (isSuccess)
+            var isBettingOver = _betOverseer.IsBettingOver();
+            if (isBettingOver)
+            {
                 GameState++;
-            return isSuccess;
+                _betOverseer.ResetForNextRound();
+            }
+            return (isSuccess, isBettingOver);
         }
 
         public void MoveBlinds()

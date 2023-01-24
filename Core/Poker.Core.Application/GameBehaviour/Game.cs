@@ -64,7 +64,7 @@ namespace Poker.Core.Application.GameBehaviour
 
             sb.AppendLine("Players:");
             foreach (var player in _playersInfo.Players)
-                sb.AppendLine($"{player.Name}: {player.Cards[0]} {player.Cards[1]}");
+                sb.AppendLine($"{player.Name} ({player.Money}): {player.Cards[0]} {player.Cards[1]}");
 
             return sb.ToString();
         }
