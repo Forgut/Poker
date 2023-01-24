@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Poker.CLI.Input
+namespace Poker.CLI.IO
 {
     class ConsoleInputProvider : IInputProivder
     {

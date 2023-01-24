@@ -1,20 +1,18 @@
 ﻿using Poker.CLI.Common;
+using Poker.CLI.IO;
 using Poker.CLI.Simulation;
 using Poker.CLI.Standard;
-using Poker.Core.Application.CardBehaviour.Shuffling;
-using Poker.Core.Application.CardBehaviour;
-using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Application;
-using System.Collections.Generic;
-using System;
+using Poker.Core.Application.Betting;
+using Poker.Core.Application.CombinationsLogic;
+using Poker.Core.Application.Events;
+using Poker.Core.Application.GameBehaviour;
 using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Extensions;
-using System.Linq;
-using Poker.Core.Application.Events;
 using Poker.Infrastructure.Services.Events;
-using Poker.Core.Application.GameBehaviour;
-using Poker.CLI.Input;
-using Poker.Core.Application.Betting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Poker.CLI.GameStateCreation
 {
@@ -40,7 +38,7 @@ namespace Poker.CLI.GameStateCreation
         {
             if (_isSimulation)
                 return new GameSimulationState(BuildGameSimulation());
-            return new GameState(BuildGame(), new ConsoleInputProvider());
+            return new GameState(BuildGame(), new ConsoleInputProvider(), new ConsoleOutputProvider());
 
             SimulationGame BuildGameSimulation()
                 => new SimulationGame(_croupier, _combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);

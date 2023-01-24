@@ -1,5 +1,5 @@
 ﻿using Poker.CLI.Common;
-using Poker.CLI.Input;
+using Poker.CLI.IO;
 using Poker.Core.Application;
 using Poker.Core.Application.GameBehaviour;
 using System;
@@ -11,13 +11,17 @@ namespace Poker.CLI.Standard
     {
         private readonly StandardGame _game;
         private readonly IInputProivder _inputProivder;
+        private readonly IOutputProvider _outputProvider;
 
         public bool ShouldEndGame { get; private set; }
 
-        public GameState(StandardGame game, IInputProivder inputProivder)
+        public GameState(StandardGame game,
+                         IInputProivder inputProivder,
+                         IOutputProvider outputProvider)
         {
             _game = game;
             _inputProivder = inputProivder;
+            _outputProvider = outputProvider;
         }
 
         public void ExecuteAction(string action)
@@ -86,12 +90,12 @@ namespace Poker.CLI.Standard
 
         private void AvamysShouts()
         {
-            Console.WriteLine("Avamys: \"Jestem WJEBANY! (big blind x2)\"");
+            _outputProvider.WriteLine("Avamys: \"Jestem WJEBANY! (big blind x2)\"");
         }
 
         private void ResetRound()
         {
-            Console.WriteLine("Clearing the table");
+            _outputProvider.WriteLine("Clearing the table");
             _game.ResetRound();
         }
 
@@ -129,7 +133,7 @@ namespace Poker.CLI.Standard
 
         private void DrawPlayerCards()
         {
-            Console.WriteLine("Pre flop. Type in cards separated with ;");
+            _outputProvider.WriteLine("Pre flop. Type in cards separated with ;");
             var cards = _inputProivder.ReadLine();
             try
             {
@@ -137,13 +141,13 @@ namespace Poker.CLI.Standard
             }
             catch
             {
-                Console.WriteLine("Error occured");
+                _outputProvider.WriteLine("Error occured");
             }
         }
 
         private void Flop()
         {
-            Console.WriteLine("Flop round. Type in cards separated with ;");
+            _outputProvider.WriteLine("Flop round. Type in cards separated with ;");
             var cards = _inputProivder.ReadLine();
             try
             {
@@ -151,13 +155,13 @@ namespace Poker.CLI.Standard
             }
             catch
             {
-                Console.WriteLine("Error occured");
+                _outputProvider.WriteLine("Error occured");
             }
         }
 
         private void Turn()
         {
-            Console.WriteLine("Turn round. Type in card.");
+            _outputProvider.WriteLine("Turn round. Type in card.");
             var card = _inputProivder.ReadLine();
             try
             {
@@ -165,13 +169,13 @@ namespace Poker.CLI.Standard
             }
             catch
             {
-                Console.WriteLine("Error occured");
+                _outputProvider.WriteLine("Error occured");
             }
         }
 
         private void River()
         {
-            Console.WriteLine("River round. Type in card.");
+            _outputProvider.WriteLine("River round. Type in card.");
             var card = _inputProivder.ReadLine();
             try
             {
@@ -180,58 +184,58 @@ namespace Poker.CLI.Standard
             }
             catch
             {
-                Console.WriteLine("Error occured");
+                _outputProvider.WriteLine("Error occured");
             }
         }
 
         private void EndRound()
         {
-            Console.WriteLine("Game has ended. Type in other player cards to establish a winner");
+            _outputProvider.WriteLine("Game has ended. Type in other player cards to establish a winner");
             _game.EndRound();
-            Console.WriteLine(_game.GetWinnersAsString());
-            Console.WriteLine("Reset game to go again");
+            _outputProvider.WriteLine(_game.GetWinnersAsString());
+            _outputProvider.WriteLine("Reset game to go again");
         }
 
         private void SetupTargetPlayer()
         {
-            Console.WriteLine("Type in new target player name");
+            _outputProvider.WriteLine("Type in new target player name");
             var playerName = _inputProivder.ReadLine();
-            Console.Write($"Setting up as target {playerName} ");
+            _outputProvider.Write($"Setting up as target {playerName} ");
             if (_game.SetTargetPlayer(playerName))
-                Console.WriteLine("succeded");
+                _outputProvider.WriteLine("succeded");
             else
-                Console.WriteLine(" failed. Player with specified name not found");
+                _outputProvider.WriteLine(" failed. Player with specified name not found");
         }
 
         private void PrintWinProbabilities()
         {
-            Console.WriteLine(_game.GetWinProbabilitiesAsString());
+            _outputProvider.WriteLine(_game.GetWinProbabilitiesAsString());
         }
 
         private void PrintTableState()
         {
-            Console.WriteLine(_game.GameStateAsString());
+            _outputProvider.WriteLine(_game.GameStateAsString());
         }
 
         private void Bet()
         {
-            Console.WriteLine(_game.GetCurrentBetInfo());
+            _outputProvider.WriteLine(_game.GetCurrentBetInfo().ToString());
             var decision = _inputProivder.ReadLine();
             _game.Bet(decision);
         }
 
         private void ShowCards()
         {
-            Console.WriteLine("Fill other players cards in order to calculate winner.\n" +
+            _outputProvider.WriteLine("Fill other players cards in order to calculate winner.\n" +
                 "Players with no cards will not be included in calculations");
             _game.SetGameStateAsEnd();
         }
 
         private void FillPlayerHand()
         {
-            Console.WriteLine("Type player name");
+            _outputProvider.WriteLine("Type player name");
             var playerName = _inputProivder.ReadLine();
-            Console.WriteLine("Type in player cards separated with ;");
+            _outputProvider.WriteLine("Type in player cards separated with ;");
             var cards = _inputProivder.ReadLine();
             try
             {
@@ -239,13 +243,13 @@ namespace Poker.CLI.Standard
             }
             catch
             {
-                Console.WriteLine("Error occured");
+                _outputProvider.WriteLine("Error occured");
             }
         }
 
         private void PrintHelp()
         {
-            Console.WriteLine("List of commands:\n" +
+            _outputProvider.WriteLine("List of commands:\n" +
                 "h help                 Displays list of commands\n" +
                 "r reset                Resets the round\n" +
                 "q quit                 Quits the game\n" +

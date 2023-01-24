@@ -1,4 +1,4 @@
-﻿namespace Poker.CLI.Input
+﻿namespace Poker.CLI.IO
 {
     public interface IInputProivder
     {
