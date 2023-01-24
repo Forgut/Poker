@@ -1,10 +1,9 @@
-﻿using Poker.Core.Application;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using Poker.CLI.Common;
-using Poker.Core.Application.GameBehaviour;
+﻿using Poker.CLI.Common;
 using Poker.CLI.Input;
+using Poker.Core.Application;
+using Poker.Core.Application.GameBehaviour;
+using System;
+using System.Linq;
 
 namespace Poker.CLI.Standard
 {
@@ -38,7 +37,7 @@ namespace Poker.CLI.Standard
                     PrintWinProbabilities();
                     break;
                 case EAction.SetupPlayer:
-                    SetupTargetPlayer(ParseParameters(action).FirstOrDefault());
+                    SetupTargetPlayer();
                     break;
                 case EAction.PrintTable:
                     PrintTableState();
@@ -57,14 +56,6 @@ namespace Poker.CLI.Standard
                     PrintHelp();
                     break;
             }
-        }
-
-        private IEnumerable<string> ParseParameters(string action)
-        {
-            var parameters = action.Split(":")
-                .Skip(1)
-                .Select(x => x.Trim());
-            return parameters;
         }
 
         private EAction ParseAction(string action)
@@ -201,8 +192,10 @@ namespace Poker.CLI.Standard
             Console.WriteLine("Reset game to go again");
         }
 
-        private void SetupTargetPlayer(string playerName)
+        private void SetupTargetPlayer()
         {
+            Console.WriteLine("Type in new target player name");
+            var playerName = _inputProivder.ReadLine();
             Console.Write($"Setting up as target {playerName} ");
             if (_game.SetTargetPlayer(playerName))
                 Console.WriteLine("succeded");
