@@ -222,11 +222,14 @@ namespace Poker.CLI.Standard
 
         private void PreFlopBet()
         {
-            var bettingInfo = _game.GetCurrentBetInfo();
-            _outputProvider.WriteLine("First bet");
-            _outputProvider.WriteLine($"Big blind: {bettingInfo.BigBlindPlayer}");
-            _outputProvider.WriteLine($"Small blind: {bettingInfo.SmallBlindPlayer}");
-            _game.BetBigAndSmallBlind();
+            if (_game.ShouldExectueBigAndSmallBlindBet())
+            {
+                var bettingInfo = _game.GetCurrentBetInfo();
+                _outputProvider.WriteLine("First bet");
+                _outputProvider.WriteLine($"Big blind: {bettingInfo.BigBlindPlayer}");
+                _outputProvider.WriteLine($"Small blind: {bettingInfo.SmallBlindPlayer}");
+                _game.BetBigAndSmallBlind();
+            }
             Bet();
         }
 

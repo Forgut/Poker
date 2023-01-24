@@ -76,9 +76,14 @@ namespace Poker.Core.Application.GameBehaviour
             return (currentPlayer, amountToCheck, totalPotAmount, bigBlind, smallBlind);
         }
 
+        public bool ShouldExectueBigAndSmallBlindBet()
+        {
+            return !_betOverseer.DidExecuteBigBlindAndSmallBlind;
+        }
+
         public void BetBigAndSmallBlind()
         {
-            //todo
+            _betOverseer.ExecuteBigAndSmallBlind(2, 1);
         }
 
         public (bool BettingSucceeded, bool IsBettingOver) Bet(string betDecision)

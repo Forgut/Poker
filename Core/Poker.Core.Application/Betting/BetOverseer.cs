@@ -9,6 +9,7 @@ namespace Poker.Core.Application.Betting
     {
         private readonly PlayersRotation _playersRotation;
         private readonly Pot _pot;
+        public bool DidExecuteBigBlindAndSmallBlind { get; private set; }
 
         public BetOverseer(Players players)
         {
@@ -19,6 +20,16 @@ namespace Poker.Core.Application.Betting
         public string GetCurrentlyBettingPlayer()
         {
             return _playersRotation.CurrentPlayer.Name;
+        }
+
+        public string GetSmallBlindPlayer()
+        {
+            return _playersRotation.SmallBlindPlayer.Name;
+        }
+
+        public string GetBigBlindPlayer()
+        {
+            return _playersRotation.BigBlindPlayer.Name;
         }
 
         public int GetAmountToCheck()
@@ -39,6 +50,16 @@ namespace Poker.Core.Application.Betting
         public void ResetForNextRound()
         {
             _playersRotation.ResetPlayersTurns();
+        }
+
+        public void ExecuteBigAndSmallBlind(int bigBlindValue, int smallBlindValue)
+        {
+            _playersRotation.BigBlindPlayer.TakeMoney(bigBlindValue);
+            _pot.AddToPot(_playersRotation.BigBlindPlayer.Name, bigBlindValue);
+
+            _playersRotation.SmallBlindPlayer.TakeMoney(smallBlindValue);
+            _pot.AddToPot(_playersRotation.SmallBlindPlayer.Name, smallBlindValue);
+            DidExecuteBigBlindAndSmallBlind = true;
         }
 
         public bool ExecuteForCurrentPlayer(string input) //todo name
@@ -100,16 +121,6 @@ namespace Poker.Core.Application.Betting
         public void MoveBlinds()
         {
             _playersRotation.MoveBlinds();
-        }
-
-        public string GetSmallBlindPlayer()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetBigBlindPlayer()
-        {
-            throw new NotImplementedException();
         }
     }
 }

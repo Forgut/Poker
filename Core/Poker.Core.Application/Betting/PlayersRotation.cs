@@ -9,6 +9,8 @@ namespace Poker.Core.Application.Betting
     {
         private readonly List<PlayerInfo> _playerInfos;
         private RecurringIndex _currentPlayerIndex;
+        private RecurringIndex _bigBlindIndex;
+        private RecurringIndex _smallBlindIndex;
 
         public PlayersRotation(Players players)
         {
@@ -16,10 +18,20 @@ namespace Poker.Core.Application.Betting
                 .Select(x => new PlayerInfo(x))
                 .ToList();
             _currentPlayerIndex = new RecurringIndex(_playerInfos.Count);
+            _currentPlayerIndex.Value = 0;
+            _smallBlindIndex = new RecurringIndex(_playerInfos.Count);
+            _smallBlindIndex.Value = 0;
+            _bigBlindIndex = new RecurringIndex(_playerInfos.Count);
+            _bigBlindIndex.Value = 1;
         }
 
         public Player CurrentPlayer
             => _playerInfos[_currentPlayerIndex.Value].Player;
+
+        public Player BigBlindPlayer
+            => _playerInfos[_bigBlindIndex.Value].Player;
+        public Player SmallBlindPlayer
+            => _playerInfos[_smallBlindIndex.Value].Player;
 
         public void MoveToNextNotFoldedPlayer()
         {
@@ -57,8 +69,10 @@ namespace Poker.Core.Application.Betting
 
         public void MoveBlinds()
         {
-            throw new NotImplementedException();
+            _smallBlindIndex++;
+            _bigBlindIndex++;
         }
+
 
         public bool IsBettingOver()
         {
