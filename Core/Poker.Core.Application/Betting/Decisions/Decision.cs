@@ -1,4 +1,4 @@
-﻿namespace Poker.Core.Application.Betting
+﻿namespace Poker.Core.Application.Betting.Decisions
 {
     public enum Decision
     {

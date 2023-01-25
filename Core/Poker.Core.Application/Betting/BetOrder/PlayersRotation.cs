@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Poker.Core.Application.Betting
+namespace Poker.Core.Application.Betting.BetOrder
 {
     public class PlayersRotation
     {
@@ -30,6 +30,7 @@ namespace Poker.Core.Application.Betting
 
         public Player BigBlindPlayer
             => _playerInfos[_bigBlindIndex.Value].Player;
+
         public Player SmallBlindPlayer
             => _playerInfos[_smallBlindIndex.Value].Player;
 
@@ -73,7 +74,6 @@ namespace Poker.Core.Application.Betting
             _bigBlindIndex.Value++;
         }
 
-
         public bool IsBettingOver()
         {
             return _playerInfos.All(x => x.HasFolded || x.HasFinished);
@@ -99,45 +99,6 @@ namespace Poker.Core.Application.Betting
         {
             return _playerInfos.Where(x => !x.HasFolded)
                 .Select(x => x.Player);
-        }
-
-        class PlayerInfo
-        {
-            public PlayerInfo(Player player)
-            {
-                Player = player;
-            }
-
-            public Player Player { get; }
-            public bool HasFolded { get; private set; }
-            public void Fold() => HasFolded = true;
-            public bool HasFinished { get; set; } = false;
-        }
-
-        public struct RecurringIndex
-        {
-            private readonly int _maxValue;
-
-            public RecurringIndex(int maxValue) : this()
-            {
-                _maxValue = maxValue;
-            }
-
-            private int _value;
-            public int Value
-            {
-                get
-                {
-                    return _value;
-                }
-                set
-                {
-                    if (value >= _maxValue)
-                        _value = value % _maxValue;
-                    else
-                        _value = value;
-                }
-            }
         }
     }
 }

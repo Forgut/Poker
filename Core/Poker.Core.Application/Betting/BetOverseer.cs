@@ -1,13 +1,11 @@
-﻿using Poker.Core.Domain.Entity;
-using System;
-using System.Collections;
+﻿using Poker.Core.Application.Betting.BetOrder;
+using Poker.Core.Application.Betting.Decisions;
+using Poker.Core.Domain.Entity;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace Poker.Core.Application.Betting
 {
-    public class BetOverseer //todo name
+    public class BetOverseer
     {
         private readonly PlayersRotation _playersRotation;
         private readonly Pot _pot;
@@ -43,19 +41,6 @@ namespace Poker.Core.Application.Betting
             return _pot.GetTotalAmount();
         }
 
-        private void ResetForNextBetRound()
-        {
-            _playersRotation.ResetPlayersTurns();
-            _playersRotation.MoveToSmallBlind();
-        }
-
-        public void ResetForNewGame()
-        {
-            DidExecuteBigBlindAndSmallBlind = false;
-            _playersRotation.ResetPlayersTurns();
-            _pot.Reset();
-        }
-
         public bool DidExecuteBigBlindAndSmallBlind { get; private set; }
         public void ExecuteBigAndSmallBlind(int bigBlindValue, int smallBlindValue)
         {
@@ -67,6 +52,12 @@ namespace Poker.Core.Application.Betting
 
             _playersRotation.MoveToPlayerAfterBigBlind();
             DidExecuteBigBlindAndSmallBlind = true;
+        }
+        public void ResetForNewGame()
+        {
+            DidExecuteBigBlindAndSmallBlind = false;
+            _playersRotation.ResetPlayersTurns();
+            _pot.Reset();
         }
 
         public IEnumerable<Player> GetNotFoldedPlayers()
@@ -113,6 +104,11 @@ namespace Poker.Core.Application.Betting
             return (betSucceeded, isBettingOver);
         }
 
+        public void MoveBlinds()
+        {
+            _playersRotation.MoveBlinds();
+        }
+
         private bool Check()
         {
             var amount = _pot.AmountToCheck(_playersRotation.CurrentPlayer.Name);
@@ -144,9 +140,10 @@ namespace Poker.Core.Application.Betting
             _playersRotation.MarkCurrentPlayerAsFolded();
         }
 
-        public void MoveBlinds()
+        private void ResetForNextBetRound()
         {
-            _playersRotation.MoveBlinds();
+            _playersRotation.ResetPlayersTurns();
+            _playersRotation.MoveToSmallBlind();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Poker.Core.Application.Betting;
+﻿using Poker.Core.Application.Betting.BetOrder;
 using Poker.Core.Domain.Entity;
 using System.Linq;
 using Xunit;

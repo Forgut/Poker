@@ -1,5 +1,5 @@
-﻿using Xunit;
-using static Poker.Core.Application.Betting.PlayersRotation;
+﻿using Poker.Core.Application.Betting.BetOrder;
+using Xunit;
 
 namespace Poker.Tests.UnitTests
 {

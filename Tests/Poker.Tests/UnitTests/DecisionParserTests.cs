@@ -1,4 +1,4 @@
-﻿using Poker.Core.Application.Betting;
+﻿using Poker.Core.Application.Betting.Decisions;
 using Xunit;
 
 namespace Poker.Tests.UnitTests
