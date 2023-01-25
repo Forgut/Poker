@@ -100,6 +100,12 @@ namespace Poker.Core.Application.Betting
                     betSucceeded = false;
                     break;
             }
+
+            if (!betSucceeded)
+                return (false, false);
+
+            _playersRotation.MoveToNextNotFoldedPlayer();
+
             var isBettingOver = _playersRotation.IsBettingOver();
             if (isBettingOver)
                 ResetForNextBetRound();
@@ -116,7 +122,6 @@ namespace Poker.Core.Application.Betting
             _playersRotation.CurrentPlayer.TakeMoney(amount);
             _pot.AddToPot(_playersRotation.CurrentPlayer.Name, amount);
             _playersRotation.MarkCurrentPlayerAsFinished();
-            _playersRotation.MoveToNextNotFoldedPlayer();
             return true;
         }
 
@@ -131,14 +136,12 @@ namespace Poker.Core.Application.Betting
             _pot.AddToPot(_playersRotation.CurrentPlayer.Name, totalAmount);
             _playersRotation.MarkNotFoldedPlayersAsNotFinished();
             _playersRotation.MarkCurrentPlayerAsFinished();
-            _playersRotation.MoveToNextNotFoldedPlayer();
             return true;
         }
 
         private void Fold()
         {
             _playersRotation.MarkCurrentPlayerAsFolded();
-            _playersRotation.MoveToNextNotFoldedPlayer();
         }
 
         public void MoveBlinds()
