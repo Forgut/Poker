@@ -92,14 +92,10 @@ namespace Poker.Core.Application.GameBehaviour
 
         public (bool BettingSucceeded, bool IsBettingOver) Bet(string betDecision)
         {
-            var isSuccess = _betOverseer.ExecuteForCurrentPlayer(betDecision);
-            var isBettingOver = _betOverseer.IsBettingOver();
-            if (isBettingOver)
-            {
+            var (betSuccess, isBetOver) = _betOverseer.ExecuteForCurrentPlayer(betDecision);
+            if (isBetOver)
                 GameState++;
-                _betOverseer.ResetForNextBetRound();
-            }
-            return (isSuccess, isBettingOver);
+            return (betSuccess, isBetOver);
         }
 
         public override string GameStateAsString()
@@ -117,7 +113,7 @@ namespace Poker.Core.Application.GameBehaviour
                 .Where(winner => notFoldedPlayers.Select(x => x.Name).Contains(winner.Player.Name)).ToList();
 
             PublishEvent(winners);
-            WinMoneyDistributor.DistributeMoney(_betOverseer.GetTotalAmountOnPot(), winners.Select(x=>x.Player));
+            WinMoneyDistributor.DistributeMoney(_betOverseer.GetTotalAmountOnPot(), winners.Select(x => x.Player));
             _betOverseer.MoveBlinds();
             GameState = EGameState.End;
 

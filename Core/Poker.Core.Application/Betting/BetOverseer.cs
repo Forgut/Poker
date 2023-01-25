@@ -43,12 +43,7 @@ namespace Poker.Core.Application.Betting
             return _pot.GetTotalAmount();
         }
 
-        public bool IsBettingOver()
-        {
-            return _playersRotation.IsBettingOver();
-        }
-
-        public void ResetForNextBetRound()
+        private void ResetForNextBetRound()
         {
             _playersRotation.ResetPlayersTurns();
             _playersRotation.MoveToSmallBlind();
@@ -79,26 +74,37 @@ namespace Poker.Core.Application.Betting
             return _playersRotation.GetNotFoldedPlayers();
         }
 
-        public bool ExecuteForCurrentPlayer(string input) //todo name
+        public (bool BetSucceeded, bool IsBettingOver) ExecuteForCurrentPlayer(string input)
         {
             var (decision, amount) = DecisionParser.Parse(input);
 
             if (decision == Decision.Unkown)
-                return false;
+                return (false, false);
             if (amount <= 0)
-                return false;
+                return (false, false);
 
+            bool betSucceeded;
             switch (decision)
             {
                 case Decision.Check:
-                    return Check();
+                    betSucceeded = Check();
+                    break;
                 case Decision.Raise:
-                    return Raise(amount!.Value);
+                    betSucceeded = Raise(amount!.Value);
+                    break;
                 case Decision.Fold:
+                    betSucceeded = true;
                     Fold();
-                    return true;
+                    break;
+                default:
+                    betSucceeded = false;
+                    break;
             }
-            return false;
+            var isBettingOver = _playersRotation.IsBettingOver();
+            if (isBettingOver)
+                ResetForNextBetRound();
+
+            return (betSucceeded, isBettingOver);
         }
 
         private bool Check()
