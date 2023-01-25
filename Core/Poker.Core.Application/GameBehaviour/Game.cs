@@ -31,7 +31,8 @@ namespace Poker.Core.Application.GameBehaviour
             _eventPublisher = eventPublisher;
         }
 
-        public EGameState GameState { get; internal set; }
+        public EGameState GameState { get; internal set; } //todo wyniesc to do GameState,
+        //tutaj jest to leaking abstraction
 
         public bool SetTargetPlayer(string playerName)
         {
