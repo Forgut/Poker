@@ -9,7 +9,6 @@ namespace Poker.Core.Application.Betting
     {
         private readonly PlayersRotation _playersRotation;
         private readonly Pot _pot;
-        public bool DidExecuteBigBlindAndSmallBlind { get; private set; }
 
         public BetOverseer(Players players)
         {
@@ -52,6 +51,7 @@ namespace Poker.Core.Application.Betting
             _playersRotation.ResetPlayersTurns();
         }
 
+        public bool DidExecuteBigBlindAndSmallBlind { get; private set; }
         public void ExecuteBigAndSmallBlind(int bigBlindValue, int smallBlindValue)
         {
             _playersRotation.BigBlindPlayer.TakeMoney(bigBlindValue);
