@@ -10,11 +10,23 @@ namespace Poker.Tests.UnitTests
         {
             var recurringIndex = new RecurringIndex(3);
             Assert.Equal(0, recurringIndex.Value);
-            recurringIndex++;
+            recurringIndex.Value++;
             Assert.Equal(1, recurringIndex.Value);
-            recurringIndex++;
+            recurringIndex.Value++;
             Assert.Equal(2, recurringIndex.Value);
-            recurringIndex++;
+            recurringIndex.Value++;
+            Assert.Equal(0, recurringIndex.Value);
+        }
+
+        [Fact]
+        public void Should_overlap_proper_amount_of_times_if_exceeds_max_value()
+        {
+            var recurringIndex = new RecurringIndex(3);
+            recurringIndex.Value += 2;
+            Assert.Equal(2, recurringIndex.Value);
+            recurringIndex.Value += 2;
+            Assert.Equal(1, recurringIndex.Value);
+            recurringIndex.Value += 2;
             Assert.Equal(0, recurringIndex.Value);
         }
     }

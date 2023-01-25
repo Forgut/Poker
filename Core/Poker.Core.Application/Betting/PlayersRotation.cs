@@ -40,7 +40,7 @@ namespace Poker.Core.Application.Betting
             {
                 if (maxIterations <= 0)
                     break;
-                _currentPlayerIndex++;
+                _currentPlayerIndex.Value++;
                 maxIterations--;
             }
             while (_playerInfos[_currentPlayerIndex.Value].HasFolded);
@@ -69,8 +69,8 @@ namespace Poker.Core.Application.Betting
 
         public void MoveBlinds()
         {
-            _smallBlindIndex++;
-            _bigBlindIndex++;
+            _smallBlindIndex.Value++;
+            _bigBlindIndex.Value++;
         }
 
 
@@ -83,6 +83,22 @@ namespace Poker.Core.Application.Betting
         {
             foreach (var player in _playerInfos)
                 player.HasFinished = false;
+        }
+
+        public void MoveToPlayerAfterBigBlind()
+        {
+            _currentPlayerIndex.Value = _bigBlindIndex.Value + 1;
+        }
+
+        public void MoveToSmallBlind()
+        {
+            _currentPlayerIndex.Value = _smallBlindIndex.Value;
+        }
+
+        public IEnumerable<Player> GetNotFoldedPlayers()
+        {
+            return _playerInfos.Where(x => !x.HasFolded)
+                .Select(x => x.Player);
         }
 
         class PlayerInfo
@@ -107,13 +123,20 @@ namespace Poker.Core.Application.Betting
                 _maxValue = maxValue;
             }
 
-            public int Value { get; set; }
-            public static RecurringIndex operator ++(RecurringIndex index)
+            private int _value;
+            public int Value
             {
-                index.Value++;
-                if (index.Value >= index._maxValue)
-                    index.Value = 0;
-                return index;
+                get
+                {
+                    return _value;
+                }
+                set
+                {
+                    if (value >= _maxValue)
+                        _value = value % _maxValue;
+                    else
+                        _value = value;
+                }
             }
         }
     }

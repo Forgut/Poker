@@ -5,6 +5,7 @@ using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Events;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Poker.Core.Application.GameBehaviour
 {
@@ -53,7 +54,7 @@ namespace Poker.Core.Application.GameBehaviour
 
         public void EndRound()
         {
-            var winners = _winDecision.Winners.ToList();
+            var winners = _winDecision.GetWinners(_playersInfo.Players).ToList();
 
             PublishEvent(winners);
             GameState = EGameState.End;
@@ -61,7 +62,7 @@ namespace Poker.Core.Application.GameBehaviour
             void PublishEvent(IEnumerable<Winner> winners)
             {
                 var eventParameters = winners
-                    .Select(x => new WinnerInfo(x.Name, x.Combination));
+                    .Select(x => new WinnerInfo(x.Player.Name, x.Combination));
                 var @event = new RoundEndedEvent(eventParameters);
                 _eventPublisher.RoundEnded(@event);
             }
@@ -74,6 +75,16 @@ namespace Poker.Core.Application.GameBehaviour
             foreach (var player in _playersInfo.Players)
                 player.ClearCards();
             GameState = EGameState.PreFlop;
+        }
+
+        public string GetWinnersAsString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Winners:");
+            foreach (var winner in _winDecision.GetWinners(_playersInfo.Players))
+                sb.Append($"{winner.Player.Name};");
+            sb.AppendLine();
+            return sb.ToString();
         }
     }
 }

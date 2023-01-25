@@ -1,5 +1,6 @@
 ﻿using Poker.Core.Application.Betting;
 using Poker.Core.Domain.Entity;
+using System.Linq;
 using Xunit;
 
 namespace Poker.Tests.UnitTests
@@ -71,6 +72,18 @@ namespace Poker.Tests.UnitTests
             Assert.Equal("Test2", _rotation.CurrentPlayer.Name);
             _rotation.MoveToNextNotFoldedPlayer();
             Assert.Equal("Test2", _rotation.CurrentPlayer.Name);
+        }
+
+        [Fact]
+        public void GetNotFoldedPlayers_should_return_only_not_folded_players()
+        {
+            var preFoldResult = _rotation.GetNotFoldedPlayers();
+            Assert.Contains("Test1", preFoldResult.Select(x => x.Name));
+            Assert.Contains("Test2", preFoldResult.Select(x => x.Name));
+            _rotation.MarkCurrentPlayerAsFolded();
+            var postFoldResult = _rotation.GetNotFoldedPlayers();
+            Assert.DoesNotContain("Test1", postFoldResult.Select(x => x.Name));
+            Assert.Contains("Test2", postFoldResult.Select(x => x.Name));
         }
     }
 }

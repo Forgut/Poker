@@ -27,7 +27,7 @@ namespace Poker.Core.Application.GameBehaviour
             _table = table;
             _winChanceEstimator = winChanceEstimator;
             _playersInfo = new PlayersInfo(players);
-            _winDecision = new WinDecision(table, players, combinationComparer);
+            _winDecision = new WinDecision(table, combinationComparer);
             _eventPublisher = eventPublisher;
         }
 
@@ -38,9 +38,7 @@ namespace Poker.Core.Application.GameBehaviour
             return _playersInfo.SetTargetPlayer(playerName);
         }
 
-        
-
-        public string GameStateAsString()
+        public virtual string GameStateAsString()
         {
             var sb = new StringBuilder();
             sb.AppendLine();
@@ -145,14 +143,6 @@ namespace Poker.Core.Application.GameBehaviour
             }
         }
 
-        public string GetWinnersAsString()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("Winners:");
-            foreach (var winner in _winDecision.Winners)
-                sb.Append($"{winner.Name};");
-            sb.AppendLine();
-            return sb.ToString();
-        }
+        
     }
 }

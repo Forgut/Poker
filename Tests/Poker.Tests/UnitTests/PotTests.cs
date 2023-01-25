@@ -30,5 +30,15 @@ namespace Poker.Tests.UnitTests
             pot.AddToPot("Test1", 3);
             Assert.Equal(12, pot.GetTotalAmount());
         }
+
+        [Fact]
+        public void Should_have_0_total_value_and_no_amount_to_check_after_reset()
+        {
+            var pot = new Pot();
+            pot.AddToPot("Test1", 10);
+            pot.Reset();
+            Assert.Equal(0, pot.GetTotalAmount());
+            Assert.Equal(0, pot.AmountToCheck("Test1"));
+        }
     }
 }

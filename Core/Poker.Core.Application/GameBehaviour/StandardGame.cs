@@ -6,6 +6,7 @@ using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Events;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Poker.Core.Application.GameBehaviour
 {
@@ -96,27 +97,34 @@ namespace Poker.Core.Application.GameBehaviour
             if (isBettingOver)
             {
                 GameState++;
-                _betOverseer.ResetForNextRound();
+                _betOverseer.ResetForNextBetRound();
             }
             return (isSuccess, isBettingOver);
         }
 
-        public void MoveBlinds()
+        public override string GameStateAsString()
         {
-            _betOverseer.MoveBlinds();
+            var stateWithoutPotInfo = base.GameStateAsString();
+            var sb = new StringBuilder(stateWithoutPotInfo);
+            sb.AppendLine($"Pot value: {_betOverseer.GetTotalAmountOnPot()}");
+            return sb.ToString();
         }
 
         public void EndRound()
         {
-            var winners = _winDecision.Winners.ToList();
+            var notFoldedPlayers = _betOverseer.GetNotFoldedPlayers();
+            var winners = _winDecision.GetWinners(notFoldedPlayers)
+                .Where(winner => notFoldedPlayers.Select(x => x.Name).Contains(winner.Player.Name)).ToList();
 
             PublishEvent(winners);
+            WinMoneyDistributor.DistributeMoney(_betOverseer.GetTotalAmountOnPot(), winners.Select(x=>x.Player));
+            _betOverseer.MoveBlinds();
             GameState = EGameState.End;
 
             void PublishEvent(IEnumerable<Winner> winners)
             {
                 var eventParameters = winners
-                    .Select(x => new WinnerInfo(x.Name, x.Combination));
+                    .Select(x => new WinnerInfo(x.Player.Name, x.Combination));
                 var @event = new RoundEndedEvent(eventParameters);
                 _eventPublisher.RoundEnded(@event);
             }
@@ -126,9 +134,20 @@ namespace Poker.Core.Application.GameBehaviour
         {
             _table.ClearCards();
             _winDecision.ResetWinners();
+            _betOverseer.ResetForNewGame();
             foreach (var player in _playersInfo.Players)
                 player.ClearCards();
             GameState = EGameState.PreFlop;
+        }
+
+        public string GetWinnersAsString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Winners:");
+            foreach (var winner in _winDecision.GetWinners(_betOverseer.GetNotFoldedPlayers()))
+                sb.Append($"{winner.Player.Name};");
+            sb.AppendLine();
+            return sb.ToString();
         }
     }
 }

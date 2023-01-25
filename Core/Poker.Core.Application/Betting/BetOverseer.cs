@@ -1,5 +1,7 @@
 ﻿using Poker.Core.Domain.Entity;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
@@ -46,9 +48,17 @@ namespace Poker.Core.Application.Betting
             return _playersRotation.IsBettingOver();
         }
 
-        public void ResetForNextRound()
+        public void ResetForNextBetRound()
         {
             _playersRotation.ResetPlayersTurns();
+            _playersRotation.MoveToSmallBlind();
+        }
+
+        public void ResetForNewGame()
+        {
+            DidExecuteBigBlindAndSmallBlind = false;
+            _playersRotation.ResetPlayersTurns();
+            _pot.Reset();
         }
 
         public bool DidExecuteBigBlindAndSmallBlind { get; private set; }
@@ -59,7 +69,14 @@ namespace Poker.Core.Application.Betting
 
             _playersRotation.SmallBlindPlayer.TakeMoney(smallBlindValue);
             _pot.AddToPot(_playersRotation.SmallBlindPlayer.Name, smallBlindValue);
+
+            _playersRotation.MoveToPlayerAfterBigBlind();
             DidExecuteBigBlindAndSmallBlind = true;
+        }
+
+        public IEnumerable<Player> GetNotFoldedPlayers()
+        {
+            return _playersRotation.GetNotFoldedPlayers();
         }
 
         public bool ExecuteForCurrentPlayer(string input) //todo name

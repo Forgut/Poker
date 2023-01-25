@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Poker.Core.Application.Betting
@@ -35,6 +36,11 @@ namespace Poker.Core.Application.Betting
         public int GetTotalAmount()
         {
             return _transactions.Sum(x => x.Amount);
+        }
+
+        public void Reset()
+        {
+            _transactions.Clear();
         }
     }
 }

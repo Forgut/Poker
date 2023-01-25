@@ -1,14 +1,16 @@
-﻿namespace Poker.Core.Application.GameBehaviour.WinCalculation
+﻿using Poker.Core.Domain.Entity;
+
+namespace Poker.Core.Application.GameBehaviour.WinCalculation
 {
     public class Winner
     {
-        public Winner(string name, string combination)
+        public Winner(Player player, string combination)
         {
-            Name = name;
+            Player = player;
             Combination = combination;
         }
 
-        public string Name { get; }
+        public Player Player { get; set; }
         public string Combination { get; }
     }
 }
