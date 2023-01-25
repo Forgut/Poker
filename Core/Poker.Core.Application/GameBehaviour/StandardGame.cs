@@ -1,7 +1,10 @@
 ﻿using Poker.Core.Application.Betting;
 using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Application.Events;
+using Poker.Core.Application.GameBehaviour.WinCalculation;
 using Poker.Core.Domain.Entity;
+using Poker.Core.Domain.Events;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Poker.Core.Application.GameBehaviour
@@ -101,6 +104,31 @@ namespace Poker.Core.Application.GameBehaviour
         public void MoveBlinds()
         {
             _betOverseer.MoveBlinds();
+        }
+
+        public void EndRound()
+        {
+            var winners = _winDecision.Winners.ToList();
+
+            PublishEvent(winners);
+            GameState = EGameState.End;
+
+            void PublishEvent(IEnumerable<Winner> winners)
+            {
+                var eventParameters = winners
+                    .Select(x => new WinnerInfo(x.Name, x.Combination));
+                var @event = new RoundEndedEvent(eventParameters);
+                _eventPublisher.RoundEnded(@event);
+            }
+        }
+
+        public void ResetRound()
+        {
+            _table.ClearCards();
+            _winDecision.ResetWinners();
+            foreach (var player in _playersInfo.Players)
+                player.ClearCards();
+            GameState = EGameState.PreFlop;
         }
     }
 }

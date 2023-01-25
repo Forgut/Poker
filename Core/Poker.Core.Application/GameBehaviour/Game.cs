@@ -38,14 +38,7 @@ namespace Poker.Core.Application.GameBehaviour
             return _playersInfo.SetTargetPlayer(playerName);
         }
 
-        public void ResetRound()
-        {
-            _table.ClearCards();
-            _winDecision.ResetWinners();
-            foreach (var player in _playersInfo.Players)
-                player.ClearCards();
-            GameState = EGameState.PreFlop;
-        }
+        
 
         public string GameStateAsString()
         {
@@ -160,22 +153,6 @@ namespace Poker.Core.Application.GameBehaviour
                 sb.Append($"{winner.Name};");
             sb.AppendLine();
             return sb.ToString();
-        }
-
-        public void EndRound()
-        {
-            var winners = _winDecision.Winners.ToList();
-
-            PublishEvent(winners);
-            GameState = EGameState.End;
-
-            void PublishEvent(IEnumerable<Winner> winners)
-            {
-                var eventParameters = winners
-                    .Select(x => new WinnerInfo(x.Name, x.Combination));
-                var @event = new RoundEndedEvent(eventParameters);
-                _eventPublisher.RoundEnded(@event);
-            }
         }
     }
 }
