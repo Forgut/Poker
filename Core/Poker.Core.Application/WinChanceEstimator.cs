@@ -11,7 +11,7 @@ namespace Poker.Core.Application
 {
     public class WinChanceEstimator
     {
-        public CombinationEstimationResult ProbableCombinationsForPlayer2Missing(Table table, Player player)
+        public CombinationEstimationResult ProbableCombinationsForPlayer2Missing(ITable table, Player player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
 
@@ -39,7 +39,7 @@ namespace Poker.Core.Application
             return new CombinationEstimationResult(combinationsDictionary);
         }
 
-        public CombinationEstimationResult ProbableCombinationsForPlayer1Missing(Table table, Player player)
+        public CombinationEstimationResult ProbableCombinationsForPlayer1Missing(ITable table, Player player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
 
@@ -62,7 +62,7 @@ namespace Poker.Core.Application
             return new CombinationEstimationResult(combinationsDictionary);
         }
 
-        public CombinationEstimationResult ProbableCombinationsForEnemy2Missing(Table table, Player player)
+        public CombinationEstimationResult ProbableCombinationsForEnemy2Missing(ITable table, Player player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
 
@@ -98,7 +98,7 @@ namespace Poker.Core.Application
             return new CombinationEstimationResult(combinationsDictionary);
         }
 
-        public CombinationEstimationResult ProbableCombinationsForEnemy1Missing(Table table, Player player)
+        public CombinationEstimationResult ProbableCombinationsForEnemy1Missing(ITable table, Player player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
 
@@ -143,7 +143,7 @@ namespace Poker.Core.Application
 
 
 
-        private IEnumerable<Card> GetNotAvailableCards(Table table, Player player)
+        private IEnumerable<Card> GetNotAvailableCards(ITable table, Player player)
         {
             var cards = player.Cards.ToList();
             cards.AddRange(table.Cards);

@@ -7,7 +7,20 @@ using System.Linq;
 
 namespace Poker.Core.Application
 {
-    public class Table
+    public interface ITable
+    {
+        ReadOnlyCollection<Card> Cards { get; }
+        bool IsFullySet { get; }
+
+        void ClearCards();
+        void SetFifthCard(Card card);
+        void SetFirstCard(Card card);
+        void SetFourthCard(Card card);
+        void SetSecondCard(Card card);
+        void SetThirdCard(Card card);
+    }
+
+    public class Table : ITable
     {
         public Table()
         {

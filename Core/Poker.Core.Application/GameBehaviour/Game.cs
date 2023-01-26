@@ -11,7 +11,7 @@ namespace Poker.Core.Application.GameBehaviour
 {
     public abstract class Game
     {
-        protected readonly Table _table;
+        protected readonly ITable _table;
         protected readonly WinChanceEstimator _winChanceEstimator;
         protected readonly PlayersInfo _playersInfo;
         protected readonly WinDecision _winDecision;
@@ -20,7 +20,7 @@ namespace Poker.Core.Application.GameBehaviour
         protected Game(
             CombinationComparer combinationComparer,
             WinChanceEstimator winChanceEstimator,
-            Table table,
+            ITable table,
             Players players,
             IEventPublisher eventPublisher)
         {

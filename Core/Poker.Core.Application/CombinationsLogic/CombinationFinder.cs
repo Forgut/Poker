@@ -11,7 +11,7 @@ namespace Poker.Core.Application.CombinationsLogic
     public class CombinationFinder
     {
         private List<Combination> _combinations = new List<Combination>();
-        public CombinationFinder(Player player, Table table)
+        public CombinationFinder(Player player, ITable table)
         {
             var cards = player.Cards.ToList();
             cards.AddRange(table.Cards);

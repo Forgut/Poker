@@ -24,19 +24,19 @@ namespace Poker.Core.Application
                 player.SetSecondCard(GetNextCardFromDeck());
         }
 
-        public void Flop(Table table)
+        public void Flop(ITable table)
         {
             table.SetFirstCard(GetNextCardFromDeck());
             table.SetSecondCard(GetNextCardFromDeck());
             table.SetThirdCard(GetNextCardFromDeck());
         }
 
-        public void Turn(Table table)
+        public void Turn(ITable table)
         {
             table.SetFourthCard(GetNextCardFromDeck());
         }
 
-        public void River(Table table)
+        public void River(ITable table)
         {
             table.SetFifthCard(GetNextCardFromDeck());
         }

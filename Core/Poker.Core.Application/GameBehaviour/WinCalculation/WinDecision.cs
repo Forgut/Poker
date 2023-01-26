@@ -10,10 +10,10 @@ namespace Poker.Core.Application.GameBehaviour.WinCalculation
 {
     public class WinDecision
     {
-        private readonly Table _table;
+        private readonly ITable _table;
         private readonly CombinationComparer _combinationComparer;
 
-        public WinDecision(Table table, CombinationComparer combinationComparer)
+        public WinDecision(ITable table, CombinationComparer combinationComparer)
         {
             _table = table;
             _combinationComparer = combinationComparer;
