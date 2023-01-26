@@ -1,6 +1,8 @@
-﻿using Poker.Core.Application;
+﻿using NSubstitute;
+using Poker.Core.Application;
 using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
+using Poker.Tests.Common;
 using System.Linq;
 using Xunit;
 
@@ -9,12 +11,12 @@ namespace Poker.Tests.UnitTests
     public class CombinationFinderTests
     {
         private readonly Player _player;
-        private readonly Table _table;
+        private readonly ITable _table;
 
         public CombinationFinderTests()
         {
             _player = new Player("test", 100);
-            _table = new Table();
+            _table = Substitute.For<ITable>();
         }
 
         [Fact]
@@ -22,11 +24,13 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Eight, EColor.Diamonds));
             _player.SetSecondCard(new Card(EValue.Ten, EColor.Diamonds));
-            _table.SetFirstCard(new Card(EValue.Two, EColor.Clubs));
-            _table.SetSecondCard(new Card(EValue.Four, EColor.Clubs));
-            _table.SetThirdCard(new Card(EValue.Six, EColor.Hearts));
-            _table.SetFourthCard(new Card(EValue.King, EColor.Clubs));
-            _table.SetFifthCard(new Card(EValue.Ace, EColor.Hearts));
+
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Two, EColor.Clubs),
+                new Card(EValue.Four, EColor.Clubs),
+                new Card(EValue.Six, EColor.Hearts),
+                new Card(EValue.King, EColor.Clubs),
+                new Card(EValue.Ace, EColor.Hearts)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.HighCard, combination.Combination);
@@ -42,11 +46,12 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Eight, EColor.Hearts));
             _player.SetSecondCard(new Card(EValue.Ten, EColor.Clubs));
-            _table.SetFirstCard(new Card(EValue.Two, EColor.Hearts));
-            _table.SetSecondCard(new Card(EValue.Four, EColor.Clubs));
-            _table.SetThirdCard(new Card(EValue.Ten, EColor.Diamonds));
-            _table.SetFourthCard(new Card(EValue.King, EColor.Clubs));
-            _table.SetFifthCard(new Card(EValue.Ace, EColor.Hearts));
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Two, EColor.Hearts),
+                new Card(EValue.Four, EColor.Clubs),
+                new Card(EValue.Ten, EColor.Diamonds),
+                new Card(EValue.King, EColor.Clubs),
+                new Card(EValue.Ace, EColor.Hearts)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.OnePair, combination.Combination);
@@ -61,11 +66,13 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Eight, EColor.Hearts));
             _player.SetSecondCard(new Card(EValue.Ten, EColor.Clubs));
-            _table.SetFirstCard(new Card(EValue.Eight, EColor.Diamonds));
-            _table.SetSecondCard(new Card(EValue.Ten, EColor.Diamonds));
-            _table.SetThirdCard(new Card(EValue.Two, EColor.Clubs));
-            _table.SetFourthCard(new Card(EValue.King, EColor.Clubs));
-            _table.SetFifthCard(new Card(EValue.Four, EColor.Clubs));
+
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Diamonds),
+                new Card(EValue.Ten, EColor.Diamonds),
+                new Card(EValue.Two, EColor.Clubs),
+                new Card(EValue.King, EColor.Clubs),
+                new Card(EValue.Four, EColor.Clubs)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.TwoPair, combination.Combination);
@@ -79,11 +86,13 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Eight, EColor.Hearts));
             _player.SetSecondCard(new Card(EValue.Ten, EColor.Clubs));
-            _table.SetFirstCard(new Card(EValue.Eight, EColor.Diamonds));
-            _table.SetSecondCard(new Card(EValue.Ten, EColor.Diamonds));
-            _table.SetThirdCard(new Card(EValue.Two, EColor.Clubs));
-            _table.SetFourthCard(new Card(EValue.Four, EColor.Hearts));
-            _table.SetFifthCard(new Card(EValue.Four, EColor.Clubs));
+
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Diamonds),
+                new Card(EValue.Ten, EColor.Diamonds),
+                new Card(EValue.Two, EColor.Clubs),
+                new Card(EValue.Four, EColor.Hearts),
+                new Card(EValue.Four, EColor.Clubs)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.TwoPair, combination.Combination);
@@ -97,11 +106,13 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Eight, EColor.Clubs));
             _player.SetSecondCard(new Card(EValue.Eight, EColor.Spades));
-            _table.SetFirstCard(new Card(EValue.Eight, EColor.Diamonds));
-            _table.SetSecondCard(new Card(EValue.Ten, EColor.Diamonds));
-            _table.SetThirdCard(new Card(EValue.Four, EColor.Clubs));
-            _table.SetFourthCard(new Card(EValue.Four, EColor.Clubs));
-            _table.SetFifthCard(new Card(EValue.Four, EColor.Clubs));
+
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Diamonds),
+                new Card(EValue.Ten, EColor.Diamonds),
+                new Card(EValue.Four, EColor.Clubs),
+                new Card(EValue.Four, EColor.Clubs),
+                new Card(EValue.Four, EColor.Clubs)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.ThreeOfAKind, combination.Combination);
@@ -115,11 +126,13 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Eight, EColor.Clubs));
             _player.SetSecondCard(new Card(EValue.Three, EColor.Clubs));
-            _table.SetFirstCard(new Card(EValue.Eight, EColor.Diamonds));
-            _table.SetSecondCard(new Card(EValue.Ten, EColor.Diamonds));
-            _table.SetThirdCard(new Card(EValue.Two, EColor.Clubs));
-            _table.SetFourthCard(new Card(EValue.King, EColor.Clubs));
-            _table.SetFifthCard(new Card(EValue.Four, EColor.Clubs));
+
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Diamonds),
+                new Card(EValue.Ten, EColor.Diamonds),
+                new Card(EValue.Two, EColor.Clubs),
+                new Card(EValue.King, EColor.Clubs),
+                new Card(EValue.Four, EColor.Clubs)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.Flush, combination.Combination);
@@ -131,11 +144,13 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
             _player.SetSecondCard(new Card(EValue.Three, EColor.Clubs));
-            _table.SetFirstCard(new Card(EValue.Four, EColor.Diamonds));
-            _table.SetSecondCard(new Card(EValue.Six, EColor.Diamonds));
-            _table.SetThirdCard(new Card(EValue.Six, EColor.Clubs));
-            _table.SetFourthCard(new Card(EValue.Seven, EColor.Clubs));
-            _table.SetFifthCard(new Card(EValue.King, EColor.Hearts));
+
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Four, EColor.Diamonds),
+                new Card(EValue.Six, EColor.Diamonds),
+                new Card(EValue.Six, EColor.Clubs),
+                new Card(EValue.Seven, EColor.Clubs),
+                new Card(EValue.King, EColor.Hearts)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.Straight, combination.Combination);
@@ -151,11 +166,12 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
             _player.SetSecondCard(new Card(EValue.Five, EColor.Diamonds));
-            _table.SetFirstCard(new Card(EValue.Four, EColor.Diamonds));
-            _table.SetSecondCard(new Card(EValue.Six, EColor.Diamonds));
-            _table.SetThirdCard(new Card(EValue.Seven, EColor.Hearts));
-            _table.SetFourthCard(new Card(EValue.Five, EColor.Hearts));
-            _table.SetFifthCard(new Card(EValue.Seven, EColor.Clubs));
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Four, EColor.Diamonds),
+                new Card(EValue.Six, EColor.Diamonds),
+                new Card(EValue.Seven, EColor.Hearts),
+                new Card(EValue.Five, EColor.Hearts),
+                new Card(EValue.Seven, EColor.Clubs)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.FullHouse, combination.Combination);
@@ -168,11 +184,12 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
             _player.SetSecondCard(new Card(EValue.Five, EColor.Hearts));
-            _table.SetFirstCard(new Card(EValue.Five, EColor.Diamonds));
-            _table.SetSecondCard(new Card(EValue.Five, EColor.Spades));
-            _table.SetThirdCard(new Card(EValue.Seven, EColor.Hearts));
-            _table.SetFourthCard(new Card(EValue.Eight, EColor.Hearts));
-            _table.SetFifthCard(new Card(EValue.Seven, EColor.Clubs));
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Five, EColor.Diamonds),
+                new Card(EValue.Five, EColor.Spades),
+                new Card(EValue.Seven, EColor.Hearts),
+                new Card(EValue.Eight, EColor.Hearts),
+                new Card(EValue.Seven, EColor.Clubs)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.FourOfAKind, combination.Combination);
@@ -186,11 +203,13 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
             _player.SetSecondCard(new Card(EValue.Three, EColor.Clubs));
-            _table.SetFirstCard(new Card(EValue.Four, EColor.Clubs));
-            _table.SetSecondCard(new Card(EValue.Six, EColor.Clubs));
-            _table.SetThirdCard(new Card(EValue.Seven, EColor.Clubs));
-            _table.SetFourthCard(new Card(EValue.Seven, EColor.Hearts));
-            _table.SetFifthCard(new Card(EValue.Ace, EColor.Clubs));
+
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Four, EColor.Clubs),
+                new Card(EValue.Six, EColor.Clubs),
+                new Card(EValue.Seven, EColor.Clubs),
+                new Card(EValue.Seven, EColor.Hearts),
+                new Card(EValue.Ace, EColor.Clubs)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.StraightFlush, combination.Combination);
@@ -207,11 +226,13 @@ namespace Poker.Tests.UnitTests
         {
             _player.SetFirstCard(new Card(EValue.Ace, EColor.Hearts));
             _player.SetSecondCard(new Card(EValue.Queen, EColor.Hearts));
-            _table.SetFirstCard(new Card(EValue.Jack, EColor.Hearts));
-            _table.SetSecondCard(new Card(EValue.King, EColor.Hearts));
-            _table.SetThirdCard(new Card(EValue.Ten, EColor.Clubs));
-            _table.SetFourthCard(new Card(EValue.Ten, EColor.Hearts));
-            _table.SetFifthCard(new Card(EValue.Three, EColor.Clubs));
+
+            _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Jack, EColor.Hearts),
+                new Card(EValue.King, EColor.Hearts),
+                new Card(EValue.Ten, EColor.Clubs),
+                new Card(EValue.Ten, EColor.Hearts),
+                new Card(EValue.Three, EColor.Clubs)));
 
             var combination = new CombinationFinder(_player, _table).GetBestCombination();
             Assert.Equal(ECombination.RoyalFlush, combination.Combination);
