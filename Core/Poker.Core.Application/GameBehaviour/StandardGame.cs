@@ -6,6 +6,7 @@ using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Events;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 
 namespace Poker.Core.Application.GameBehaviour
@@ -108,7 +109,7 @@ namespace Poker.Core.Application.GameBehaviour
 
         public void EndRound()
         {
-            var notFoldedPlayers = _betOverseer.GetNotFoldedPlayers();
+            var notFoldedPlayers = _betOverseer.GetNotFoldedPlayers().Cast<Player>(); //hack
             var winners = _winDecision.GetWinners(notFoldedPlayers)
                 .Where(winner => notFoldedPlayers.Select(x => x.Name).Contains(winner.Player.Name)).ToList();
 
@@ -140,7 +141,7 @@ namespace Poker.Core.Application.GameBehaviour
         {
             var sb = new StringBuilder();
             sb.AppendLine("Winners:");
-            foreach (var winner in _winDecision.GetWinners(_betOverseer.GetNotFoldedPlayers()))
+            foreach (var winner in _winDecision.GetWinners(_betOverseer.GetNotFoldedPlayers().Cast<Player>())) //hack
                 sb.Append($"{winner.Player.Name};");
             sb.AppendLine();
             return sb.ToString();

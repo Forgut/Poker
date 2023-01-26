@@ -12,7 +12,7 @@ namespace Poker.Core.Application.Betting.BetOrder
         IMoneyHolder CurrentPlayer { get; }
         IMoneyHolder SmallBlindPlayer { get; }
 
-        IEnumerable<IMoneyHolder> GetNotFoldedPlayers();
+        IEnumerable<IPlayer> GetNotFoldedPlayers();
         bool IsBettingOver();
         void MarkCurrentPlayerAsFinished();
         void MarkCurrentPlayerAsFolded();
@@ -117,7 +117,7 @@ namespace Poker.Core.Application.Betting.BetOrder
             _currentPlayerIndex.Value = _smallBlindIndex.Value;
         }
 
-        public IEnumerable<IMoneyHolder> GetNotFoldedPlayers()
+        public IEnumerable<IPlayer> GetNotFoldedPlayers()
         {
             return _playerInfos.Where(x => !x.HasFolded)
                 .Select(x => x.Player);

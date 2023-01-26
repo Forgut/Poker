@@ -1,8 +1,7 @@
 ﻿namespace Poker.Core.Domain.Interfaces
 {
-    public interface IMoneyHolder
+    public interface IMoneyHolder : IPlayer
     {
-        string Name { get; }
         int Money { get; }
         public int TakeMoney(int amount);
         public void AddMoney(int amount);

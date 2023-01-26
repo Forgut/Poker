@@ -69,9 +69,9 @@ namespace Poker.Core.Application.Betting
             _pot.Reset();
         }
 
-        public IEnumerable<Player> GetNotFoldedPlayers()
+        public IEnumerable<IPlayer> GetNotFoldedPlayers()
         {
-            return _playersRotation.GetNotFoldedPlayers().Cast<Player>(); //TODO hackan
+            return _playersRotation.GetNotFoldedPlayers();
         }
 
         public (bool BetSucceeded, bool IsBettingOver) ExecuteForCurrentPlayer(string input)
