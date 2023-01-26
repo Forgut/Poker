@@ -1,31 +1,46 @@
-﻿using Poker.Core.Application.Betting.BetOrder;
+﻿using NSubstitute;
+using Poker.Core.Application.Betting.BetOrder;
 using Poker.Core.Domain.Entity;
+using Poker.Core.Domain.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Poker.Tests.UnitTests
 {
     public class PlayersRotationTests
     {
         private readonly PlayersRotation _rotation;
+        private readonly IMoneyHolder _bigBlind;
+        private readonly IMoneyHolder _smallBlind;
+
+        private readonly string _bigBlindName = "BigBlind";
+        private readonly string _smallBlindName = "SmallBlind";
         public PlayersRotationTests()
         {
-            var players = new Players()
+            _bigBlind = Substitute.For<IMoneyHolder>();
+            _bigBlind.Name.Returns(_bigBlindName);
+            _smallBlind = Substitute.For<IMoneyHolder>();
+            _smallBlind.Name.Returns(_smallBlindName);
+
+            var moneyHolders = new List<IMoneyHolder>()
             {
-                new Player("Test1", 10),
-                new Player("Test2", 10),
+                _smallBlind,
+                _bigBlind,
             };
-            _rotation = new PlayersRotation(players);
+
+            _rotation = new PlayersRotation(moneyHolders);
         }
 
         [Fact]
         public void Should_return_CurrentPlayer_correctly_after_calling_MoveToNextPlayer()
         {
-            Assert.Equal("Test1", _rotation.CurrentPlayer.Name);
+            Assert.Equal(_smallBlindName, _rotation.CurrentPlayer.Name);
             _rotation.MoveToNextNotFoldedPlayer();
-            Assert.Equal("Test2", _rotation.CurrentPlayer.Name);
+            Assert.Equal(_bigBlindName, _rotation.CurrentPlayer.Name);
             _rotation.MoveToNextNotFoldedPlayer();
-            Assert.Equal("Test1", _rotation.CurrentPlayer.Name);
+            Assert.Equal(_smallBlindName, _rotation.CurrentPlayer.Name);
         }
 
         [Fact]
@@ -66,24 +81,38 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void MoveToNextNotFoldedPlayer_should_skip_players_that_folded()
         {
-            Assert.Equal("Test1", _rotation.CurrentPlayer.Name);
+            Assert.Equal(_smallBlindName, _rotation.CurrentPlayer.Name);
             _rotation.MarkCurrentPlayerAsFolded();
             _rotation.MoveToNextNotFoldedPlayer();
-            Assert.Equal("Test2", _rotation.CurrentPlayer.Name);
+            Assert.Equal(_bigBlindName, _rotation.CurrentPlayer.Name);
             _rotation.MoveToNextNotFoldedPlayer();
-            Assert.Equal("Test2", _rotation.CurrentPlayer.Name);
+            Assert.Equal(_bigBlindName, _rotation.CurrentPlayer.Name);
         }
 
         [Fact]
         public void GetNotFoldedPlayers_should_return_only_not_folded_players()
         {
             var preFoldResult = _rotation.GetNotFoldedPlayers();
-            Assert.Contains("Test1", preFoldResult.Select(x => x.Name));
-            Assert.Contains("Test2", preFoldResult.Select(x => x.Name));
+            Assert.Contains(_smallBlindName, preFoldResult.Select(x => x.Name));
+            Assert.Contains(_bigBlindName, preFoldResult.Select(x => x.Name));
             _rotation.MarkCurrentPlayerAsFolded();
             var postFoldResult = _rotation.GetNotFoldedPlayers();
-            Assert.DoesNotContain("Test1", postFoldResult.Select(x => x.Name));
-            Assert.Contains("Test2", postFoldResult.Select(x => x.Name));
+            Assert.DoesNotContain(_smallBlindName, postFoldResult.Select(x => x.Name));
+            Assert.Contains(_bigBlindName, postFoldResult.Select(x => x.Name));
+        }
+
+        [Fact]
+        public void TakeBigBlindMoney_should_take_money_from_big_blind_player()
+        {
+            _rotation.TakeBigBlindMoney(5);
+            _bigBlind.Received(1).TakeMoney(5);
+        }
+
+        [Fact]
+        public void TakeSmallBlindMoney_should_take_money_from_small_blind_player()
+        {
+            _rotation.TakeSmallBlindMoney(5);
+            _smallBlind.Received(1).TakeMoney(5);
         }
     }
 }

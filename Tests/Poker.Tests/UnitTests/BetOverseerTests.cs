@@ -1,37 +1,27 @@
-﻿using Poker.Core.Application.Betting;
-using Poker.Core.Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NSubstitute;
+using Poker.Core.Application.Betting;
+using Poker.Core.Application.Betting.BetOrder;
+using Poker.Core.Domain.Interfaces;
 using Xunit;
-using Xunit.Sdk;
 
 namespace Poker.Tests.UnitTests
 {
     public class BetOverseerTests
     {
         private readonly BetOverseer _betOverseer;
-        private readonly Player _smallBlind;
-        private readonly Player _bigBlind;
-        private readonly Player _firstAfterBigBlind;
-        private const string _smallBlindName = "SmallBlind";
-        private const string _bigBlindName = "BigBlind";
-        private const string _firstAfterBigBlindName = "FirstAfterBigBlind";
+
+        private readonly IPlayersRotation _playersRotation;
+        private readonly IPot _pot;
 
         public BetOverseerTests()
         {
-            _smallBlind = new Player(_smallBlindName, 100);
-            _bigBlind = new Player(_bigBlindName, 100);
-            _firstAfterBigBlind = new Player(_firstAfterBigBlindName, 100);
-            var players = new Players()
-            {
-                _smallBlind,
-                _bigBlind,
-                _firstAfterBigBlind,
-            };
-            _betOverseer = new BetOverseer(players);
+            _playersRotation = Substitute.For<IPlayersRotation>();
+            var currentPlayer = Substitute.For<IMoneyHolder>();
+            currentPlayer.Money.Returns(100);
+            _playersRotation.CurrentPlayer.Returns(currentPlayer);
+
+            _pot = Substitute.For<IPot>();
+            _betOverseer = new BetOverseer(_playersRotation, _pot);
         }
 
         [Fact]
@@ -45,85 +35,101 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_properly_execute_initial_big_and_small_blind()
         {
-
             _betOverseer.ExecuteBigAndSmallBlind(2, 1);
-            Assert.Equal(99, _smallBlind.Money);
-            Assert.Equal(98, _bigBlind.Money);
-            Assert.Equal(100, _firstAfterBigBlind.Money);
+            _playersRotation.Received(1).TakeBigBlindMoney(2);
+            _playersRotation.Received(1).TakeSmallBlindMoney(1);
+            _pot.Received(1).AddToPot(Arg.Any<string>(), 2);
+            _pot.Received(1).AddToPot(Arg.Any<string>(), 1);
         }
 
         [Fact]
-        public void GetCurrentlyBettingPlayer_should_point_to_first_player_after_big_blind_after_ExecuteBigAndSmallBlind()
+        public void ExecuteBigAndSmallBlind_should_result_in_moving_bet_round_to_first_player_after_big_blind()
         {
             _betOverseer.ExecuteBigAndSmallBlind(2, 1);
-            Assert.Equal(_firstAfterBigBlind.Name, _betOverseer.GetCurrentlyBettingPlayer());
+            _playersRotation.Received(1).MoveToPlayerAfterBigBlind();
         }
 
         [Fact]
         public void MoveBlinds_should_pass_blind_pointer_to_next_person()
         {
-            Assert.Equal(_smallBlind.Name, _betOverseer.GetSmallBlindPlayer());
-            Assert.Equal(_bigBlind.Name, _betOverseer.GetBigBlindPlayer());
-
             _betOverseer.MoveBlinds();
-
-            Assert.Equal(_bigBlind.Name, _betOverseer.GetSmallBlindPlayer());
-            Assert.Equal(_firstAfterBigBlind.Name, _betOverseer.GetBigBlindPlayer());
+            _playersRotation.Received(1).MoveBlinds();
         }
 
         [Fact]
         public void ExecuteForCurrentPlayer_should_move_to_another_player_for_valid_decision()
         {
-            Assert.Equal(_smallBlindName, _betOverseer.GetCurrentlyBettingPlayer());
             _betOverseer.ExecuteForCurrentPlayer("raise:10");
-            Assert.Equal(_bigBlindName, _betOverseer.GetCurrentlyBettingPlayer());
+            _playersRotation.Received(1).MoveToNextNotFoldedPlayer();
         }
 
         [Fact]
         public void ExecuteForCurrentPlayer_should_not_move_to_another_player_for_invalid_decision()
         {
-            Assert.Equal(_smallBlindName, _betOverseer.GetCurrentlyBettingPlayer());
             _betOverseer.ExecuteForCurrentPlayer("asdasdsa");
-            Assert.Equal(_smallBlindName, _betOverseer.GetCurrentlyBettingPlayer());
+            _playersRotation.DidNotReceive().MoveToNextNotFoldedPlayer();
         }
 
         [Fact]
         public void ExecuteForCurrentPlayer_raise_should_remove_money_from_player_and_add_it_to_pot()
         {
             _betOverseer.ExecuteForCurrentPlayer("raise:10");
-            Assert.Equal(90, _smallBlind.Money);
-            Assert.Equal(10, _betOverseer.GetTotalAmountOnPot());
+            _playersRotation.Received(1).TakeCurrentPlayerMoney(10);
+            _pot.Received(1).AddToPot(Arg.Any<string>(), 10);
+        }
+
+        [Fact]
+        public void ExecuteForCurrentPlayer_raise_should_mark_other_not_folded_players_as_not_finished()
+        {
+            _betOverseer.ExecuteForCurrentPlayer("raise:10");
+            _playersRotation.Received(1).MarkNotFoldedPlayersAsNotFinished();
+        }
+
+        [Fact]
+        public void ExecuteForCurrentPlayer_raise_should_mark_current_player_finished()
+        {
+            _betOverseer.ExecuteForCurrentPlayer("raise:10");
+            _playersRotation.Received(1).MarkCurrentPlayerAsFinished();
         }
 
         [Fact]
         public void ExecuteForCurrentPlayer_check_should_remove_money_from_player_and_add_it_to_pot()
         {
-            _betOverseer.ExecuteForCurrentPlayer("raise:10");
             _betOverseer.ExecuteForCurrentPlayer("check");
-            Assert.Equal(90, _bigBlind.Money);
-            Assert.Equal(20, _betOverseer.GetTotalAmountOnPot());
+            _playersRotation.Received(1).TakeCurrentPlayerMoney(Arg.Any<int>());
+            _pot.Received(1).AddToPot(Arg.Any<string>(), Arg.Any<int>());
+        }
+
+        [Fact]
+        public void ExecuteForCurrentPlayer_check_should_not_mark_other_not_folded_players_as_not_finished()
+        {
+            _betOverseer.ExecuteForCurrentPlayer("check");
+            _playersRotation.DidNotReceive().MarkNotFoldedPlayersAsNotFinished();
+        }
+
+        [Fact]
+        public void ExecuteForCurrentPlayer_check_should_mark_current_player_finished()
+        {
+            _betOverseer.ExecuteForCurrentPlayer("check");
+            _playersRotation.Received(1).MarkCurrentPlayerAsFinished();
         }
 
         [Fact]
         public void ExecuteForCurrentPlayer_fold_should_not_change_pot_amount_nor_player_money()
         {
-            var smallBlindMoney = _smallBlind.Money;
-            var pot = _betOverseer.GetTotalAmountOnPot();
             _betOverseer.ExecuteForCurrentPlayer("fold");
-            Assert.Equal(smallBlindMoney, _smallBlind.Money);
-            Assert.Equal(pot, _betOverseer.GetTotalAmountOnPot());
+            _playersRotation.DidNotReceive().TakeCurrentPlayerMoney(Arg.Any<int>());
+            _pot.DidNotReceive().AddToPot(Arg.Any<string>(), Arg.Any<int>());
         }
 
         [Fact]
         public void ExecuteForCurrentPlayer_should_return_that_betting_is_over_if_all_players_folded_or_finished()
         {
-            bool isBettingOver = false;
-            (_, isBettingOver) = _betOverseer.ExecuteForCurrentPlayer("check");
-            Assert.False(isBettingOver);
-            (_, isBettingOver) = _betOverseer.ExecuteForCurrentPlayer("fold");
-            Assert.False(isBettingOver);
-            (_, isBettingOver) = _betOverseer.ExecuteForCurrentPlayer("fold");
+            _playersRotation.IsBettingOver()
+                .Returns(true);
+            var (_, isBettingOver) = _betOverseer.ExecuteForCurrentPlayer("check");
             Assert.True(isBettingOver);
+           
         }
     }
 }
