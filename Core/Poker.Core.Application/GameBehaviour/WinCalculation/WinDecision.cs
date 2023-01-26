@@ -1,14 +1,19 @@
 ﻿using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Exceptions;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Poker.Core.Application.GameBehaviour.WinCalculation
 {
-    public class WinDecision
+    public interface IWinDecision
+    {
+        ReadOnlyCollection<Winner> GetWinners(IEnumerable<Player> notFoldedPlayers);
+        void ResetWinners();
+    }
+
+    public class WinDecision : IWinDecision
     {
         private readonly ITable _table;
         private readonly ICombinationComparer _combinationComparer;
@@ -27,7 +32,7 @@ namespace Poker.Core.Application.GameBehaviour.WinCalculation
             _winners = null;
         }
 
-        public ReadOnlyCollection<Winner> CalculateWinners(IEnumerable<Player> notFoldedPlayers)
+        private ReadOnlyCollection<Winner> CalculateWinners(IEnumerable<Player> notFoldedPlayers)
         {
             if (!_table.IsFullySet)
                 throw new UnableToCalculateWinnerException();
