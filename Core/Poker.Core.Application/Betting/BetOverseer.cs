@@ -7,7 +7,22 @@ using System.Linq;
 
 namespace Poker.Core.Application.Betting
 {
-    public class BetOverseer
+    public interface IBetOverseer
+    {
+        bool DidExecuteBigBlindAndSmallBlind { get; }
+        void ExecuteBigAndSmallBlind(int bigBlindValue, int smallBlindValue);
+        (bool BetSucceeded, bool IsBettingOver) ExecuteForCurrentPlayer(string input);
+        int GetAmountToCheck();
+        string GetBigBlindPlayer();
+        string GetCurrentlyBettingPlayer();
+        IEnumerable<IPlayer> GetNotFoldedPlayers();
+        string GetSmallBlindPlayer();
+        int GetTotalAmountOnPot();
+        void MoveBlinds();
+        void ResetForNewGame();
+    }
+
+    public class BetOverseer : IBetOverseer
     {
         private readonly IPlayersRotation _playersRotation;
         private readonly IPot _pot;

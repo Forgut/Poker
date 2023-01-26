@@ -13,13 +13,13 @@ namespace Poker.Core.Application.GameBehaviour
 {
     public class StandardGame : Game
     {
-        private readonly BetOverseer _betOverseer;
+        private readonly IBetOverseer _betOverseer;
         public StandardGame(CombinationComparer combinationComparer,
                     WinChanceEstimator winChanceEstimator,
                     Table table,
                     Players players,
                     IEventPublisher eventPublisher,
-                    BetOverseer betOverseer)
+                    IBetOverseer betOverseer)
             : base(combinationComparer,
                   winChanceEstimator,
                   table,
