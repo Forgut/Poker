@@ -9,7 +9,15 @@ using System.Linq;
 
 namespace Poker.Core.Application
 {
-    public class WinChanceEstimator
+    public interface IWinChanceEstimator
+    {
+        CombinationEstimationResult ProbableCombinationsForEnemy1Missing(ITable table, Player player);
+        CombinationEstimationResult ProbableCombinationsForEnemy2Missing(ITable table, Player player);
+        CombinationEstimationResult ProbableCombinationsForPlayer1Missing(ITable table, Player player);
+        CombinationEstimationResult ProbableCombinationsForPlayer2Missing(ITable table, Player player);
+    }
+
+    public class WinChanceEstimator : IWinChanceEstimator
     {
         public CombinationEstimationResult ProbableCombinationsForPlayer2Missing(ITable table, Player player)
         {

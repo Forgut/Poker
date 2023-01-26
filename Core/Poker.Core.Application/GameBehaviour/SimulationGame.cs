@@ -15,7 +15,7 @@ namespace Poker.Core.Application.GameBehaviour
 
         public SimulationGame(Croupier croupier,
                     CombinationComparer combinationComparer,
-                    WinChanceEstimator winChanceEstimator,
+                    IWinChanceEstimator winChanceEstimator,
                     ITable table,
                     Players players,
                     IEventPublisher eventPublisher)
