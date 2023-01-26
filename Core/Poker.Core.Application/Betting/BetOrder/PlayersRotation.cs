@@ -1,18 +1,40 @@
 ﻿using Poker.Core.Domain.Entity;
+using Poker.Core.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Poker.Core.Application.Betting.BetOrder
 {
-    public class PlayersRotation
+    public interface IPlayersRotation
+    {
+        IMoneyHolder BigBlindPlayer { get; }
+        IMoneyHolder CurrentPlayer { get; }
+        IMoneyHolder SmallBlindPlayer { get; }
+
+        IEnumerable<IMoneyHolder> GetNotFoldedPlayers();
+        bool IsBettingOver();
+        void MarkCurrentPlayerAsFinished();
+        void MarkCurrentPlayerAsFolded();
+        void MarkNotFoldedPlayersAsNotFinished();
+        void MoveBlinds();
+        void MoveToNextNotFoldedPlayer();
+        void MoveToPlayerAfterBigBlind();
+        void MoveToSmallBlind();
+        void ResetPlayersTurns();
+        void TakeBigBlindMoney(int amount);
+        void TakeSmallBlindMoney(int amount);
+        void TakeCurrentPlayerMoney(int amount);
+    }
+
+    public class PlayersRotation : IPlayersRotation
     {
         private readonly List<PlayerInfo> _playerInfos;
         private RecurringIndex _currentPlayerIndex;
         private RecurringIndex _bigBlindIndex;
         private RecurringIndex _smallBlindIndex;
 
-        public PlayersRotation(Players players)
+        public PlayersRotation(List<IMoneyHolder> players)
         {
             _playerInfos = players
                 .Select(x => new PlayerInfo(x))
@@ -25,13 +47,13 @@ namespace Poker.Core.Application.Betting.BetOrder
             _bigBlindIndex.Value = 1;
         }
 
-        public Player CurrentPlayer
+        public IMoneyHolder CurrentPlayer
             => _playerInfos[_currentPlayerIndex.Value].Player;
 
-        public Player BigBlindPlayer
+        public IMoneyHolder BigBlindPlayer
             => _playerInfos[_bigBlindIndex.Value].Player;
 
-        public Player SmallBlindPlayer
+        public IMoneyHolder SmallBlindPlayer
             => _playerInfos[_smallBlindIndex.Value].Player;
 
         public void MoveToNextNotFoldedPlayer()
@@ -95,10 +117,25 @@ namespace Poker.Core.Application.Betting.BetOrder
             _currentPlayerIndex.Value = _smallBlindIndex.Value;
         }
 
-        public IEnumerable<Player> GetNotFoldedPlayers()
+        public IEnumerable<IMoneyHolder> GetNotFoldedPlayers()
         {
             return _playerInfos.Where(x => !x.HasFolded)
                 .Select(x => x.Player);
+        }
+
+        public void TakeBigBlindMoney(int amount)
+        {
+            BigBlindPlayer.TakeMoney(amount);
+        }
+
+        public void TakeSmallBlindMoney(int amount)
+        {
+            SmallBlindPlayer.TakeMoney(amount);
+        }
+
+        public void TakeCurrentPlayerMoney(int amount)
+        {
+            CurrentPlayer.TakeMoney(amount);
         }
     }
 }

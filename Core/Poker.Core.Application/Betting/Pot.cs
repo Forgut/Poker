@@ -4,7 +4,15 @@ using System.Linq;
 
 namespace Poker.Core.Application.Betting
 {
-    public class Pot
+    public interface IPot
+    {
+        void AddToPot(string playerName, int amount);
+        int AmountToCheck(string playerName);
+        int GetTotalAmount();
+        void Reset();
+    }
+
+    public class Pot : IPot
     {
         private readonly List<(string PlayerName, int Amount)> _transactions;
 

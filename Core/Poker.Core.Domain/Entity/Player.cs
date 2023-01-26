@@ -1,12 +1,13 @@
 ﻿using Poker.Core.Common;
 using Poker.Core.Domain.Exceptions;
+using Poker.Core.Domain.Interfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Poker.Core.Domain.Entity
 {
-    public class Player
+    public class Player : IMoneyHolder
     {
         public Player(string name, int initialMoney)
         {

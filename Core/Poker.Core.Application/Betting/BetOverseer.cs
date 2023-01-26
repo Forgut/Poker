@@ -1,19 +1,28 @@
 ﻿using Poker.Core.Application.Betting.BetOrder;
 using Poker.Core.Application.Betting.Decisions;
 using Poker.Core.Domain.Entity;
+using Poker.Core.Domain.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Poker.Core.Application.Betting
 {
     public class BetOverseer
     {
-        private readonly PlayersRotation _playersRotation;
-        private readonly Pot _pot;
+        private readonly IPlayersRotation _playersRotation;
+        private readonly IPot _pot;
 
         public BetOverseer(Players players)
         {
-            _playersRotation = new PlayersRotation(players);
+            _playersRotation = new PlayersRotation(players.Cast<IMoneyHolder>().ToList());
             _pot = new Pot();
+        }
+
+        public BetOverseer(IPlayersRotation playersRotation,
+            IPot pot)
+        {
+            _playersRotation = playersRotation;
+            _pot = pot;
         }
 
         public string GetCurrentlyBettingPlayer()
@@ -44,10 +53,10 @@ namespace Poker.Core.Application.Betting
         public bool DidExecuteBigBlindAndSmallBlind { get; private set; }
         public void ExecuteBigAndSmallBlind(int bigBlindValue, int smallBlindValue)
         {
-            _playersRotation.BigBlindPlayer.TakeMoney(bigBlindValue);
+            _playersRotation.TakeBigBlindMoney(bigBlindValue);
             _pot.AddToPot(_playersRotation.BigBlindPlayer.Name, bigBlindValue);
 
-            _playersRotation.SmallBlindPlayer.TakeMoney(smallBlindValue);
+            _playersRotation.TakeSmallBlindMoney(smallBlindValue);
             _pot.AddToPot(_playersRotation.SmallBlindPlayer.Name, smallBlindValue);
 
             _playersRotation.MoveToPlayerAfterBigBlind();
@@ -62,7 +71,7 @@ namespace Poker.Core.Application.Betting
 
         public IEnumerable<Player> GetNotFoldedPlayers()
         {
-            return _playersRotation.GetNotFoldedPlayers();
+            return _playersRotation.GetNotFoldedPlayers().Cast<Player>(); //TODO hackan
         }
 
         public (bool BetSucceeded, bool IsBettingOver) ExecuteForCurrentPlayer(string input)
@@ -115,7 +124,7 @@ namespace Poker.Core.Application.Betting
             if (_playersRotation.CurrentPlayer.Money < amount)
                 return false;
 
-            _playersRotation.CurrentPlayer.TakeMoney(amount);
+            _playersRotation.TakeCurrentPlayerMoney(amount);
             _pot.AddToPot(_playersRotation.CurrentPlayer.Name, amount);
             _playersRotation.MarkCurrentPlayerAsFinished();
             return true;
@@ -128,7 +137,7 @@ namespace Poker.Core.Application.Betting
             if (_playersRotation.CurrentPlayer.Money < totalAmount)
                 return false;
 
-            _playersRotation.CurrentPlayer.TakeMoney(totalAmount);
+            _playersRotation.TakeCurrentPlayerMoney(totalAmount);
             _pot.AddToPot(_playersRotation.CurrentPlayer.Name, totalAmount);
             _playersRotation.MarkNotFoldedPlayersAsNotFinished();
             _playersRotation.MarkCurrentPlayerAsFinished();
