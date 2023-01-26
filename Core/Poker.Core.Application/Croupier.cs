@@ -5,7 +5,15 @@ using System;
 
 namespace Poker.Core.Application
 {
-    public class Croupier
+    public interface ICroupier
+    {
+        void Flop(ITable table);
+        void PreFlop(Players players);
+        void River(ITable table);
+        void Turn(ITable table);
+    }
+
+    public class Croupier : ICroupier
     {
         private Deck? _deck;
         private readonly Random _random;
