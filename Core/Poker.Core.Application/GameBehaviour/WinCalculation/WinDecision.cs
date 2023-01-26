@@ -11,9 +11,9 @@ namespace Poker.Core.Application.GameBehaviour.WinCalculation
     public class WinDecision
     {
         private readonly ITable _table;
-        private readonly CombinationComparer _combinationComparer;
+        private readonly ICombinationComparer _combinationComparer;
 
-        public WinDecision(ITable table, CombinationComparer combinationComparer)
+        public WinDecision(ITable table, ICombinationComparer combinationComparer)
         {
             _table = table;
             _combinationComparer = combinationComparer;

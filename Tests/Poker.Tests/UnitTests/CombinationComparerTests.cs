@@ -10,6 +10,13 @@ namespace Poker.Tests.UnitTests
 {
     public class CombinationComparerTests
     {
+        private readonly CombinationComparer _comparer;
+
+        public CombinationComparerTests()
+        {
+            _comparer = new CombinationComparer();
+        }
+
         [Theory]
         [InlineData(ECombination.HighCard, ECombination.HighCard, ECombination.HighCard, ECombination.OnePair, ECombination.OnePair)]
         [InlineData(ECombination.RoyalFlush, ECombination.TwoPair, ECombination.FourOfAKind, ECombination.OnePair, ECombination.RoyalFlush)]
@@ -21,7 +28,7 @@ namespace Poker.Tests.UnitTests
             ECombination combination4,
             ECombination expectedWinner)
         {
-            var winner = new CombinationComparer()
+            var winner = _comparer
                 .GetBestCombinations(new List<CombinationDTO>()
                 {
                     new CombinationDTO(combination1, null),
@@ -66,7 +73,7 @@ namespace Poker.Tests.UnitTests
                     new Card(EValue.Two, EColor.Diamonds),
                 });
 
-            var winner = new CombinationComparer()
+            var winner = _comparer
                 .GetBestCombinations(new List<CombinationDTO>()
                 {
                     combination1,
@@ -110,7 +117,7 @@ namespace Poker.Tests.UnitTests
                     new Card(EValue.Two, EColor.Diamonds),
                 });
 
-            var winner = new CombinationComparer()
+            var winner = _comparer
                 .GetBestCombinations(new List<CombinationDTO>()
                 {
                     combination1,
@@ -153,7 +160,7 @@ namespace Poker.Tests.UnitTests
                     new Card(EValue.Four, EColor.Diamonds),
                     new Card(EValue.Two, EColor.Diamonds),
                 });
-            var winner = new CombinationComparer()
+            var winner = _comparer
                 .GetBestCombinations(new List<CombinationDTO>()
                 {
                     combination1,
@@ -197,7 +204,7 @@ namespace Poker.Tests.UnitTests
                     new Card(EValue.Two, EColor.Diamonds),
                 });
 
-            var winner = new CombinationComparer()
+            var winner = _comparer
                 .GetBestCombinations(new List<CombinationDTO>()
                 {
                     combination1,
@@ -228,7 +235,7 @@ namespace Poker.Tests.UnitTests
             var combination2 = new CombinationFinder(GetCards(hand2)).GetBestCombination();
             var combination3 = new CombinationFinder(GetCards(hand3)).GetBestCombination();
 
-            var winner = new CombinationComparer()
+            var winner = _comparer
                 .GetBestCombinations(new List<CombinationDTO>()
                 {
                     combination1,
@@ -257,7 +264,7 @@ namespace Poker.Tests.UnitTests
             var combination1 = new CombinationFinder(GetCards(hand1)).GetBestCombination();
             var combination2 = new CombinationFinder(GetCards(hand2)).GetBestCombination();
 
-            var winner = new CombinationComparer()
+            var winner = _comparer
                 .GetBestCombinations(new List<CombinationDTO>()
                 {
                     combination1,

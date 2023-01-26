@@ -14,7 +14,7 @@ namespace Poker.Core.Application.GameBehaviour
     public class StandardGame : Game
     {
         private readonly IBetOverseer _betOverseer;
-        public StandardGame(CombinationComparer combinationComparer,
+        public StandardGame(ICombinationComparer combinationComparer,
                     IWinChanceEstimator winChanceEstimator,
                     ITable table,
                     Players players,

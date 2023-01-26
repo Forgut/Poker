@@ -3,7 +3,12 @@ using System.Linq;
 
 namespace Poker.Core.Application.CombinationsLogic
 {
-    public class CombinationComparer
+    public interface ICombinationComparer
+    {
+        IEnumerable<CombinationDTO> GetBestCombinations(IEnumerable<CombinationDTO> combinations);
+    }
+
+    public class CombinationComparer : ICombinationComparer
     {
         public IEnumerable<CombinationDTO> GetBestCombinations(IEnumerable<CombinationDTO> combinations)
         {

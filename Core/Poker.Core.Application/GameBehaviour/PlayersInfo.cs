@@ -3,7 +3,15 @@ using System.Linq;
 
 namespace Poker.Core.Application.GameBehaviour
 {
-    public class PlayersInfo
+    public interface IPlayersInfo
+    {
+        Players Players { get; }
+        Player TargetPlayer { get; }
+
+        bool SetTargetPlayer(string playerName);
+    }
+
+    public class PlayersInfo : IPlayersInfo
     {
         public Players Players { get; private set; }
         public PlayersInfo(Players players)

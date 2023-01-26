@@ -13,12 +13,12 @@ namespace Poker.Core.Application.GameBehaviour
     {
         protected readonly ITable _table;
         protected readonly IWinChanceEstimator _winChanceEstimator;
-        protected readonly PlayersInfo _playersInfo;
+        protected readonly IPlayersInfo _playersInfo;
         protected readonly WinDecision _winDecision;
         protected readonly IEventPublisher _eventPublisher;
 
         protected Game(
-            CombinationComparer combinationComparer,
+            ICombinationComparer combinationComparer,
             IWinChanceEstimator winChanceEstimator,
             ITable table,
             Players players,

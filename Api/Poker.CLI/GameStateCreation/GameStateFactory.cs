@@ -28,7 +28,7 @@ namespace Poker.CLI.GameStateCreation
         private ITable _table;
         private ICroupier _croupier;
         private IWinChanceEstimator _winChanceEstimator;
-        private CombinationComparer _combinationComparer;
+        private ICombinationComparer _combinationComparer;
         private Players _players;
         private IEventPublisher _eventPublisher;
         private bool _isSimulation;
