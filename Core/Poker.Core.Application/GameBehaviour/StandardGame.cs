@@ -116,7 +116,7 @@ namespace Poker.Core.Application.GameBehaviour
                 .Where(winner => notFoldedPlayers.Select(x => x.Name).Contains(winner.Player.Name)).ToList();
 
             PublishEvent(winners);
-            WinMoneyDistributor.DistributeMoney(_betOverseer.GetTotalAmountOnPot(), winners.Select(x => x.Player));
+            WinMoneyDistributor.DistributeMoney(_betOverseer.GetTotalAmountOnPot(), winners.Select(x => x.Player).Cast<Player>()); //hack
             _betOverseer.MoveBlinds();
             GameState = EGameState.End;
 

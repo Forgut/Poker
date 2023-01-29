@@ -2,6 +2,7 @@
 using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Common;
 using Poker.Core.Domain.Entity;
+using Poker.Core.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -11,10 +12,10 @@ namespace Poker.Core.Application
 {
     public interface IWinChanceEstimator
     {
-        CombinationEstimationResult ProbableCombinationsForEnemy1Missing(ITable table, Player player);
-        CombinationEstimationResult ProbableCombinationsForEnemy2Missing(ITable table, Player player);
-        CombinationEstimationResult ProbableCombinationsForPlayer1Missing(ITable table, Player player);
-        CombinationEstimationResult ProbableCombinationsForPlayer2Missing(ITable table, Player player);
+        CombinationEstimationResult ProbableCombinationsForEnemy1Missing(ITable table, ICardsHolder player);
+        CombinationEstimationResult ProbableCombinationsForEnemy2Missing(ITable table, ICardsHolder player);
+        CombinationEstimationResult ProbableCombinationsForPlayer1Missing(ITable table, ICardsHolder player);
+        CombinationEstimationResult ProbableCombinationsForPlayer2Missing(ITable table, ICardsHolder player);
     }
 
     public class WinChanceEstimator : IWinChanceEstimator
@@ -26,7 +27,7 @@ namespace Poker.Core.Application
             _combinationFinder = combinationFinder;
         }
 
-        public CombinationEstimationResult ProbableCombinationsForPlayer2Missing(ITable table, Player player)
+        public CombinationEstimationResult ProbableCombinationsForPlayer2Missing(ITable table, ICardsHolder player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
 
@@ -54,7 +55,7 @@ namespace Poker.Core.Application
             return new CombinationEstimationResult(combinationsDictionary);
         }
 
-        public CombinationEstimationResult ProbableCombinationsForPlayer1Missing(ITable table, Player player)
+        public CombinationEstimationResult ProbableCombinationsForPlayer1Missing(ITable table, ICardsHolder player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
 
@@ -77,7 +78,7 @@ namespace Poker.Core.Application
             return new CombinationEstimationResult(combinationsDictionary);
         }
 
-        public CombinationEstimationResult ProbableCombinationsForEnemy2Missing(ITable table, Player player)
+        public CombinationEstimationResult ProbableCombinationsForEnemy2Missing(ITable table, ICardsHolder player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
 
@@ -113,7 +114,7 @@ namespace Poker.Core.Application
             return new CombinationEstimationResult(combinationsDictionary);
         }
 
-        public CombinationEstimationResult ProbableCombinationsForEnemy1Missing(ITable table, Player player)
+        public CombinationEstimationResult ProbableCombinationsForEnemy1Missing(ITable table, ICardsHolder player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
 
@@ -158,7 +159,7 @@ namespace Poker.Core.Application
 
 
 
-        private IEnumerable<Card> GetNotAvailableCards(ITable table, Player player)
+        private IEnumerable<Card> GetNotAvailableCards(ITable table, ICardsHolder player)
         {
             var cards = player.Cards.ToList();
             cards.AddRange(table.Cards);

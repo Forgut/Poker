@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Poker.Core.Domain.Entity
 {
-    public class Player : IMoneyHolder
+    public class Player : IMoneyHolder, ICardsHolder
     {
         public Player(string name, int initialMoney)
         {
