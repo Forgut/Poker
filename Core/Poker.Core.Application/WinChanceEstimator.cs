@@ -19,6 +19,13 @@ namespace Poker.Core.Application
 
     public class WinChanceEstimator : IWinChanceEstimator
     {
+        private readonly ICombinationFinder _combinationFinder;
+
+        public WinChanceEstimator(ICombinationFinder combinationFinder)
+        {
+            _combinationFinder = combinationFinder;
+        }
+
         public CombinationEstimationResult ProbableCombinationsForPlayer2Missing(ITable table, Player player)
         {
             var notAvailableCards = GetNotAvailableCards(table, player);
@@ -39,7 +46,7 @@ namespace Poker.Core.Application
             }
 
             var combinationsDictionary = possibleCombinations
-                .Select(x => new { Combination = x, Comb = new CombinationFinder(x).GetBestCombination().Combination })
+                .Select(x => new { Combination = x, Comb = _combinationFinder.GetBestCombination(x).Combination })
                 .GroupBy(x => x.Comb)
                 .Select(x => new { x.Key, Chance = x.Count() / (double)possibleCombinations.Count })
                 .ToDictionary(keySelector: x => x.Key, elementSelector: chance => chance.Chance);
@@ -62,7 +69,7 @@ namespace Poker.Core.Application
             }
 
             var combinationsDictionary = possibleCombinations
-                .Select(x => new { Combination = x, Comb = new CombinationFinder(x).GetBestCombination().Combination })
+                .Select(x => new { Combination = x, Comb = _combinationFinder.GetBestCombination(x).Combination })
                 .GroupBy(x => x.Comb)
                 .Select(x => new { x.Key, Chance = x.Count() / (double)possibleCombinations.Count })
                 .ToDictionary(keySelector: x => x.Key, elementSelector: chance => chance.Chance);
@@ -98,7 +105,7 @@ namespace Poker.Core.Application
             }
 
             var combinationsDictionary = possibleCombinations
-                .Select(x => new { Combination = x, Comb = new CombinationFinder(x).GetBestCombination().Combination })
+                .Select(x => new { Combination = x, Comb = _combinationFinder.GetBestCombination(x).Combination })
                 .GroupBy(x => x.Comb)
                 .Select(x => new { x.Key, Chance = x.Count() / (double)possibleCombinations.Count })
                 .ToDictionary(keySelector: x => x.Key, elementSelector: chance => chance.Chance);
@@ -131,7 +138,7 @@ namespace Poker.Core.Application
             }
 
             var combinationsDictionary = possibleCombinations
-                .Select(x => new { Combination = x, Comb = new CombinationFinder(x).GetBestCombination().Combination })
+                .Select(x => new { Combination = x, Comb = _combinationFinder.GetBestCombination(x).Combination })
                 .GroupBy(x => x.Comb)
                 .Select(x => new { x.Key, Chance = x.Count() / (double)possibleCombinations.Count })
                 .ToDictionary(keySelector: x => x.Key, elementSelector: chance => chance.Chance);

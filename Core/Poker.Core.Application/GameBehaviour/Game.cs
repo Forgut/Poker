@@ -16,19 +16,22 @@ namespace Poker.Core.Application.GameBehaviour
         protected readonly IPlayersInfo _playersInfo;
         protected readonly IWinDecision _winDecision;
         protected readonly IEventPublisher _eventPublisher;
+        protected readonly ICombinationFinder _combinationFinder;
 
         protected Game(
             ICombinationComparer combinationComparer,
             IWinChanceEstimator winChanceEstimator,
             ITable table,
             Players players,
-            IEventPublisher eventPublisher)
+            IEventPublisher eventPublisher,
+            ICombinationFinder combinationFinder)
         {
             _table = table;
             _winChanceEstimator = winChanceEstimator;
             _playersInfo = new PlayersInfo(players);
-            _winDecision = new WinDecision(table, combinationComparer);
+            _winDecision = new WinDecision(table, combinationComparer, combinationFinder);
             _eventPublisher = eventPublisher;
+            _combinationFinder = combinationFinder;
         }
 
         public EGameState GameState { get; internal set; } //todo wyniesc to do GameState,
@@ -136,7 +139,7 @@ namespace Poker.Core.Application.GameBehaviour
                     .Select(x => new
                     {
                         Player = x,
-                        Combination = new CombinationFinder(x, _table).GetBestCombination()
+                        Combination = _combinationFinder.GetBestCombination(x, _table)
                     });
 
                 foreach (var playerCombination in playersCombinations)

@@ -39,8 +39,13 @@ namespace Poker.CLI.GameStateCreation
 
     interface ISetEventPublisherStage
     {
-        IBuildGameStateStage WithNoEventPublisher();
-        IBuildGameStateStage WithEventPublisher(IEventPublisher eventPublisher);
+        ICombinationFinderStage WithNoEventPublisher();
+        ICombinationFinderStage WithEventPublisher(IEventPublisher eventPublisher);
+    }
+
+    interface ICombinationFinderStage
+    {
+        IBuildGameStateStage WithDefaultCombinationFinder();
     }
 
     interface IBuildGameStateStage

@@ -1,5 +1,4 @@
 ﻿using NSubstitute;
-using Poker.Core.Application;
 using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
 using Poker.Tests.Common;
@@ -12,11 +11,13 @@ namespace Poker.Tests.UnitTests
     {
         private readonly Player _player;
         private readonly ITable _table;
+        private readonly CombinationFinder _combinationFinder;
 
         public CombinationFinderTests()
         {
             _player = new Player("test", 100);
             _table = Substitute.For<ITable>();
+            _combinationFinder = new CombinationFinder();
         }
 
         [Fact]
@@ -32,7 +33,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.King, EColor.Clubs),
                 new Card(EValue.Ace, EColor.Hearts)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.HighCard, combination.Combination);
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.Ace));
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.King));
@@ -53,7 +54,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.King, EColor.Clubs),
                 new Card(EValue.Ace, EColor.Hearts)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.OnePair, combination.Combination);
             Assert.True(combination.Cards.Count(x => x.Value == EValue.Ten) == 2);
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.Ace));
@@ -74,7 +75,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.King, EColor.Clubs),
                 new Card(EValue.Four, EColor.Clubs)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.TwoPair, combination.Combination);
             Assert.True(combination.Cards.Count(x => x.Value == EValue.Ten) == 2);
             Assert.True(combination.Cards.Count(x => x.Value == EValue.Eight) == 2);
@@ -94,7 +95,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.Four, EColor.Hearts),
                 new Card(EValue.Four, EColor.Clubs)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.TwoPair, combination.Combination);
             Assert.True(combination.Cards.Count(x => x.Value == EValue.Ten) == 2);
             Assert.True(combination.Cards.Count(x => x.Value == EValue.Eight) == 2);
@@ -114,7 +115,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.Four, EColor.Clubs),
                 new Card(EValue.Four, EColor.Clubs)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.ThreeOfAKind, combination.Combination);
             Assert.True(combination.Cards.Count(x => x.Value == EValue.Eight) == 3);
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.Ten));
@@ -134,7 +135,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.King, EColor.Clubs),
                 new Card(EValue.Four, EColor.Clubs)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.Flush, combination.Combination);
             Assert.True(combination.Cards.All(x => x.Color == EColor.Clubs));
         }
@@ -152,7 +153,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.Seven, EColor.Clubs),
                 new Card(EValue.King, EColor.Hearts)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.Straight, combination.Combination);
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.Three));
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.Four));
@@ -173,7 +174,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.Five, EColor.Hearts),
                 new Card(EValue.Seven, EColor.Clubs)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.FullHouse, combination.Combination);
             Assert.True(combination.Cards.Count(x => x.Value == EValue.Five) == 3);
             Assert.True(combination.Cards.Count(x => x.Value == EValue.Seven) == 2);
@@ -191,7 +192,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.Eight, EColor.Hearts),
                 new Card(EValue.Seven, EColor.Clubs)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.FourOfAKind, combination.Combination);
             Assert.True(combination.Cards.Count(x => x.Value == EValue.Five) == 4);
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.Eight));
@@ -211,7 +212,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.Seven, EColor.Hearts),
                 new Card(EValue.Ace, EColor.Clubs)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.StraightFlush, combination.Combination);
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.Three));
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.Four));
@@ -234,7 +235,7 @@ namespace Poker.Tests.UnitTests
                 new Card(EValue.Ten, EColor.Hearts),
                 new Card(EValue.Three, EColor.Clubs)));
 
-            var combination = new CombinationFinder(_player, _table).GetBestCombination();
+            var combination = _combinationFinder.GetBestCombination(_player, _table);
             Assert.Equal(ECombination.RoyalFlush, combination.Combination);
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.Ace));
             Assert.Single(combination.Cards.Where(x => x.Value == EValue.King));

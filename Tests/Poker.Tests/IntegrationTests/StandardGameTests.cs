@@ -20,7 +20,8 @@ namespace Poker.Tests.IntegrationTests
         public StandardGameTests()
         {
             var combinationComparer = new CombinationComparer();
-            var winChanceEstimator = new WinChanceEstimator();
+            var combinationFinder = new CombinationFinder();
+            var winChanceEstimator = new WinChanceEstimator(combinationFinder);
             var table = new Table();
             var eventPublisher = Substitute.For<IEventPublisher>();
             var players = new Players()
@@ -35,7 +36,8 @@ namespace Poker.Tests.IntegrationTests
                                      table,
                                      players,
                                      eventPublisher,
-                                     new BetOverseer(players));
+                                     new BetOverseer(players),
+                                     combinationFinder);
         }
 
         [Theory]

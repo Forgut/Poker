@@ -17,11 +17,15 @@ namespace Poker.Core.Application.GameBehaviour.WinCalculation
     {
         private readonly ITable _table;
         private readonly ICombinationComparer _combinationComparer;
+        private readonly ICombinationFinder _combinationFinder;
 
-        public WinDecision(ITable table, ICombinationComparer combinationComparer)
+        public WinDecision(ITable table,
+                           ICombinationComparer combinationComparer,
+                           ICombinationFinder combinationFinder)
         {
             _table = table;
             _combinationComparer = combinationComparer;
+            _combinationFinder = combinationFinder;
         }
 
         private ReadOnlyCollection<Winner>? _winners;
@@ -42,7 +46,7 @@ namespace Poker.Core.Application.GameBehaviour.WinCalculation
                 .Select(x => new
                 {
                     Player = x,
-                    Combination = new CombinationFinder(x, _table).GetBestCombination()
+                    Combination = _combinationFinder.GetBestCombination(x, _table)
                 });
 
             var winners = _combinationComparer

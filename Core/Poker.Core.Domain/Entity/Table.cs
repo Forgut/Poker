@@ -1,11 +1,10 @@
 ﻿using Poker.Core.Common;
-using Poker.Core.Domain.Entity;
 using Poker.Core.Domain.Exceptions;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Poker.Core.Application
+namespace Poker.Core.Domain.Entity
 {
     public interface ITable
     {

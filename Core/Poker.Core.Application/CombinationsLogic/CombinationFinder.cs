@@ -7,39 +7,17 @@ using System.Linq;
 
 namespace Poker.Core.Application.CombinationsLogic
 {
-
-    public class CombinationFinder
+    public interface ICombinationFinder
     {
-        private List<Combination> _combinations = new List<Combination>();
-        public CombinationFinder(Player player, ITable table)
+        CombinationDTO GetBestCombination(Player player, ITable table);
+        CombinationDTO GetBestCombination(IEnumerable<Card> cards);
+    }
+
+    public class CombinationFinder : ICombinationFinder
+    {
+        public CombinationDTO GetBestCombination(IEnumerable<Card> cards)
         {
-            var cards = player.Cards.ToList();
-            cards.AddRange(table.Cards);
-            if (cards.Any(x => x == null))
-                throw new ArgumentNullException();
-
-            InitCombinations(cards!);
-        }
-
-        public CombinationFinder(IEnumerable<Card> cards)
-        {
-            InitCombinations(cards);
-        }
-
-        public CombinationDTO GetBestCombination()
-        {
-            foreach (var combination in _combinations)
-            {
-                if (combination.ThereIsCombination())
-                    return combination.GetCombination();
-            }
-
-            throw new CombinationNotFoundException();
-        }
-
-        private void InitCombinations(IEnumerable<Card> cards)
-        {
-            _combinations = new List<Combination>()
+            var combinations = new List<Combination>()
             {
                 new RoyalFlush(cards),
                 new StraightFlush(cards),
@@ -52,6 +30,21 @@ namespace Poker.Core.Application.CombinationsLogic
                 new OnePair(cards),
                 new HighCard(cards),
             };
+
+            foreach (var combination in combinations)
+                if (combination.ThereIsCombination())
+                    return combination.GetCombination();
+
+            throw new CombinationNotFoundException();
+        }
+
+        public CombinationDTO GetBestCombination(Player player, ITable table)
+        {
+            var cards = player.Cards.ToList();
+            cards.AddRange(table.Cards);
+            if (cards.Any(x => x == null))
+                throw new ArgumentNullException();
+            return GetBestCombination(cards!);
         }
     }
 }

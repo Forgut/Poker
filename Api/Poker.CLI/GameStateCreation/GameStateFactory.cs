@@ -12,6 +12,7 @@ using Poker.Core.Domain.Extensions;
 using Poker.Infrastructure.Services.Events;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Poker.CLI.GameStateCreation
@@ -23,12 +24,14 @@ namespace Poker.CLI.GameStateCreation
         ISetCombinationComparerStage,
         ISetPlayersStage,
         ISetEventPublisherStage,
+        ICombinationFinderStage,
         IBuildGameStateStage
     {
         private ITable _table;
         private ICroupier _croupier;
         private IWinChanceEstimator _winChanceEstimator;
         private ICombinationComparer _combinationComparer;
+        private ICombinationFinder _combinationFinder;
         private Players _players;
         private IEventPublisher _eventPublisher;
         private bool _isSimulation;
@@ -41,10 +44,10 @@ namespace Poker.CLI.GameStateCreation
             return new GameState(BuildGame(), new ConsoleInputProvider(), new ConsoleOutputProvider());
 
             SimulationGame BuildGameSimulation()
-                => new SimulationGame(_croupier, _combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher);
+                => new SimulationGame(_croupier, _combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher, _combinationFinder);
 
             StandardGame BuildGame()
-                => new StandardGame(_combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher, new BetOverseer(_players));
+                => new StandardGame(_combinationComparer, _winChanceEstimator, _table, _players, _eventPublisher, new BetOverseer(_players), _combinationFinder);
         }
 
         private GameStateFactory()
@@ -87,7 +90,7 @@ namespace Poker.CLI.GameStateCreation
 
         public ISetCombinationComparerStage WithDefaultWinEstimator()
         {
-            _winChanceEstimator = new WinChanceEstimator();
+            _winChanceEstimator = new WinChanceEstimator(_combinationFinder);
             return this;
         }
 
@@ -104,15 +107,21 @@ namespace Poker.CLI.GameStateCreation
             return this;
         }
 
-        public IBuildGameStateStage WithNoEventPublisher()
+        public ICombinationFinderStage WithNoEventPublisher()
         {
             _eventPublisher = new EmptyEventPublisher();
             return this;
         }
 
-        public IBuildGameStateStage WithEventPublisher(IEventPublisher eventPublisher)
+        public ICombinationFinderStage WithEventPublisher(IEventPublisher eventPublisher)
         {
             _eventPublisher = eventPublisher;
+            return this;
+        }
+
+        public IBuildGameStateStage WithDefaultCombinationFinder()
+        {
+            _combinationFinder = new CombinationFinder();
             return this;
         }
     }

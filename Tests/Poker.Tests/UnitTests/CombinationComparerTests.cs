@@ -231,9 +231,9 @@ namespace Poker.Tests.UnitTests
             ExpectedWinner expectedWinner,
             ECombination expectedCombination)
         {
-            var combination1 = new CombinationFinder(GetCards(hand1)).GetBestCombination();
-            var combination2 = new CombinationFinder(GetCards(hand2)).GetBestCombination();
-            var combination3 = new CombinationFinder(GetCards(hand3)).GetBestCombination();
+            var combination1 = new CombinationFinder().GetBestCombination(GetCards(hand1));
+            var combination2 = new CombinationFinder().GetBestCombination(GetCards(hand2));
+            var combination3 = new CombinationFinder().GetBestCombination(GetCards(hand3));
 
             var winner = _comparer
                 .GetBestCombinations(new List<CombinationDTO>()
@@ -261,8 +261,8 @@ namespace Poker.Tests.UnitTests
             ExpectedWinner expectedWinner,
             ECombination expectedCombination)
         {
-            var combination1 = new CombinationFinder(GetCards(hand1)).GetBestCombination();
-            var combination2 = new CombinationFinder(GetCards(hand2)).GetBestCombination();
+            var combination1 = new CombinationFinder().GetBestCombination(GetCards(hand1));
+            var combination2 = new CombinationFinder().GetBestCombination(GetCards(hand2));
 
             var winner = _comparer
                 .GetBestCombinations(new List<CombinationDTO>()

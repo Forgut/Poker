@@ -19,12 +19,14 @@ namespace Poker.Core.Application.GameBehaviour
                     ITable table,
                     Players players,
                     IEventPublisher eventPublisher,
-                    IBetOverseer betOverseer)
+                    IBetOverseer betOverseer,
+                    ICombinationFinder combinationFinder)
             : base(combinationComparer,
                   winChanceEstimator,
                   table,
                   players,
-                  eventPublisher)
+                  eventPublisher,
+                  combinationFinder)
         {
             _betOverseer = betOverseer;
         }

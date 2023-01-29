@@ -32,6 +32,7 @@ namespace Poker.CLI
                     //.WithPlayers(GetPlayers())
                     .WithRandomPlayers()
                     .WithNoEventPublisher()
+                    .WithDefaultCombinationFinder()
                     .Build();
             }
             else
@@ -43,6 +44,7 @@ namespace Poker.CLI
                     .WithDefaultCombinationComparer()
                     .WithPlayers(GetPlayers())
                     .WithNoEventPublisher()
+                    .WithDefaultCombinationFinder()
                     .Build();
             }
 

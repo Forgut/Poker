@@ -18,12 +18,14 @@ namespace Poker.Core.Application.GameBehaviour
                     IWinChanceEstimator winChanceEstimator,
                     ITable table,
                     Players players,
-                    IEventPublisher eventPublisher)
+                    IEventPublisher eventPublisher,
+                    ICombinationFinder combinationFinder)
             : base(combinationComparer,
                  winChanceEstimator,
                  table,
                  players,
-                 eventPublisher)
+                 eventPublisher,
+                 combinationFinder)
         {
             _croupier = croupier;
         }
