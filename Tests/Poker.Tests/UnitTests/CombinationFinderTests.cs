@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using Poker.Core.Application.CombinationsLogic;
 using Poker.Core.Domain.Entity;
+using Poker.Core.Domain.Interfaces;
 using Poker.Tests.Common;
 using System.Linq;
 using Xunit;
@@ -9,13 +10,13 @@ namespace Poker.Tests.UnitTests
 {
     public class CombinationFinderTests
     {
-        private readonly Player _player;
+        private readonly ICardsHolder _player;
         private readonly ITable _table;
         private readonly CombinationFinder _combinationFinder;
 
         public CombinationFinderTests()
         {
-            _player = new Player("test", 100);
+            _player = Substitute.For<ICardsHolder>();
             _table = Substitute.For<ITable>();
             _combinationFinder = new CombinationFinder();
         }
@@ -23,8 +24,9 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_high_card()
         {
-            _player.SetFirstCard(new Card(EValue.Eight, EColor.Diamonds));
-            _player.SetSecondCard(new Card(EValue.Ten, EColor.Diamonds));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Diamonds),
+                new Card(EValue.Ten, EColor.Diamonds)));
 
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Two, EColor.Clubs),
@@ -45,8 +47,11 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_pair()
         {
-            _player.SetFirstCard(new Card(EValue.Eight, EColor.Hearts));
-            _player.SetSecondCard(new Card(EValue.Ten, EColor.Clubs));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Hearts),
+                new Card(EValue.Ten, EColor.Clubs)));
+
+
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Two, EColor.Hearts),
                 new Card(EValue.Four, EColor.Clubs),
@@ -65,8 +70,9 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_two_pairs()
         {
-            _player.SetFirstCard(new Card(EValue.Eight, EColor.Hearts));
-            _player.SetSecondCard(new Card(EValue.Ten, EColor.Clubs));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Hearts),
+                new Card(EValue.Ten, EColor.Clubs)));
 
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Eight, EColor.Diamonds),
@@ -85,8 +91,9 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_two_pairs_when_there_are_3_pairs()
         {
-            _player.SetFirstCard(new Card(EValue.Eight, EColor.Hearts));
-            _player.SetSecondCard(new Card(EValue.Ten, EColor.Clubs));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Hearts),
+                new Card(EValue.Ten, EColor.Clubs)));
 
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Eight, EColor.Diamonds),
@@ -105,8 +112,9 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_three_of_a_kind()
         {
-            _player.SetFirstCard(new Card(EValue.Eight, EColor.Clubs));
-            _player.SetSecondCard(new Card(EValue.Eight, EColor.Spades));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Clubs),
+                new Card(EValue.Eight, EColor.Spades)));
 
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Eight, EColor.Diamonds),
@@ -125,8 +133,9 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_flush()
         {
-            _player.SetFirstCard(new Card(EValue.Eight, EColor.Clubs));
-            _player.SetSecondCard(new Card(EValue.Three, EColor.Clubs));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Eight, EColor.Clubs),
+                new Card(EValue.Three, EColor.Clubs)));
 
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Eight, EColor.Diamonds),
@@ -143,8 +152,9 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_straight()
         {
-            _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
-            _player.SetSecondCard(new Card(EValue.Three, EColor.Clubs));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Five, EColor.Clubs),
+                new Card(EValue.Three, EColor.Clubs)));
 
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Four, EColor.Diamonds),
@@ -165,8 +175,10 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_full_house()
         {
-            _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
-            _player.SetSecondCard(new Card(EValue.Five, EColor.Diamonds));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Five, EColor.Clubs),
+                new Card(EValue.Five, EColor.Diamonds)));
+
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Four, EColor.Diamonds),
                 new Card(EValue.Six, EColor.Diamonds),
@@ -183,8 +195,10 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_four_of_a_kind()
         {
-            _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
-            _player.SetSecondCard(new Card(EValue.Five, EColor.Hearts));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Five, EColor.Clubs),
+                new Card(EValue.Five, EColor.Hearts)));
+
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Five, EColor.Diamonds),
                 new Card(EValue.Five, EColor.Spades),
@@ -202,8 +216,9 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_straight_flush()
         {
-            _player.SetFirstCard(new Card(EValue.Five, EColor.Clubs));
-            _player.SetSecondCard(new Card(EValue.Three, EColor.Clubs));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Five, EColor.Clubs),
+                new Card(EValue.Three, EColor.Clubs)));
 
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Four, EColor.Clubs),
@@ -225,8 +240,9 @@ namespace Poker.Tests.UnitTests
         [Fact]
         public void Should_find_royal_flush()
         {
-            _player.SetFirstCard(new Card(EValue.Ace, EColor.Hearts));
-            _player.SetSecondCard(new Card(EValue.Queen, EColor.Hearts));
+            _player.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
+                new Card(EValue.Ace, EColor.Hearts),
+                new Card(EValue.Queen, EColor.Hearts)));
 
             _table.Cards.Returns(ReadOnlyCreator.GetReadonlyCollection(
                 new Card(EValue.Jack, EColor.Hearts),
