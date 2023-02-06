@@ -1,0 +1,25 @@
+Cel: mo¿liwoœæ zapisu i odczytu stanu gry
+
+U¿ytkownik mo¿e wywo³aæ zapis gry. Po ponownym uruchomieniu aplikacji gra powinna
+za³adowaæ siê z zapisu w dok³adnie takim stanie jak w momencie zapisania. 
+Nie mog¹ ulec stracie ¿adne informacje - stan kart, pieniêdzy, czyja jest tura itp.
+
+Zapis stanu nastepuje do pliku tekstowego.
+
+W momencie wywo³ania metody zapisu stan gry zostaje zachowany w snapshocie a nastêpnie
+snapshot zostaje zserializowany i zapisany do pliku tekstowego.
+
+Przy odczycie zawartoœæ pliku tekstowego zostaje zdeserializowana do snapshotu i z niego 
+zostaje utworzony poprawny obiekt gry.
+
+Funkcjonalnoœæ obejmuje tylko grê standardow¹.
+
+Plan:
+1. Napisaæ obs³ugê tworzenia snapshotów dla:
+-Player
+-Table
+-Card
+-PlayersRotation
+-Pot
+2. Napisaæ logikê zapisu powy¿szych snapshotów do jednego zbiorczego reprezentuj¹cego stan gry
+3. Napisaæ logikê tworzenia obiektu gry w oparciu o zapisany snapshot
