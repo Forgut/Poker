@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System;
 using Poker.Core.Domain.Exceptions;
+using Poker.Core.Domain.Entity.Snapshot;
 
 namespace Poker.Core.Domain.Entity
 {
@@ -88,6 +89,20 @@ namespace Poker.Core.Domain.Entity
                     _ => throw new WrongCardValueException(input),
                 };
             }
+        }
+
+        public CardSnapshot ToSnapshot()
+        {
+            return new CardSnapshot()
+            {
+                Color = this.Color,
+                Value = this.Value
+            };
+        }
+
+        public static Card FromSnapshot(CardSnapshot snapshot)
+        {
+            return new Card(snapshot.Value, snapshot.Color);
         }
     }
 }
