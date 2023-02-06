@@ -1,9 +1,11 @@
 ﻿using Poker.Core.Common;
+using Poker.Core.Domain.Entity.Snapshot;
 using Poker.Core.Domain.Exceptions;
 using Poker.Core.Domain.Interfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Poker.Core.Domain.Entity
 {
@@ -15,10 +17,16 @@ namespace Poker.Core.Domain.Entity
             Money = initialMoney;
             _cards = new Card[2];
         }
-        public string Name { get; }
+
+        private Player()
+        {
+
+        }
+
+        public string Name { get; private set; }
         public int Money { get; private set; }
 
-        private readonly Card?[] _cards;
+        private Card?[] _cards;
         public ReadOnlyCollection<Card?> Cards => Array.AsReadOnly(_cards);
         public bool HasCards => _cards.ExceptNull().Count() == 2;
 
@@ -52,6 +60,27 @@ namespace Poker.Core.Domain.Entity
         public void AddMoney(int amount)
         {
             Money += amount;
+        }
+
+        public PlayerSnapshot ToSnapshot()
+        {
+            return new PlayerSnapshot()
+            {
+                Name = this.Name,
+                Money = this.Money,
+                Cards = this.Cards.Select(x => x?.ToSnapshot()),
+            };
+        }
+
+        public static Player EmptyPlayer =>
+            new Player();
+
+        public Player FromSnapshot(PlayerSnapshot snapshot)
+        {
+            this.Money = snapshot.Money;
+            this.Name = snapshot.Name;
+            this._cards = snapshot.Cards.Select(x => x.HasValue ? Card.EmptyCard.FromSnapshot(x.Value) : null).ToArray();
+            return this;
         }
     }
 }

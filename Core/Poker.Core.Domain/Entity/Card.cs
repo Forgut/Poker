@@ -14,8 +14,13 @@ namespace Poker.Core.Domain.Entity
             Color = color;
         }
 
-        public EValue Value { get; }
-        public EColor Color { get; }
+        private Card()
+        {
+
+        }
+
+        public EValue Value { get; private set; }
+        public EColor Color { get; private set; }
 
         public override string ToString()
         {
@@ -100,9 +105,14 @@ namespace Poker.Core.Domain.Entity
             };
         }
 
-        public static Card FromSnapshot(CardSnapshot snapshot)
+        public static Card EmptyCard
+            => new Card();
+
+        public Card FromSnapshot(CardSnapshot snapshot)
         {
-            return new Card(snapshot.Value, snapshot.Color);
+            this.Color = snapshot.Color;
+            this.Value = snapshot.Value;
+            return this;
         }
     }
 }
